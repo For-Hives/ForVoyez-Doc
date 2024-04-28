@@ -77,7 +77,7 @@ export function Properties({ children }) {
     <div className="my-6">
       <ul
         role="list"
-        className="m-0 max-w-[calc(theme(maxWidth.lg)-theme(spacing.8))] list-none divide-y divide-zinc-900/5 p-0 dark:divide-white/5"
+        className="m-0 max-w-[calc(theme(maxWidth.lg)-theme(spacing.8))] list-none divide-y divide-slate-900/5 p-0 dark:divide-white/5"
       >
         {children}
       </ul>
@@ -96,7 +96,7 @@ export function Property({ name, children, type }) {
         {type && (
           <>
             <dt className="sr-only">Type</dt>
-            <dd className="font-mono text-xs text-zinc-400 dark:text-zinc-500">
+            <dd className="font-mono text-xs text-slate-400 dark:text-slate-500">
               {type}
             </dd>
           </>
