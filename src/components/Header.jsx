@@ -18,7 +18,7 @@ function TopLevelNavItem({ href, children }) {
     <li>
       <Link
         href={href}
-        className="text-sm leading-5 text-slate-600 transition hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+        className="text-sm leading-5 text-slate-600 transition hover:text-slate-900"
       >
         {children}
       </Link>
@@ -41,10 +41,10 @@ export const Header = forwardRef(function Header({ className }, ref) {
         className,
         'fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80',
         !isInsideMobileNavigation &&
-          'backdrop-blur-sm lg:left-72 xl:left-80 dark:backdrop-blur',
+          'backdrop-blur-sm lg:left-72 xl:left-80',
         isInsideMobileNavigation
-          ? 'bg-white dark:bg-slate-900'
-          : 'bg-white/[var(--bg-opacity-light)] dark:bg-slate-900/[var(--bg-opacity-dark)]',
+          ? 'bg-white'
+          : 'bg-white/[var(--bg-opacity-light)]',
       )}
       style={{
         '--bg-opacity-light': bgOpacityLight,
@@ -55,7 +55,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
         className={clsx(
           'absolute inset-x-0 top-full h-px transition',
           (isInsideMobileNavigation || !mobileNavIsOpen) &&
-            'bg-slate-900/7.5 dark:bg-white/7.5',
+            'bg-slate-900/7.5',
         )}
       />
       <Search />
@@ -73,7 +73,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
             <TopLevelNavItem href="#">Support</TopLevelNavItem>
           </ul>
         </nav>
-        <div className="hidden md:block md:h-5 md:w-px md:bg-slate-900/10 md:dark:bg-white/15" />
+        <div className="hidden md:block md:h-5 md:w-px md:bg-slate-900/10" />
         <div className="flex gap-4">
           <MobileSearch />
           <ThemeToggle />

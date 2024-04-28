@@ -7,29 +7,29 @@ const variantStyles = {
 
 const colorStyles = {
   forvoyez_orange: {
-    small: 'text-forvoyez_orange-500 dark:text-forvoyez_orange-400',
+    small: 'text-forvoyez_orange-500',
     medium:
-      'ring-forvoyez_orange-300 dark:ring-forvoyez_orange-400/30 bg-forvoyez_orange-400/10 text-forvoyez_orange-500 dark:text-forvoyez_orange-400',
+      'ring-forvoyez_orange-300bg-forvoyez_orange-400/10 text-forvoyez_orange-500',
   },
   sky: {
     small: 'text-sky-500',
     medium:
-      'ring-sky-300 bg-sky-400/10 text-sky-500 dark:ring-sky-400/30 dark:bg-sky-400/10 dark:text-sky-400',
+      'ring-sky-300 bg-sky-400/10 text-sky-500',
   },
   amber: {
     small: 'text-amber-500',
     medium:
-      'ring-amber-300 bg-amber-400/10 text-amber-500 dark:ring-amber-400/30 dark:bg-amber-400/10 dark:text-amber-400',
+      'ring-amber-300 bg-amber-400/10 text-amber-500',
   },
   rose: {
-    small: 'text-red-500 dark:text-rose-500',
+    small: 'text-red-500',
     medium:
-      'ring-rose-200 bg-rose-50 text-red-500 dark:ring-rose-500/20 dark:bg-rose-400/10 dark:text-rose-400',
+      'ring-rose-200 bg-rose-50 text-red-500',
   },
   slate: {
-    small: 'text-slate-400 dark:text-slate-500',
+    small: 'text-slate-400',
     medium:
-      'ring-slate-200 bg-slate-50 text-slate-500 dark:ring-slate-500/20 dark:bg-slate-400/10 dark:text-slate-400',
+      'ring-slate-200 bg-slate-50 text-slate-500',
   },
 }
 
