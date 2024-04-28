@@ -25,6 +25,21 @@ module.exports = {
     },
     typography: typographyStyles,
     extend: {
+      colors:{
+        'forvoyez-orange': {
+          '50': '#fff3f1',
+          '100': '#ffe5df',
+          '200': '#ffcfc5',
+          '300': '#ffae9d',
+          '400': '#ff7f64',
+          '500': '#ff6545',
+          '600': '#ed3a15',
+          '700': '#c82d0d',
+          '800': '#a5290f',
+          '900': '#882814',
+          '950': '#4b1004',
+        },
+      },
       boxShadow: {
         glow: '0 0 4px rgb(0 0 0 / 0.1)',
       },
