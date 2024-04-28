@@ -193,11 +193,11 @@ function NavigationGroup({ group, className }) {
 
 export const navigation = [
   {
+    // fixme make the correct arborescence
     title: 'Guides',
     links: [
       { title: 'Introduction', href: '/' },
       { title: 'Quickstart', href: '/quickstart' },
-      { title: 'SDKs', href: '/sdks' },
       { title: 'Authentication', href: '/authentication' },
       { title: 'Pagination', href: '/pagination' },
       { title: 'Errors', href: '/errors' },
