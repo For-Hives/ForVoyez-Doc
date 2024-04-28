@@ -6,10 +6,10 @@ const variantStyles = {
 }
 
 const colorStyles = {
-  forvoyez-orange: {
-    small: 'text-forvoyez-orange-500 dark:text-forvoyez-orange-400',
+  forvoyez_orange: {
+    small: 'text-forvoyez_orange-500 dark:text-forvoyez_orange-400',
     medium:
-      'ring-forvoyez-orange-300 dark:ring-forvoyez-orange-400/30 bg-forvoyez-orange-400/10 text-forvoyez-orange-500 dark:text-forvoyez-orange-400',
+      'ring-forvoyez_orange-300 dark:ring-forvoyez_orange-400/30 bg-forvoyez_orange-400/10 text-forvoyez_orange-500 dark:text-forvoyez_orange-400',
   },
   sky: {
     small: 'text-sky-500',
@@ -34,7 +34,7 @@ const colorStyles = {
 }
 
 const valueColorMap = {
-  GET: 'forvoyez-orange',
+  GET: 'forvoyez_orange',
   POST: 'sky',
   PUT: 'amber',
   DELETE: 'rose',
@@ -43,7 +43,7 @@ const valueColorMap = {
 export function Tag({
   children,
   variant = 'medium',
-  color = valueColorMap[children] ?? 'forvoyez-orange',
+  color = valueColorMap[children] ?? 'forvoyez_orange',
 }) {
   return (
     <span

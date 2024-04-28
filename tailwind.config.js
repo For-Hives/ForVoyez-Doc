@@ -26,7 +26,7 @@ module.exports = {
     typography: typographyStyles,
     extend: {
       colors:{
-        'forvoyez-orange': {
+        'forvoyez_orange': {
           '50': '#fff3f1',
           '100': '#ffe5df',
           '200': '#ffcfc5',

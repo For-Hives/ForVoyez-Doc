@@ -16,14 +16,14 @@ function ArrowIcon(props) {
 
 const variantStyles = {
   primary:
-    'rounded-full bg-slate-900 py-1 px-3 text-white hover:bg-slate-700 dark:bg-forvoyez-orange-400/10 dark:text-forvoyez-orange-400 dark:ring-1 dark:ring-inset dark:ring-forvoyez-orange-400/20 dark:hover:bg-forvoyez-orange-400/10 dark:hover:text-forvoyez-orange-300 dark:hover:ring-forvoyez-orange-300',
+    'rounded-full bg-slate-900 py-1 px-3 text-white hover:bg-slate-700 dark:bg-forvoyez_orange-400/10 dark:text-forvoyez_orange-400 dark:ring-1 dark:ring-inset dark:ring-forvoyez_orange-400/20 dark:hover:bg-forvoyez_orange-400/10 dark:hover:text-forvoyez_orange-300 dark:hover:ring-forvoyez_orange-300',
   secondary:
     'rounded-full bg-slate-100 py-1 px-3 text-slate-900 hover:bg-slate-200 dark:bg-slate-800/40 dark:text-slate-400 dark:ring-1 dark:ring-inset dark:ring-slate-800 dark:hover:bg-slate-800 dark:hover:text-slate-300',
   filled:
-    'rounded-full bg-slate-900 py-1 px-3 text-white hover:bg-slate-700 dark:bg-forvoyez-orange-500 dark:text-white dark:hover:bg-forvoyez-orange-400',
+    'rounded-full bg-slate-900 py-1 px-3 text-white hover:bg-slate-700 dark:bg-forvoyez_orange-500 dark:text-white dark:hover:bg-forvoyez_orange-400',
   outline:
     'rounded-full py-1 px-3 text-slate-700 ring-1 ring-inset ring-slate-900/10 hover:bg-slate-900/2.5 hover:text-slate-900 dark:text-slate-400 dark:ring-white/10 dark:hover:bg-white/5 dark:hover:text-white',
-  text: 'text-forvoyez-orange-500 hover:text-forvoyez-orange-600 dark:text-forvoyez-orange-400 dark:hover:text-forvoyez-orange-500',
+  text: 'text-forvoyez_orange-500 hover:text-forvoyez_orange-600 dark:text-forvoyez_orange-400 dark:hover:text-forvoyez_orange-500',
 }
 
 export function Button({

@@ -53,8 +53,8 @@ const FeedbackThanks = forwardRef(function FeedbackThanks(_props, ref) {
       ref={ref}
       className="absolute inset-0 flex justify-center md:justify-start"
     >
-      <div className="flex items-center gap-3 rounded-full bg-forvoyez-orange-50/50 py-1 pl-1.5 pr-3 text-sm text-forvoyez-orange-900 ring-1 ring-inset ring-forvoyez-orange-500/20 dark:bg-forvoyez-orange-500/5 dark:text-forvoyez-orange-200 dark:ring-forvoyez-orange-500/30">
-        <CheckIcon className="h-5 w-5 flex-none fill-forvoyez-orange-500 stroke-white dark:fill-forvoyez-orange-200/20 dark:stroke-forvoyez-orange-200" />
+      <div className="flex items-center gap-3 rounded-full bg-forvoyez_orange-50/50 py-1 pl-1.5 pr-3 text-sm text-forvoyez_orange-900 ring-1 ring-inset ring-forvoyez_orange-500/20 dark:bg-forvoyez_orange-500/5 dark:text-forvoyez_orange-200 dark:ring-forvoyez_orange-500/30">
+        <CheckIcon className="h-5 w-5 flex-none fill-forvoyez_orange-500 stroke-white dark:fill-forvoyez_orange-200/20 dark:stroke-forvoyez_orange-200" />
         Thanks for your feedback!
       </div>
     </div>
