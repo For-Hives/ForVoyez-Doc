@@ -1,126 +1,172 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import {usePathname} from 'next/navigation'
 
-import { Button } from '@/components/Button'
-import { navigation } from '@/components/Navigation'
+import {Button} from '@/components/Button'
+import {navigation} from '@/components/Navigation'
 
-function PageLink({ label, page, previous = false }) {
-  return (
-    <>
-      <Button
-        href={page.href}
-        aria-label={`${label}: ${page.title}`}
-        variant="secondary"
-        arrow={previous ? 'left' : 'right'}
-      >
-        {label}
-      </Button>
-      <Link
-        href={page.href}
-        tabIndex={-1}
-        aria-hidden="true"
-        className="text-base font-semibold text-slate-900 transition hover:text-slate-600"
-      >
-        {page.title}
-      </Link>
-    </>
-  )
+
+const social = [
+    {
+        name: 'Discord',
+        href: '#',
+        icon: props => (
+            <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
+                <path
+                    fillRule="evenodd"
+                    d="M20.317 4.492c-1.53-.69-3.17-1.2-4.885-1.49a.075.075 0 0 0-.079.036c-.21.369-.444.85-.608 1.23a18.566 18.566 0 0 0-5.487 0 12.36 12.36 0 0 0-.617-1.23A.077.077 0 0 0 8.562 3c-1.714.29-3.354.8-4.885 1.491a.07.07 0 0 0-.032.027C.533 9.093-.32 13.555.099 17.961a.08.08 0 0 0 .031.055 20.03 20.03 0 0 0 5.993 2.98.078.078 0 0 0 .084-.026 13.83 13.83 0 0 0 1.226-1.963.074.074 0 0 0-.041-.104 13.201 13.201 0 0 1-1.872-.878.075.075 0 0 1-.008-.125c.126-.093.252-.19.372-.287a.075.075 0 0 1 .078-.01c3.927 1.764 8.18 1.764 12.061 0a.075.075 0 0 1 .079.009c.12.098.245.195.372.288a.075.075 0 0 1-.006.125c-.598.344-1.22.635-1.873.877a.075.075 0 0 0-.041.105c.36.687.772 1.341 1.225 1.962a.077.077 0 0 0 .084.028 19.963 19.963 0 0 0 6.002-2.981.076.076 0 0 0 .032-.054c.5-5.094-.838-9.52-3.549-13.442a.06.06 0 0 0-.031-.028zM8.02 15.278c-1.182 0-2.157-1.069-2.157-2.38 0-1.312.956-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.956 2.38-2.157 2.38zm7.975 0c-1.183 0-2.157-1.069-2.157-2.38 0-1.312.955-2.38 2.157-2.38 1.21 0 2.176 1.077 2.157 2.38 0 1.312-.946 2.38-2.157 2.38z"
+                    clipRule="evenodd"
+                />
+            </svg>
+        ),
+    },
+    {
+        name: 'Facebook',
+        href: '#',
+        icon: props => (
+            <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
+                <path
+                    fillRule="evenodd"
+                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"
+                    clipRule="evenodd"
+                />
+            </svg>
+        ),
+    },
+    {
+        name: 'Instagram',
+        href: '#',
+        icon: props => (
+            <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
+                <path
+                    fillRule="evenodd"
+                    d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z"
+                    clipRule="evenodd"
+                />
+            </svg>
+        ),
+    },
+    {
+        name: 'GitHub',
+        href: '#',
+        icon: props => (
+            <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
+                <path
+                    fillRule="evenodd"
+                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+                    clipRule="evenodd"
+                />
+            </svg>
+        ),
+    },
+    {
+        name: 'LinkedIn',
+        href: '#',
+        icon: props => (
+            <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
+                <path
+                    fillRule="evenodd"
+                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                    clipRule="evenodd"
+                />
+            </svg>
+        ),
+    },
+]
+
+function PageLink({label, page, previous = false}) {
+    return (
+        <>
+            <Button
+                href={page.href}
+                aria-label={`${label}: ${page.title}`}
+                variant="secondary"
+                arrow={previous ? 'left' : 'right'}
+            >
+                {label}
+            </Button>
+            <Link
+                href={page.href}
+                tabIndex={-1}
+                aria-hidden="true"
+                className="text-base font-semibold text-slate-900 transition hover:text-slate-600"
+            >
+                {page.title}
+            </Link>
+        </>
+    )
 }
 
 function PageNavigation() {
-  let pathname = usePathname()
-  let allPages = navigation.flatMap((group) => group.links)
-  let currentPageIndex = allPages.findIndex((page) => page.href === pathname)
+    let pathname = usePathname()
+    let allPages = navigation.flatMap((group) => group.links)
+    let currentPageIndex = allPages.findIndex((page) => page.href === pathname)
 
-  if (currentPageIndex === -1) {
-    return null
-  }
+    if (currentPageIndex === -1) {
+        return null
+    }
 
-  let previousPage = allPages[currentPageIndex - 1]
-  let nextPage = allPages[currentPageIndex + 1]
+    let previousPage = allPages[currentPageIndex - 1]
+    let nextPage = allPages[currentPageIndex + 1]
 
-  if (!previousPage && !nextPage) {
-    return null
-  }
+    if (!previousPage && !nextPage) {
+        return null
+    }
 
-  return (
-    <div className="flex">
-      {previousPage && (
-        <div className="flex flex-col items-start gap-3">
-          <PageLink label="Previous" page={previousPage} previous />
+    return (
+        <div className="flex">
+            {previousPage && (
+                <div className="flex flex-col items-start gap-3">
+                    <PageLink label="Previous" page={previousPage} previous/>
+                </div>
+            )}
+            {nextPage && (
+                <div className="ml-auto flex flex-col items-end gap-3">
+                    <PageLink label="Next" page={nextPage}/>
+                </div>
+            )}
         </div>
-      )}
-      {nextPage && (
-        <div className="ml-auto flex flex-col items-end gap-3">
-          <PageLink label="Next" page={nextPage} />
-        </div>
-      )}
-    </div>
-  )
+    )
 }
 
-function XIcon(props) {
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
-      <path d="M11.1527 8.92804L16.2525 3H15.044L10.6159 8.14724L7.07919 3H3L8.34821 10.7835L3 17H4.20855L8.88474 11.5643L12.6198 17H16.699L11.1524 8.92804H11.1527ZM9.49748 10.8521L8.95559 10.077L4.644 3.90978H6.50026L9.97976 8.88696L10.5216 9.66202L15.0446 16.1316H13.1883L9.49748 10.8524V10.8521Z" />
-    </svg>
-  )
-}
 
-function GitHubIcon(props) {
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="M10 1.667c-4.605 0-8.334 3.823-8.334 8.544 0 3.78 2.385 6.974 5.698 8.106.417.075.573-.182.573-.406 0-.203-.011-.875-.011-1.592-2.093.397-2.635-.522-2.802-1.002-.094-.246-.5-1.005-.854-1.207-.291-.16-.708-.556-.01-.567.656-.01 1.124.62 1.281.876.75 1.292 1.948.93 2.427.705.073-.555.291-.93.531-1.143-1.854-.213-3.791-.95-3.791-4.218 0-.929.322-1.698.854-2.296-.083-.214-.375-1.09.083-2.265 0 0 .698-.224 2.292.876a7.576 7.576 0 0 1 2.083-.288c.709 0 1.417.096 2.084.288 1.593-1.11 2.291-.875 2.291-.875.459 1.174.167 2.05.084 2.263.53.599.854 1.357.854 2.297 0 3.278-1.948 4.005-3.802 4.219.302.266.563.78.563 1.58 0 1.143-.011 2.061-.011 2.35 0 .224.156.491.573.405a8.365 8.365 0 0 0 4.11-3.116 8.707 8.707 0 0 0 1.567-4.99c0-4.721-3.73-8.545-8.334-8.545Z"
-      />
-    </svg>
-  )
-}
-
-function DiscordIcon(props) {
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
-      <path d="M16.238 4.515a14.842 14.842 0 0 0-3.664-1.136.055.055 0 0 0-.059.027 10.35 10.35 0 0 0-.456.938 13.702 13.702 0 0 0-4.115 0 9.479 9.479 0 0 0-.464-.938.058.058 0 0 0-.058-.027c-1.266.218-2.497.6-3.664 1.136a.052.052 0 0 0-.024.02C1.4 8.023.76 11.424 1.074 14.782a.062.062 0 0 0 .024.042 14.923 14.923 0 0 0 4.494 2.272.058.058 0 0 0 .064-.02c.346-.473.654-.972.92-1.496a.057.057 0 0 0-.032-.08 9.83 9.83 0 0 1-1.404-.669.058.058 0 0 1-.029-.046.058.058 0 0 1 .023-.05c.094-.07.189-.144.279-.218a.056.056 0 0 1 .058-.008c2.946 1.345 6.135 1.345 9.046 0a.056.056 0 0 1 .059.007c.09.074.184.149.28.22a.058.058 0 0 1 .023.049.059.059 0 0 1-.028.046 9.224 9.224 0 0 1-1.405.669.058.058 0 0 0-.033.033.056.056 0 0 0 .002.047c.27.523.58 1.022.92 1.495a.056.056 0 0 0 .062.021 14.878 14.878 0 0 0 4.502-2.272.055.055 0 0 0 .016-.018.056.056 0 0 0 .008-.023c.375-3.883-.63-7.256-2.662-10.246a.046.046 0 0 0-.023-.021Zm-9.223 8.221c-.887 0-1.618-.814-1.618-1.814s.717-1.814 1.618-1.814c.908 0 1.632.821 1.618 1.814 0 1-.717 1.814-1.618 1.814Zm5.981 0c-.887 0-1.618-.814-1.618-1.814s.717-1.814 1.618-1.814c.908 0 1.632.821 1.618 1.814 0 1-.71 1.814-1.618 1.814Z" />
-    </svg>
-  )
-}
-
-function SocialLink({ href, icon: Icon, children }) {
-  return (
-    <Link href={href} className="group">
-      <span className="sr-only">{children}</span>
-      <Icon className="h-5 w-5 fill-slate-700 transition group-hover:fill-slate-900" />
-    </Link>
-  )
+function SocialLink({href, icon: Icon, children}) {
+    return (
+        <Link href={href} className="group">
+            <span className="sr-only">{children}</span>
+            <Icon className="h-5 w-5 fill-slate-700 transition group-hover:fill-slate-900"/>
+        </Link>
+    )
 }
 
 function SmallPrint() {
-  return (
-    <div className="flex flex-col items-center justify-between gap-5 border-t border-slate-900/5 pt-8 sm:flex-row">
-      <p className="text-xs text-slate-600">
-        &copy; ForVoyez Copyright {new Date().getFullYear()}. All rights reserved.
-      </p>
-      <div className="flex gap-4">
-        <SocialLink href="#" icon={GitHubIcon}>
-          Follow us on GitHub
-        </SocialLink>
-        <SocialLink href="#" icon={DiscordIcon}>
-          Join our Discord server
-        </SocialLink>
-      </div>
-    </div>
-  )
+    return (
+        <div className="flex flex-col items-center justify-between gap-5 border-t border-slate-900/5 pt-8 sm:flex-row">
+            <p className="text-xs text-slate-600">
+                &copy; ForVoyez Copyright {new Date().getFullYear()}. All rights reserved.
+            </p>
+            <div className="flex gap-4">
+                {social.map(item => (
+                    <Link
+                        key={item.name}
+                        href={item.href}
+                        className="text-gray-400 hover:text-forvoyez_orange-500 transition-all"
+                    >
+                        <span className="sr-only">{item.name}</span>
+                        <item.icon className="h-6 w-6" aria-hidden="true"/>
+                    </Link>
+                ))}
+            </div>
+        </div>
+    )
 }
 
 export function Footer() {
-  return (
-    <footer className="mx-auto w-full max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
-      <PageNavigation />
-      <SmallPrint />
-    </footer>
-  )
+    return (
+        <footer className="mx-auto w-full max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
+            <PageNavigation/>
+            <SmallPrint/>
+        </footer>
+    )
 }
