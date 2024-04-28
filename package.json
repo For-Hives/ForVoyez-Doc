@@ -1,12 +1,23 @@
 {
   "name": "forvoyez-documentation",
   "version": "1.0.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prettier": "prettier --write .",
+    "precommit": "lint-staged",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.json": "prettier --write",
+    "*.css": "prettier --write"
   },
   "browserslist": "defaults, not ie <= 11",
   "dependencies": {
@@ -44,6 +55,10 @@
   "devDependencies": {
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.3",
+    "eslint-config-prettier": "9.1.0",
+    "husky": "9.0.11",
+    "lint-staged": "15.2.2",
+    "postcss": "8.4.38",
     "prettier": "3.2.5",
     "prettier-plugin-tailwindcss": "0.5.14",
     "sharp": "0.33.3"
