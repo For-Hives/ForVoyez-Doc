@@ -22,7 +22,7 @@ function FeedbackButton(props) {
   return (
     <button
       type="submit"
-      className="px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-900/2.5 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white"
+      className="px-3 text-sm font-medium text-slate-600 transition hover:bg-slate-900/2.5 hover:text-slate-900"
       {...props}
     />
   )
@@ -35,12 +35,12 @@ const FeedbackForm = forwardRef(function FeedbackForm({ onSubmit }, ref) {
       onSubmit={onSubmit}
       className="absolute inset-0 flex items-center justify-center gap-6 md:justify-start"
     >
-      <p className="text-sm text-slate-600 dark:text-slate-400">
+      <p className="text-sm text-slate-600">
         Was this page helpful?
       </p>
-      <div className="group grid h-8 grid-cols-[1fr,1px,1fr] overflow-hidden rounded-full border border-slate-900/10 dark:border-white/10">
+      <div className="group grid h-8 grid-cols-[1fr,1px,1fr] overflow-hidden rounded-full border border-slate-900/10">
         <FeedbackButton data-response="yes">Yes</FeedbackButton>
-        <div className="bg-slate-900/10 dark:bg-white/10" />
+        <div className="bg-slate-900/10" />
         <FeedbackButton data-response="no">No</FeedbackButton>
       </div>
     </form>
@@ -53,8 +53,8 @@ const FeedbackThanks = forwardRef(function FeedbackThanks(_props, ref) {
       ref={ref}
       className="absolute inset-0 flex justify-center md:justify-start"
     >
-      <div className="flex items-center gap-3 rounded-full bg-forvoyez_orange-50/50 py-1 pl-1.5 pr-3 text-sm text-forvoyez_orange-900 ring-1 ring-inset ring-forvoyez_orange-500/20 dark:bg-forvoyez_orange-500/5 dark:text-forvoyez_orange-200 dark:ring-forvoyez_orange-500/30">
-        <CheckIcon className="h-5 w-5 flex-none fill-forvoyez_orange-500 stroke-white dark:fill-forvoyez_orange-200/20 dark:stroke-forvoyez_orange-200" />
+      <div className="flex items-center gap-3 rounded-full bg-forvoyez_orange-50/50 py-1 pl-1.5 pr-3 text-sm text-forvoyez_orange-900 ring-1 ring-inset ring-forvoyez_orange-500/20">
+        <CheckIcon className="h-5 w-5 flex-none fill-forvoyez_orange-500 stroke-white" />
         Thanks for your feedback!
       </div>
     </div>

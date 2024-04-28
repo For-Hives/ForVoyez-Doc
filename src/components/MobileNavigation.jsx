@@ -89,7 +89,7 @@ function MobileNavigationDialog({ isOpen, close }) {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 top-14 bg-slate-400/20 backdrop-blur-sm dark:bg-black/40" />
+          <div className="fixed inset-0 top-14 bg-slate-400/20 backdrop-blur-sm" />
         </Transition.Child>
 
         <Dialog.Panel>
@@ -116,7 +116,7 @@ function MobileNavigationDialog({ isOpen, close }) {
           >
             <motion.div
               layoutScroll
-              className="fixed bottom-0 left-0 top-14 w-full overflow-y-auto bg-white px-4 pb-4 pt-6 shadow-lg shadow-slate-900/10 ring-1 ring-slate-900/7.5 min-[416px]:max-w-sm sm:px-6 sm:pb-10 dark:bg-slate-900 dark:ring-slate-800"
+              className="fixed bottom-0 left-0 top-14 w-full overflow-y-auto bg-white px-4 pb-4 pt-6 shadow-lg shadow-slate-900/10 ring-1 ring-slate-900/7.5 min-[416px]:max-w-sm sm:px-6 sm:pb-10"
             >
               <Navigation />
             </motion.div>
@@ -147,11 +147,11 @@ export function MobileNavigation() {
     <IsInsideMobileNavigationContext.Provider value={true}>
       <button
         type="button"
-        className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-slate-900/5 dark:hover:bg-white/5"
+        className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-slate-900/5"
         aria-label="Toggle navigation"
         onClick={toggle}
       >
-        <ToggleIcon className="w-2.5 stroke-slate-900 dark:stroke-white" />
+        <ToggleIcon className="w-2.5 stroke-slate-900" />
       </button>
       {!isInsideMobileNavigation && (
         <Suspense fallback={null}>
