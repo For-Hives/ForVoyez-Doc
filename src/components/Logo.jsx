@@ -7,7 +7,7 @@ export function Logo() {
             <Image
                 className="h-8 w-auto"
                 src="/logo/logo.webp"
-                alt=""
+                alt="logo ForVoyez"
                 width={80}
                 height={80}
             />
