@@ -67,8 +67,6 @@ export const Header = forwardRef(function Header({ className }, ref) {
             {/*fixme link to website*/}
             <TopLevelNavItem href="/">Website</TopLevelNavItem>
             <TopLevelNavItem href="/">Documentation</TopLevelNavItem>
-            {/*fixme link to changelog*/}
-            <TopLevelNavItem href="#">Changelog</TopLevelNavItem>
             {/*fixme link to profile*/}
             <TopLevelNavItem href="#">Profile</TopLevelNavItem>
           </ul>
