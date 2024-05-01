@@ -7,7 +7,6 @@ module.exports = {
     content: ['./src/**/*.{js,mjs,jsx,ts,tsx,mdx}'],
     safelist: [
         {
-            // fixme replace sourcesans, jost etc with your chosen font
             pattern: /font-(sourcesans|jost)/,
         },
     ],
@@ -32,7 +31,6 @@ module.exports = {
         typography: typographyStyles,
         extend: {
             fontFamily: {
-                // fixme replace sourcesans, jost etc with your chosen font
                 sourcesans: 'var(--font-sourcesans)',
                 jost: 'var(--font-jost)',
             },
