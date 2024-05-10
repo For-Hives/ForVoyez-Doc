@@ -1,40 +1,45 @@
-import { Guides } from '@/components/Guides'
-import { Resources } from '@/components/Resources'
-import { HeroPattern } from '@/components/HeroPattern'
+import {Guides} from '@/components/Guides'
+import {References} from '@/components/References'
+import {DashboardSupport} from '@/components/DashboardSupport'
+import {HeroPattern} from '@/components/HeroPattern'
+import {Button} from "@/components/Button";
 
 export const metadata = {
-  title: 'API Documentation',
-  description:
-    'Learn everything there is to know about the Protocol API and integrate Protocol into your product.',
+    title: 'ForVoyez API Documentation',
+    description:
+        'Learn everything there is to know about the ForVoyez API for automatic image metadata generation and seamlessly integrate it into your product.',
 }
 
 export const sections = [
-  { title: 'Guides', id: 'guides' },
-  { title: 'Resources', id: 'resources' },
+    {title: 'Guides', id: 'guides'},
+    {title: 'References', id: 'references'},
+    {title: 'Dashboard & Support', id: 'dashboard-support'},
 ]
 
-<HeroPattern />
+    <HeroPattern />
 
-# API Documentation
+# ForVoyez API Documentation
 
-Use the Protocol API to access contacts, conversations, group messages, and more and seamlessly integrate your product into the workflows of dozens of devoted Protocol users. {{ className: 'lead' }}
+Use the ForVoyez API to automatically generate alt text and metadata for your images, boost your SEO, and improve accessibility. Seamlessly integrate our AI-powered solution into your product and workflows. {{ className: 'lead' }}
 
 <div className="not-prose mb-16 mt-6 flex gap-3">
-  <Button href="/quickstart" arrow="right">
-    <>Quickstart</>
-  </Button>
+    <Button href="/quickstart" arrow="right">
+        <>Quickstart</>
+    </Button>
 </div>
 
-## Getting started {{ anchor: false }}
+## Getting Started {{ anchor: false }}
 
-To get started, create a new application in your [developer settings](#), then read about how to make requests for the resources you need to access using our HTTP APIs or dedicated client SDKs. When your integration is ready to go live, publish it to our [integrations directory](#) to reach the Protocol community. {{ className: 'lead' }}
+To get started, sign up for an account on our platform and obtain your API key. Refer to our guides and API references to learn how to make requests and integrate our solution into your project. When you're ready to go live, configure your account settings and manage your subscription in the dashboard. {{ className: 'lead' }}
 
 <div className="not-prose">
-  <Button href="/sdks" variant="text" arrow="right">
-    <>Get your API key</>
-  </Button>
+    <Button href="/authentication" variant="text" arrow="right">
+        <>Get your API key</>
+    </Button>
 </div>
 
-<Guides />
+<Guides/>
 
-<Resources />
+<References/>
+
+<DashboardSupport/>
