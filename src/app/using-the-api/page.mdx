@@ -1,3 +1,6 @@
+import {CodeGroup} from "@/components/Code";
+import {Button} from "@/components/Button";
+
 export const metadata = {
   title: 'Using the API',
   description: 'Learn about the request format, required and optional parameters, and error handling when using the ForVoyez API.',
@@ -9,7 +12,7 @@ To effectively integrate the ForVoyez API into your application, it's essential 
 
 ## Request Format
 
-When making requests to the ForVoyez API, you'll need to send a `POST` request to the `/v1/generate` endpoint with the following format:
+When making requests to the ForVoyez API, you'll need to send a `POST` request to the `/describe` endpoint with the following format:
 
 - The `Authorization` header should include your API key as a Bearer token.
 - The `Content-Type` header should be set to `multipart/form-data`.
@@ -17,28 +20,60 @@ When making requests to the ForVoyez API, you'll need to send a `POST` request t
   - `image`: The image file you want to generate metadata for.
   - `data`: A JSON object containing the `context` (optional) and `schema` (optional) for the metadata generation.
 
-Here's an example request using cURL:
+Here's an example request using cURL and JavaScript:
 
-```bash
+<CodeGroup>
+```bash {{ title: 'cURL' }}
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "data={\"context\":\"Your image context\",\"schema\":{\"alt\":\"string\",\"caption\":\"string\"}}" \
-  https://api.forvoyez.com/v1/generate
+  -F "data={\"context\":\"Playful kittens among blooming flowers\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+  https://api.forvoyez.com/v1/describe
 ```
+
+```js {{ title: 'JavaScript' }}
+const form = new FormData();
+form.append('image', fileInput.files[0]);
+form.append('data', JSON.stringify({
+  context: 'Playful kittens among blooming flowers',
+  schema: {
+    title: 'string',
+    alternativeText: 'string',
+    caption: 'string'
+  }
+}));
+
+fetch('https://api.forvoyez.com/v1/describe', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: form
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    // Handle the API response data
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle any errors that occurred during the request
+  });
+```
+</CodeGroup>
 
 ## Required and Optional Parameters
 
 When making a request to the ForVoyez API, there are both required and optional parameters you can include:
 
 - Required parameters:
-- `image`: The image file for which you want to generate metadata. This should be included as a file in the `multipart/form-data` request body.
+  - `image`: The image file for which you want to generate metadata.This should be included as a file in the multipart/form-data request body.
 
 - Optional parameters:
-- `data`: A JSON object that can include the following properties:
-- `context` (string): Additional context or description about the image to assist in generating more accurate metadata.
-- `schema` (object): Specifies the desired output schema for the generated metadata. You can customize the schema based on your requirements.
+  - `data`: A JSON object that can include the following properties:
+    - `context` (string): Additional context or description about the image to assist in generating more accurate metadata.
+    - `schema` (object): Specifies the desired output schema for the generated metadata. You can customize the schema based on your requirements.
 
 If you don't provide the `data` parameter or omit the `context` or `schema` properties, the API will use default values for metadata generation.
 
@@ -54,9 +89,9 @@ Here's an example of a successful API response:
 
 ```json
 {
-  "alt": "A beautiful sunset over the ocean",
-  "caption": "Breathtaking view of the sun setting on the horizon, casting a warm glow on the waves.",
-  "title": "Sunset over the ocean"
+  "title": "Playful Kittens Among Blooming Flowers",
+  "alternativeText": "Two animated kittens playing among blooming flowers with a clear blue sky",
+  "caption": "Adorable kittens having fun in a field of vibrant blossoms under the clear blue sky"
 }
 ```
 
@@ -78,7 +113,6 @@ And here's an example of an error response:
 </div>
 
 ## Next Steps
-
 Now that you know how to make requests to the ForVoyez API, handle errors, and interpret the responses, you can explore further:
 
 - [Data Schemas](/data-schemas): Learn how to customize and validate the metadata output schema.
