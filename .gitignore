@@ -35,5 +35,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 LICENSE.md
-output_custom.txt
-large_output_custom.txt
+large.txt
+output.txt
+bun.lockb
