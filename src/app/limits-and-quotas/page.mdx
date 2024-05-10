@@ -1,1 +1,75 @@
-# todo
+import {Button} from "@/components/Button";
+export const metadata = {
+    title: 'Limits and Usage Quotas',
+    description: 'Understand the request limits per subscription, how to handle quota overages, and the option to purchase additional credit packs.',
+}
+
+# Limits and Usage Quotas
+
+To ensure fair usage and maintain the performance of the ForVoyez API, we have implemented request limits and usage quotas. In this section, we'll discuss the request limits per subscription, how to handle quota overages, and the possibility to purchase additional credit packs.
+
+## Request Limits per Subscription
+
+Each subscription plan has a specific request limit that determines the maximum number of API requests you can make within a given time period. Here are the request limits for our subscription plans:
+
+- Starter Plan: 100 requests per month
+- Growth Plan: 1,000 requests per month
+- Enterprise Plan: custom high-volume plans available
+
+If you exceed the request limit for your subscription plan, the API will return a `401 Unauthorized, no credit left` error. It's important to monitor your usage and upgrade your subscription plan if needed to avoid interruptions in your service.
+
+<div className="not-prose">
+    <Button href="/pricing" variant="text" arrow="right">
+        See our pricing plans for more details
+    </Button>
+</div>
+
+## Handling Quota Overages
+
+If you exceed your monthly request quota, you have a few options to continue using the ForVoyez API:
+
+1. Wait until the next billing cycle: If you can wait until your quota resets in the next billing cycle, you can pause your usage or limit your requests to essential operations.
+
+2. Upgrade your subscription plan: If you consistently exceed your quota, consider upgrading to a higher-tier subscription plan that offers more requests per month. This will give you a larger quota to work with and help you avoid overages.
+
+3. Purchase additional credit packs: If you need a temporary boost in your request quota, you can purchase additional credit packs. Credit packs are one-time purchases that add a specific number of requests to your quota for the current billing cycle.
+
+<div className="not-prose">
+    <Button href="/usage" variant="text" arrow="right">
+        Monitor your usage and quota in the dashboard
+    </Button>
+</div>
+
+## Purchasing Additional Credit Packs
+
+If you're already subscribed to a plan and need more requests, you can purchase additional credit packs. Credit packs are available in the following options:
+
+- 50 additional requests
+- 100 additional requests
+- 1000 additional requests
+
+To purchase a credit pack:
+
+1. Log in to your ForVoyez account and navigate to the [Billing](https://forvoyez.com/app/plans) section.
+2. Click on the "Purchase Credit Pack" button.
+3. Select the desired credit pack option and complete the payment process.
+
+The additional requests will be added to your quota instantly, and you can continue using the API without interruption.
+
+Please note that credit packs are non-refundable and expire at the end of the billing cycle. Unused requests from credit packs do not roll over to the next billing cycle.
+
+<div className="not-prose">
+    <Button href="/contact" variant="text" arrow="right">
+        Contact us for custom high-volume plans
+    </Button>
+</div>
+
+## Next Steps
+
+Now that you understand the request limits, quota overages, and the option to purchase additional credit packs, you can:
+
+- [Monitor your usage](/usage) in the dashboard to track your requests and quota.
+- [Upgrade your subscription plan](/pricing) if you consistently exceed your quota.
+- [Purchase credit packs](/billing) for temporary quota boosts.
+
+If you have any questions about limits and usage quotas or need assistance with your subscription, please don't hesitate to reach out to our [support team](/support).
