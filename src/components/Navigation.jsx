@@ -193,25 +193,31 @@ function NavigationGroup({ group, className }) {
 
 export const navigation = [
   {
-    // fixme make the correct arborescence
     title: 'Guides',
     links: [
-      { title: 'Introduction', href: '/' },
-      { title: 'Quickstart', href: '/quickstart' },
+      { title: 'Introduction', href: '/introduction' },
+      { title: 'Quick Start', href: '/quickstart' },
       { title: 'Authentication', href: '/authentication' },
-      { title: 'Pagination', href: '/pagination' },
-      { title: 'Errors', href: '/errors' },
-      { title: 'Webhooks', href: '/webhooks' },
+      { title: 'Using the API', href: '/using-the-api' },
+      { title: 'Data Schemas', href: '/data-schemas' },
+      { title: 'Limits and Quotas', href: '/limits-and-quotas' },
     ],
   },
   {
-    title: 'Resources',
+    title: 'References',
     links: [
-      { title: 'Contacts', href: '/contacts' },
-      { title: 'Conversations', href: '/conversations' },
-      { title: 'Messages', href: '/messages' },
-      { title: 'Groups', href: '/groups' },
-      { title: 'Attachments', href: '/attachments' },
+      { title: 'API Reference', href: '/api-reference' },
+      { title: 'Code Examples', href: '/code-examples' },
+      { title: 'Additional Resources', href: '/additional-resources' },
+    ],
+  },
+  {
+    title: 'Dashboard & Support',
+    links: [
+      { title: 'Account Management', href: '/account-management' },
+      { title: 'Usage Tracking', href: '/usage-tracking' },
+      { title: 'Online Tools', href: '/online-tools' },
+      { title: 'Support', href: '/support' },
     ],
   },
 ]
