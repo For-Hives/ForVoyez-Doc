@@ -1,0 +1,110 @@
+import {Button} from "@/components/Button";
+import {CodeGroup} from "@/components/Code";
+
+export const metadata = {
+    title: 'Quick Start',
+    description: 'Get started with the ForVoyez API quickly by following this step-by-step guide.',
+}
+
+# Quick Start
+
+Welcome to the quick start guide for the ForVoyez API. In this section, we'll walk you through the process of signing up for an account, obtaining your API key, and making your first API call to generate metadata for an image.
+
+## Signing Up and Creating an Account
+
+To get started with the ForVoyez API, you'll need to create an account. Follow these steps:
+
+1. Visit the [ForVoyez website](https://forvoyez.com) and click on the "Sign Up" button.
+2. Fill out the registration form with your email address and a strong password.
+3. Verify your email address by clicking on the confirmation link sent to your inbox.
+4. Once your email is verified, log in to your account.
+
+You can also sign up using your Google or GitHub account for a quicker registration process.
+
+## Obtaining the API Key
+
+After logging in to your account, you'll need to obtain your API key. Here's how:
+
+1. Navigate to the [API Settings](https://forvoyez.com/app/tokens) page in your account dashboard.
+2. Click on the "Add token" button.
+3. Copy your API key and store it in a secure location. You'll need this key to authenticate your requests to the ForVoyez API.
+4. Be careful, the key is only displayed once, so make sure to save it securely.
+
+<div className="not-prose">
+    <Button href="/authentication" variant="text" arrow="right">
+        Learn more about authentication
+    </Button>
+</div>
+
+Certainly! Here's an updated version of the "Making Your First API Call" section with a CodeGroup component that includes examples in both cURL and JavaScript:
+
+## Making Your First API Call
+
+Now that you have your API key, you're ready to make your first API call to generate metadata for an image. Below are examples using cURL and JavaScript:
+
+<CodeGroup>
+```bash {{ title: 'cURL' }}
+curl -X POST \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F "image=@/path/to/your/image.jpg" \
+  -F "data={\"context\":\"Your image context\",\"schema\":{\"alt\":\"string\",\"caption\":\"string\"}}" \
+  https://api.forvoyez.com/v1/generate
+```
+
+```js {{ title: 'JavaScript' }}
+const form = new FormData();
+form.append('image', fileInput.files[0]);
+form.append('data', JSON.stringify({
+  context: 'Your image context',
+  schema: {
+    alt: 'string',
+    caption: 'string'
+  }
+}));
+
+fetch('https://api.forvoyez.com/v1/generate', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: form
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    // Handle the API response data
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle any errors that occurred during the request
+  });
+```
+
+</CodeGroup>
+
+Make sure to replace `YOUR_API_KEY` with your actual API key and `/path/to/your/image.jpg` with the path to the image file you want to generate metadata for.
+
+The `data` parameter is a JSON object that includes:
+- `context`: A string providing additional context about the image (optional).
+- `schema`: An object specifying the desired output schema for the generated metadata (optional).
+
+The API will process your request and return a JSON response containing the generated alt text and other metadata based on your specified schema.
+
+<div className="not-prose">
+    <Button href="/using-the-api" variant="text" arrow="right">
+        Learn more about using the API
+    </Button>
+</div>
+
+## Next Steps
+
+Congratulations! You've successfully signed up for an account, obtained your API key, and made your first API call to generate image metadata.
+
+Next, explore the documentation further to learn more about:
+
+- [Authentication](/authentication): How to authenticate your requests and manage your API keys.
+- [Using the API](/using-the-api): Details on request formats, parameters, and error handling.
+- [Data Schemas](/data-schemas): Customizing and validating the metadata output schema.
+
+If you have any questions or need assistance, please don't hesitate to reach out to our [support team](/support).
