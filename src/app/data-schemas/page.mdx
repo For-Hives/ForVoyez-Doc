@@ -1,1 +1,139 @@
-# todo
+import {CodeGroup} from "@/components/Code";
+import {Button} from "@/components/Button";
+
+export const metadata = {
+    title: 'Data Schemas',
+    description: 'Understand the JSON schema structure, learn how to customize schemas, and ensure schema validation when using the ForVoyez API.',
+}
+
+# Data Schemas
+
+The ForVoyez API allows you to customize the output of the generated metadata by providing a schema in the request. In this section, we'll explore the JSON schema structure, how to customize schemas, and the importance of schema validation.
+
+## JSON Schema Structure
+
+The schema you provide in the API request should follow the JSON Schema format. It defines the structure and constraints of the generated metadata. Here's an example of a basic schema:
+
+```json
+{
+  "title": "string",
+  "alternativeText": "string",
+  "caption": "string",
+  "tags": ["string"],
+  "categories": ["string"]
+}
+```
+
+In this example, the schema defines the expected data types for each field. The `title`, `alternativeText`, and `caption` fields are specified as strings, while `tags` and `categories` are arrays of strings.
+
+## Customizing Schemas
+
+You can customize the schema to match your specific requirements. For example, you can add additional fields, specify required fields, or define default values. Here's an example of a customized schema:
+
+```json
+{
+  "title": {
+    "type": "string",
+    "required": true
+  },
+  "alternativeText": {
+    "type": "string",
+    "required": true
+  },
+  "caption": {
+    "type": "string",
+    "required": false
+  },
+  "tags": {
+    "type": "array",
+    "items": {
+      "type": "string"
+    },
+    "default": []
+  },
+  "customField": {
+    "type": "string"
+  }
+}
+```
+
+In this customized schema:
+- The `title` and `alternativeText` fields are marked as required.
+- The `caption` field is optional.
+- The `tags` field is an array of strings with an empty array as the default value.
+- A custom field named `customField` is added.
+
+To use a customized schema in your API request, include it in the `data` parameter as a JSON object. Here are examples using cURL and JavaScript:
+
+<CodeGroup>
+```bash {{ title: 'cURL' }}
+curl -X POST \
+-H "Authorization: Bearer YOUR_API_KEY" \
+-H "Content-Type: multipart/form-data" \
+-F "image=@/path/to/your/image.jpg" \
+-F "data={\"schema\":{\"title\":{\"type\":\"string\",\"required\":true},\"alternativeText\":{\"type\":\"string\",\"required\":true},\"caption\":{\"type\":\"string\",\"required\":false},\"tags\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"default\":[]},\"customField\":{\"type\":\"string\"}}}" \
+https://api.forvoyez.com/v1/describe
+```
+
+```js {{ title: 'JavaScript' }}
+        const form = new FormData();
+        form.append('image', fileInput.files[0]);
+        form.append('data', JSON.stringify({
+        schema: {
+        title: {
+        type: 'string',
+        required: true
+    },
+        alternativeText: {
+        type: 'string',
+        required: true
+    },
+        caption: {
+        type: 'string',
+        required: false
+    },
+        tags: {
+        type: 'array',
+        items: {
+        type: 'string'
+    },
+        default: []
+    },
+        customField: {
+        type: 'string'
+    }
+    }
+    }));
+
+        fetch('https://api.forvoyez.com/v1/describe', {
+        method: 'POST',
+        headers: {
+        'Authorization': 'Bearer YOUR_API_KEY'
+    },
+        body: form
+    })
+        .then(response => response.json())
+        .then(data => {
+        console.log(data);
+        // Handle the API response data
+    })
+        .catch(error => {
+        console.error('Error:', error);
+        // Handle any errors that occurred during the request
+    });
+```
+</CodeGroup>
+
+## Schema Validation
+
+When providing a custom schema, it's important to ensure that it is valid and well-formed. The ForVoyez API performs schema validation on the server side to check for any structural or type-related issues.
+
+If the provided schema is invalid, the API will return a `400 Bad Request` error with details about the validation errors. Make sure to carefully construct your schema and test it before using it in production.
+
+<div className="not-prose">
+    <Button href="/api-reference" variant="text" arrow="right">
+        See the API reference for more details on schema validation
+    </Button>
+</div>
+
+If you have any questions or need further assistance with data schemas, feel free to reach out to our [support team](/support).
