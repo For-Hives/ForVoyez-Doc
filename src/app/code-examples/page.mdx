@@ -1,1 +1,150 @@
-# todo
+import {CodeGroup} from "@/components/Code";
+
+export const metadata = {
+  title: 'Code Examples',
+  description: 'Explore code snippets in different programming languages for making requests to the ForVoyez API.',
+}
+
+# Code Examples
+
+To help you get started with integrating the ForVoyez API into your application, we provide code examples in various programming languages. These examples demonstrate how to make a request to the `/v1/describe` endpoint to generate metadata for an image.
+
+<CodeGroup>
+```bash {{ title: 'cURL' }}
+curl -X POST \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F "image=@/path/to/your/image.jpg" \
+  -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+  https://api.forvoyez.com/v1/describe
+```
+
+```python {{ title: 'Python' }}
+import requests
+
+url = "https://api.forvoyez.com/v1/describe"
+api_key = "YOUR_API_KEY"
+
+payload = {
+    "data": '{"context":"Playful kittens","schema":{"title":"string","alternativeText":"string","caption":"string"}}'
+}
+files = [
+    ('image', ('image.jpg', open('/path/to/your/image.jpg', 'rb'), 'image/jpeg'))
+]
+headers = {
+    'Authorization': f'Bearer {api_key}'
+}
+
+response = requests.post(url, headers=headers, data=payload, files=files)
+
+print(response.json())
+```
+
+```javascript {{ title: 'JavaScript' }}
+const form = new FormData();
+form.append('image', fileInput.files[0]);
+form.append('data', JSON.stringify({
+  context: 'Playful kittens',
+  schema: {
+    title: 'string',
+    alternativeText: 'string',
+    caption: 'string'
+  }
+}));
+
+fetch('https://api.forvoyez.com/v1/describe', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_KEY'
+  },
+  body: form
+})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data);
+    // Handle the API response data
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    // Handle any errors that occurred during the request
+  });
+```
+
+```php {{ title: 'PHP' }}
+<?php
+
+$url = 'https://api.forvoyez.com/v1/describe';
+$api_key = 'YOUR_API_KEY';
+
+$data = [
+    'data' => json_encode([
+        'context' => 'Playful kittens',
+        'schema' => [
+            'title' => 'string',
+            'alternativeText' => 'string',
+            'caption' => 'string'
+        ]
+    ])
+];
+
+$image_path = '/path/to/your/image.jpg';
+$image_mime = mime_content_type($image_path);
+$image_name = basename($image_path);
+$image_data = file_get_contents($image_path);
+
+$boundary = uniqid();
+$delimiter = '-------------' . $boundary;
+
+$post_data = build_data_files($boundary, $data, $image_name, $image_mime, $image_data);
+
+$headers = [
+    'Authorization: Bearer ' . $api_key,
+    'Content-Type: multipart/form-data; boundary=' . $delimiter,
+    'Content-Length: ' . strlen($post_data)
+];
+
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+$result = curl_exec($ch);
+curl_close($ch);
+
+echo $result;
+
+function build_data_files($boundary, $fields, $file_name, $file_mime, $file_data) {
+    $data = '';
+    $delimiter = '-------------' . $boundary;
+
+    foreach ($fields as $name => $content) {
+        $data .= "--" . $delimiter . "\r\n"
+            . 'Content-Disposition: form-data; name="' . $name . "\"\r\n\r\n"
+            . $content . "\r\n";
+    }
+
+    $data .= "--" . $delimiter . "\r\n"
+        . 'Content-Disposition: form-data; name="image"; filename="' . $file_name . '"' . "\r\n"
+        . 'Content-Type: ' . $file_mime . "\r\n\r\n"
+        . $file_data . "\r\n";
+
+    $data .= "--" . $delimiter . "--\r\n";
+
+    return $data;
+}
+```
+</CodeGroup>
+
+These code examples demonstrate how to make a POST request to the `/v1/describe` endpoint using different programming languages. Make sure to replace `YOUR_API_KEY` with your actual API key and provide the path to your image file.
+
+For more detailed information on the request parameters and response format, refer to the [API Documentation](/api-documentation).
+
+## Next Steps
+
+- Explore the [API Reference](/api-documentation) for detailed information on all available endpoints and their parameters.
+- Integrate the ForVoyez API into your application using your preferred programming language.
+- If you encounter any issues or have questions, consult the [Error Codes](/error-codes) documentation or reach out to our [support team](/support) for assistance.
+
+Start generating metadata for your images with the ForVoyez API and enhance your application's functionality!
