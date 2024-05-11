@@ -1,0 +1,88 @@
+import {Button} from '@/components/Button'
+import {CodeGroup} from '@/components/Code'
+
+export const metadata = {
+    title: 'Error Codes',
+    description: 'Explore the error codes and error messages returned by the ForVoyez API.',
+}
+
+# Error Codes
+
+When making requests to the ForVoyez API, you may encounter various error codes and error messages that indicate the status of your request. This page provides a comprehensive list of the error codes and messages you may receive, along with their descriptions and possible solutions.
+
+## HTTP Status Codes
+
+The ForVoyez API uses standard HTTP status codes to indicate the success or failure of a request. Here are the common status codes you may encounter:
+
+- `200 OK`: The request was successful.
+- `400 Bad Request`: The request was invalid or cannot be served.
+- `401 Unauthorized`: The request lacks valid authentication credentials.
+- `500 Internal Server Error`: The server encountered an unexpected condition that prevented it from fulfilling the request.
+
+## ForVoyez API Error Messages
+
+In addition to the standard HTTP status codes, the ForVoyez API returns specific error messages in the response body to provide more detailed information about the error. These error messages are accompanied by the corresponding HTTP status code.
+
+Here are the ForVoyez API error messages you may encounter:
+
+- `Unauthorized`
+- Status Code: `401`
+- Description: The request lacks valid authentication credentials.
+- Possible Causes:
+- The `Authorization` header is missing in the request.
+- The provided API key or token is invalid.
+- The user has insufficient credits to make the request.
+
+- `No file uploaded`
+- Status Code: `400`
+- Description: The `image` parameter is missing in the request.
+- Solution: Ensure that you are including the `image` parameter in the multipart/form-data request body.
+
+- `Invalid image file`
+- Status Code: `400`
+- Description: The uploaded file is not a valid image format.
+- Solution: Verify that the uploaded file is in one of the supported image formats: JPEG, JPG, PNG, WebP, or GIF.
+
+- `Invalid schema`
+- Status Code: `400`
+- Description: The provided schema is invalid or malformed.
+- Solution: Ensure that the schema provided in the `data` parameter is valid and follows the expected structure.
+
+- `Internal Server Error`
+- Status Code: `500`
+- Description: An unexpected error occurred on the server side.
+- Solution: If you encounter this error repeatedly, please contact our support team for assistance.
+
+## Error Response Format
+
+When an error occurs, the ForVoyez API returns an error response with the appropriate HTTP status code and an error message in the response body.
+
+Example error response:
+
+```txt
+Unauthorized, missing Authorization header
+```
+
+## Handling Errors
+
+When consuming the ForVoyez API, it's important to handle errors gracefully in your application. Here are some best practices for error handling:
+
+- Check the HTTP status code of the response to determine the general category of the error.
+- Read the error message in the response body to understand the specific cause of the error.
+- Display user-friendly error messages to your users based on the error message received.
+- Implement appropriate error logging and monitoring mechanisms to track and investigate errors.
+- If you encounter persistent or unexpected errors, reach out to our support team for further assistance.
+
+<div className="not-prose">
+    <Button href="/support" variant="text" arrow="right">
+        Contact support for assistance with error resolution
+    </Button>
+</div>
+
+## Next Steps
+
+- Review the [API Documentation](/api-documentation) to understand the requirements and constraints of each endpoint.
+- Implement robust error handling in your application to provide a smooth user experience.
+- If you need further assistance or have questions about error codes, contact our [support team](/support).
+
+By understanding and handling error codes and messages effectively, you can build reliable and resilient applications that integrate seamlessly with the ForVoyez API.
