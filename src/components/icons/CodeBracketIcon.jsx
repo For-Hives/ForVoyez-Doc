@@ -6,6 +6,7 @@ export function CodeBracketIcon(props) {
 			width="512"
 			xmlns="http://www.w3.org/2000/svg"
 			id="fi_3573187"
+			className={'scale-50'}
 		>
 			<path d="m1.293 12.707 4 4a1 1 0 1 0 1.414-1.414l-3.293-3.293 3.293-3.293a1 1 0 1 0 -1.414-1.414l-4 4a1 1 0 0 0 0 1.414z"></path>
 			<path d="m18.707 7.293a1 1 0 1 0 -1.414 1.414l3.293 3.293-3.293 3.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414z"></path>
