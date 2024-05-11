@@ -1,1 +1,106 @@
-# todo
+import {Button} from "@/components/Button";
+import {CodeGroup} from "@/components/Code";
+export const metadata = {
+  title: 'API References',
+  description: 'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
+}
+
+# API Documentation
+
+This section provides a comprehensive reference for the ForVoyez API. You'll find detailed information about the available endpoints, request parameters, response formats, error codes, and error messages. Use this documentation as a guide while integrating the ForVoyez API into your application.
+
+## Complete Reference of Endpoints
+
+The ForVoyez API offers the following endpoints:
+
+- `POST /describe`: Generate metadata for an image.
+- `GET /usage`: Retrieve usage statistics for your account.
+- `GET /plans`: Get a list of available subscription plans.
+- `POST /subscriptions`: Create a new subscription.
+- `PUT /subscriptions/:id`: Update an existing subscription.
+- `DELETE /subscriptions/:id`: Cancel a subscription.
+
+For detailed information about each endpoint, including the required parameters, request examples, and response formats, refer to the individual endpoint documentation:
+
+<div className="not-prose">
+  <Button href="/describe" variant="text" arrow="right">
+    /describe
+  </Button>
+  <Button href="/usage" variant="text" arrow="right">
+    /usage
+  </Button>
+  <Button href="/plans" variant="text" arrow="right">
+    /plans
+  </Button>
+  <Button href="/subscriptions" variant="text" arrow="right">
+    /subscriptions
+  </Button>
+</div>
+
+## Details of Parameters and Responses
+
+Each endpoint in the ForVoyez API requires specific parameters to be included in the request. These parameters can be provided as query parameters, path parameters, or request body parameters, depending on the endpoint.
+
+The API responses are returned in JSON format and contain the requested data or relevant error information. The response format varies based on the endpoint and the success or failure of the request.
+
+Here's an example of a request and response for the `/describe` endpoint:
+
+<CodeGroup>
+```bash {{ title: 'cURL Request' }}
+curl -X POST \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F "image=@/path/to/your/image.jpg" \
+  -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+  https://api.forvoyez.com/v1/describe
+```
+
+```json {{ title: 'JSON Response' }}
+{
+  "title": "Playful Kittens",
+  "alternativeText": "Two kittens playing with a ball of yarn",
+  "caption": "Adorable kittens having fun and being mischievous"
+}
+```
+</CodeGroup>
+
+For more details on the parameters and responses for each endpoint, refer to the individual endpoint documentation.
+
+## Error Codes and Error Messages
+
+If a request to the ForVoyez API fails, you'll receive an appropriate HTTP status code along with an error message in the response body. The error message provides more information about the cause of the error and helps you troubleshoot the issue.
+
+Here are some common error codes you might encounter:
+
+- `400 Bad Request`: The request is invalid or missing required parameters.
+- `401 Unauthorized`: The provided API key is invalid or missing.
+- `429 Too Many Requests`: The request limit for your subscription plan has been exceeded.
+- `500 Internal Server Error`: An unexpected error occurred on the server side.
+
+The error response body will include an `error` object with more details:
+
+```json
+{
+  "error": {
+    "code": 400,
+    "message": "Missing required parameter: image"
+  }
+}
+```
+
+For a complete list of error codes and their meanings, refer to the [Error Codes](/error-codes) documentation.
+
+<div className="not-prose">
+    <Button href="/support" variant="text" arrow="right">
+        Contact support for assistance with error resolution
+    </Button>
+</div>
+
+## Next Steps
+
+Now that you have a good understanding of the API documentation, you can:
+
+- Handle [error codes and messages](/error-codes) gracefully in your application.
+- If you encounter any issues or have questions, reach out to our [support team](/support) for assistance.
+
+Happy coding with the ForVoyez API!
