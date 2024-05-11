@@ -30,7 +30,7 @@ curl -X POST \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
   -F "data={\"context\":\"Playful kittens among blooming flowers\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
-  https://api.forvoyez.com/v1/describe
+  https://forvoyez.com/api/describe
 ```
 
 ```js {{ title: 'JavaScript' }}
@@ -48,7 +48,7 @@ form.append(
 	})
 )
 
-fetch('https://api.forvoyez.com/v1/describe', {
+fetch('https://forvoyez.com/api/describe', {
 	method: 'POST',
 	headers: {
 		Authorization: 'Bearer YOUR_API_KEY',
