@@ -211,6 +211,7 @@ export const navigation = [
 		links: [
 			{ title: 'Account Management', href: '/account-management' },
 			{ title: 'Usage Tracking', href: '/usage-tracking' },
+			{ title: 'Pricing', href: '/pricing' },
 			{ title: 'Online Tools', href: '/online-tools' },
 			{ title: 'Contact us', href: '/support' },
 			{ title: 'Useful links', href: '/useful-links' },
@@ -233,11 +234,6 @@ export function Navigation(props) {
 						className={groupIndex === 0 ? 'md:mt-0' : ''}
 					/>
 				))}
-				<li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-					<Button href="#" variant="filled" className="w-full">
-						Sign in
-					</Button>
-				</li>
 			</ul>
 		</nav>
 	)
