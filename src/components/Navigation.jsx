@@ -207,7 +207,7 @@ export const navigation = [
 		],
 	},
 	{
-		title: 'Dashboard & Support',
+		title: 'Support',
 		links: [
 			{ title: 'Account Management', href: '/account-management' },
 			{ title: 'Usage Tracking', href: '/usage-tracking' },
