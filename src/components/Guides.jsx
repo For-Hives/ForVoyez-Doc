@@ -5,12 +5,12 @@ import Link from 'next/link'
 
 import { GridPattern } from '@/components/GridPattern'
 import { Heading } from '@/components/Heading'
-import { BoltIcon } from '@/components/icons/BoltIcon'
+// import { BoltIcon } from '@/components/icons/BoltIcon'
 import { BookIcon } from '@/components/icons/BookIcon'
-import { CodeBracketIcon } from '@/components/icons/CodeBracketIcon'
-import { CubeTransparentIcon } from '@/components/icons/CubeTransparentIcon'
-import { GaugeIcon } from '@/components/icons/GaugeIcon'
-import { KeyIcon } from '@/components/icons/KeyIcon'
+// import { CodeBracketIcon } from '@/components/icons/CodeBracketIcon'
+// import { CubeTransparentIcon } from '@/components/icons/CubeTransparentIcon'
+// import { GaugeIcon } from '@/components/icons/GaugeIcon'
+// import { KeyIcon } from '@/components/icons/KeyIcon'
 
 const guides = [
 	[
@@ -19,7 +19,7 @@ const guides = [
 			name: 'Introduction',
 			description:
 				'Discover the need for automated image metadata generation and the benefits of our API.',
-			icon: BoltIcon,
+			icon: BookIcon,
 			pattern: {
 				y: 16,
 				squares: [
@@ -28,76 +28,76 @@ const guides = [
 				],
 			},
 		},
-		{
-			href: '/quickstart',
-			name: 'Quick Start',
-			description:
-				'Get up and running quickly with our API by following this step-by-step guide.',
-			icon: BoltIcon,
-			pattern: {
-				y: -6,
-				squares: [
-					[-1, 2],
-					[1, 3],
-				],
-			},
-		},
-		{
-			href: '/authentication',
-			name: 'Authentication',
-			description:
-				'Learn how to authenticate your requests to the API and manage your API keys.',
-			icon: BoltIcon,
-			pattern: {
-				y: 32,
-				squares: [
-					[0, 2],
-					[1, 4],
-				],
-			},
-		},
-		{
-			href: '/using-the-api',
-			name: 'Using the API',
-			description:
-				'Understand the request format, parameters, and error handling when using our API.',
-			icon: BoltIcon,
-			pattern: {
-				y: 22,
-				squares: [
-					[0, 1],
-					[1, 3],
-				],
-			},
-		},
-		{
-			href: '/data-schemas',
-			name: 'Data Schemas',
-			description:
-				'Explore the structure of JSON schemas and learn how to customize and validate them.',
-			icon: BoltIcon,
-			pattern: {
-				y: 8,
-				squares: [
-					[0, 2],
-					[1, 4],
-				],
-			},
-		},
-		{
-			href: '/limits-and-quotas',
-			name: 'Limits and Quotas',
-			description:
-				'Understand the request limits per subscription and how to handle quota overages.',
-			icon: BoltIcon,
-			pattern: {
-				y: -12,
-				squares: [
-					[-1, 1],
-					[1, 2],
-				],
-			},
-		},
+		// {
+		// 	href: '/quickstart',
+		// 	name: 'Quick Start',
+		// 	description:
+		// 		'Get up and running quickly with our API by following this step-by-step guide.',
+		// 	icon: BoltIcon,
+		// 	pattern: {
+		// 		y: -6,
+		// 		squares: [
+		// 			[-1, 2],
+		// 			[1, 3],
+		// 		],
+		// 	},
+		// },
+		// {
+		// 	href: '/authentication',
+		// 	name: 'Authentication',
+		// 	description:
+		// 		'Learn how to authenticate your requests to the API and manage your API keys.',
+		// 	icon: KeyIcon,
+		// 	pattern: {
+		// 		y: 32,
+		// 		squares: [
+		// 			[0, 2],
+		// 			[1, 4],
+		// 		],
+		// 	},
+		// },
+		// {
+		// 	href: '/using-the-api',
+		// 	name: 'Using the API',
+		// 	description:
+		// 		'Understand the request format, parameters, and error handling when using our API.',
+		// 	icon: CodeBracketIcon,
+		// 	pattern: {
+		// 		y: 22,
+		// 		squares: [
+		// 			[0, 1],
+		// 			[1, 3],
+		// 		],
+		// 	},
+		// },
+		// {
+		// 	href: '/data-schemas',
+		// 	name: 'Data Schemas',
+		// 	description:
+		// 		'Explore the structure of JSON schemas and learn how to customize and validate them.',
+		// 	icon: CubeTransparentIcon,
+		// 	pattern: {
+		// 		y: 8,
+		// 		squares: [
+		// 			[0, 2],
+		// 			[1, 4],
+		// 		],
+		// 	},
+		// },
+		// {
+		// 	href: '/limits-and-quotas',
+		// 	name: 'Limits and Quotas',
+		// 	description:
+		// 		'Understand the request limits per subscription and how to handle quota overages.',
+		// 	icon: GaugeIcon,
+		// 	pattern: {
+		// 		y: -12,
+		// 		squares: [
+		// 			[-1, 1],
+		// 			[1, 2],
+		// 		],
+		// 	},
+		// },
 	],
 ]
 
