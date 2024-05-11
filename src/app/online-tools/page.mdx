@@ -1,1 +1,79 @@
-# todo
+import {Button} from "@/components/Button";
+
+export const metadata = {
+    title: 'API Playground',
+    description: 'Explore the ForVoyez API playground to test image analysis with custom context and JSON schemas.',
+}
+
+# API Playground
+
+The ForVoyez API playground is an interactive tool that allows you to test the image analysis capabilities of our API. You can upload an image, provide custom context, and specify a JSON schema to customize the structure of the API response.
+
+## Uploading an Image
+
+To analyze an image using the API playground:
+
+1. Click on the "Upload a file" button or drag and drop an image into the designated area.
+2. The uploaded image should be in PNG, WEBP, JPG, or GIF format and not exceed 10MB in size.
+3. Once the image is uploaded, it will be displayed in the playground.
+
+<div className="not-prose">
+    <Button href="https://forvoyez.com/app/playground" variant="text" arrow="right">
+        Launch API Playground
+    </Button>
+</div>
+
+## Providing Custom Context
+
+You can provide additional context to help the API better understand and process your image. This can include information about the image content, specific requirements, or any other relevant details.
+
+To add custom context:
+
+1. In the "Add Your Context" section, enter your context in the text area provided.
+2. The more context you provide, the more accurate the API results will be.
+
+## Specifying a JSON Schema
+
+The API playground allows you to customize the structure and format of the API response by specifying a JSON schema. By default, the API will use a standard schema if no custom schema is provided.
+
+To specify a custom JSON schema:
+
+1. In the "JSON Schema" section, enter your desired schema using valid JSON syntax.
+2. The JSON schema defines the structure and format of the data returned by the API.
+3. If the provided schema is invalid, an error message will be displayed.
+
+## Analyzing the Image
+
+Once you have uploaded an image, provided custom context (optional), and specified a JSON schema (optional), you can analyze the image using the ForVoyez API.
+
+To analyze the image:
+
+1. Click on the "Analyze your image" button.
+2. The API playground will send a request to the ForVoyez API with the uploaded image, context, and JSON schema.
+3. The API will process the image and generate a response based on the provided inputs.
+
+## Viewing the API Response
+
+After the image is analyzed, the API response will be displayed in the "API Response" section of the playground.
+
+The response will include:
+- The generated title for the image
+- Alternative text describing the image
+- A caption providing more context about the image
+Or any other metadata based on the JSON schema provided.
+
+You can copy the API response by clicking on the copy button located in the top-right corner of the response section.
+
+## Request Preview
+
+The "Request Preview" section shows a preview of the request that is sent to the API when you click the "Analyze your image" button. It includes the HTTP method, API URL, request headers, and the request body containing the selected image, additional context, and JSON schema.
+
+You can copy the request preview by clicking on the copy button located in the top-right corner of the preview section.
+
+## Next Steps
+
+- Explore the [API Documentation](/api-documentation) to learn more about the available endpoints and parameters.
+- Check out the [Guides](/guides) for detailed instructions on integrating the ForVoyez API into your application.
+- If you have any questions or need assistance, reach out to our [Support Team](https://forvoyez.com/contact).
+
+Start leveraging the power of the ForVoyez API to generate metadata for your images and enhance your application's capabilities!
