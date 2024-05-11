@@ -65,6 +65,36 @@ function CopyButton({ code }) {
 		}
 	}, [copyCount])
 
+	const copyToClipboard = code => {
+		if (navigator.clipboard) {
+			navigator.clipboard
+				.writeText(code)
+				.then(() => {
+					setCopyCount(count => count + 1)
+				})
+				.catch(err => {
+					console.error('Failed to copy with navigator.clipboard:', err)
+					fallbackCopyTextToClipboard(code)
+				})
+		} else {
+			fallbackCopyTextToClipboard(code)
+		}
+	}
+
+	const fallbackCopyTextToClipboard = code => {
+		const textarea = document.createElement('textarea')
+		textarea.value = code
+		document.body.appendChild(textarea)
+		textarea.select()
+		try {
+			document.execCommand('copy')
+			setCopyCount(count => count + 1)
+		} catch (err) {
+			console.error('Failed to copy with execCommand:', err)
+		}
+		document.body.removeChild(textarea)
+	}
+
 	return (
 		<button
 			type="button"
@@ -74,11 +104,7 @@ function CopyButton({ code }) {
 					? 'bg-forvoyez_orange-400/10 ring-1 ring-inset ring-forvoyez_orange-400/20'
 					: 'bg-white/5 hover:bg-white/7.5'
 			)}
-			onClick={() => {
-				window.navigator.clipboard.writeText(code).then(() => {
-					setCopyCount(count => count + 1)
-				})
-			}}
+			onClick={() => copyToClipboard(code)}
 		>
 			<span
 				aria-hidden={copied}
