@@ -1,7 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
+import Link from 'next/link'
 
 import { GridPattern } from '@/components/GridPattern'
 import { Heading } from '@/components/Heading'

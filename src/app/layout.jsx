@@ -1,8 +1,9 @@
 import glob from 'fast-glob'
+import { Jost, Source_Sans_3 } from 'next/font/google'
+
 import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
-import { Jost, Source_Sans_3 } from 'next/font/google'
 
 export const metadata = {
 	title: {

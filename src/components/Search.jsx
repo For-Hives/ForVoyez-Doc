@@ -1,5 +1,9 @@
 'use client'
 
+import { createAutocomplete } from '@algolia/autocomplete-core'
+import { Dialog, Transition } from '@headlessui/react'
+import clsx from 'clsx'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import {
 	forwardRef,
 	Fragment,
@@ -11,10 +15,6 @@ import {
 	useState,
 } from 'react'
 import Highlighter from 'react-highlight-words'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { createAutocomplete } from '@algolia/autocomplete-core'
-import { Dialog, Transition } from '@headlessui/react'
-import clsx from 'clsx'
 
 import { navigation } from '@/components/Navigation'
 
