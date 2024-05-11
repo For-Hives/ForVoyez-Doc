@@ -1,8 +1,9 @@
 import {Button} from "@/components/Button";
 import {CodeGroup} from "@/components/Code";
+
 export const metadata = {
-  title: 'API References',
-  description: 'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
+    title: 'API References',
+    description: 'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
 }
 
 # API Documentation
@@ -13,28 +14,28 @@ This section provides a comprehensive reference for the ForVoyez API. You'll fin
 
 The ForVoyez API offers the following endpoints:
 
-- `POST /describe`: Generate metadata for an image.
-- `GET /usage`: Retrieve usage statistics for your account.
-- `GET /plans`: Get a list of available subscription plans.
-- `POST /subscriptions`: Create a new subscription.
-- `PUT /subscriptions/:id`: Update an existing subscription.
-- `DELETE /subscriptions/:id`: Cancel a subscription.
+- `POST /v1/describe`: Generate metadata for an image.
+- `GET /v1/usage`: Retrieve usage statistics for your account.
+- `GET /v1/plans`: Get a list of available subscription plans.
+- `POST /v1/subscriptions`: Create a new subscription.
+- `PUT /v1/subscriptions/:id`: Update an existing subscription.
+- `DELETE /v1/subscriptions/:id`: Cancel a subscription.
 
 For detailed information about each endpoint, including the required parameters, request examples, and response formats, refer to the individual endpoint documentation:
 
 <div className="not-prose">
-  <Button href="/describe" variant="text" arrow="right">
-    /describe
-  </Button>
-  <Button href="/usage" variant="text" arrow="right">
-    /usage
-  </Button>
-  <Button href="/plans" variant="text" arrow="right">
-    /plans
-  </Button>
-  <Button href="/subscriptions" variant="text" arrow="right">
-    /subscriptions
-  </Button>
+    <Button href="/describe" variant="text" arrow="right">
+        /describe
+    </Button>
+    <Button href="/usage" variant="text" arrow="right">
+        /usage
+    </Button>
+    <Button href="/plans" variant="text" arrow="right">
+        /plans
+    </Button>
+    <Button href="/subscriptions" variant="text" arrow="right">
+        /subscriptions
+    </Button>
 </div>
 
 ## Details of Parameters and Responses
@@ -43,23 +44,23 @@ Each endpoint in the ForVoyez API requires specific parameters to be included in
 
 The API responses are returned in JSON format and contain the requested data or relevant error information. The response format varies based on the endpoint and the success or failure of the request.
 
-Here's an example of a request and response for the `/describe` endpoint:
+Here's an example of a request and response for the `/v1/describe` endpoint:
 
 <CodeGroup>
-```bash {{ title: 'cURL Request' }}
-curl -X POST \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: multipart/form-data" \
-  -F "image=@/path/to/your/image.jpg" \
-  -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
-  https://api.forvoyez.com/v1/describe
+```bash {{title: 'cURL Request'}}
+    curl -X POST \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: multipart/form-data" \
+    -F "image=@/path/to/your/image.jpg" \
+    -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+    https://api.forvoyez.com/v1/describe
 ```
 
 ```json {{ title: 'JSON Response' }}
 {
-  "title": "Playful Kittens",
-  "alternativeText": "Two kittens playing with a ball of yarn",
-  "caption": "Adorable kittens having fun and being mischievous"
+    "title": "Playful Kittens",
+    "alternativeText": "Two kittens playing with a ball of yarn",
+    "caption": "Adorable kittens having fun and being mischievous"
 }
 ```
 </CodeGroup>
@@ -70,21 +71,27 @@ For more details on the parameters and responses for each endpoint, refer to the
 
 If a request to the ForVoyez API fails, you'll receive an appropriate HTTP status code along with an error message in the response body. The error message provides more information about the cause of the error and helps you troubleshoot the issue.
 
-Here are some common error codes you might encounter:
+Here are the common error codes you might encounter:
 
 - `400 Bad Request`: The request is invalid or missing required parameters.
-- `401 Unauthorized`: The provided API key is invalid or missing.
+- `No file uploaded`: The `image` parameter is missing in the request.
+- `Invalid image file`: The uploaded file is not a valid image format.
+- `Invalid schema`: The provided schema is invalid or malformed.
+
+- `401 Unauthorized`: Authentication failed.
+- `Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
+- `Unauthorized, invalid token`: The provided API key or token is invalid.
+- `Unauthorized, no credit left`: The user has insufficient credits to make the request.
+
 - `429 Too Many Requests`: The request limit for your subscription plan has been exceeded.
+
 - `500 Internal Server Error`: An unexpected error occurred on the server side.
 
-The error response body will include an `error` object with more details:
+The error response body will include an error message with more details:
 
 ```json
 {
-  "error": {
-    "code": 400,
-    "message": "Missing required parameter: image"
-  }
+  "error": "Missing required parameter: image"
 }
 ```
 
