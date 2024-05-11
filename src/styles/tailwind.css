@@ -3,48 +3,48 @@
 @tailwind utilities;
 
 @media screen and (min-width: 768px) {
-    ::-webkit-scrollbar {
-        -webkit-appearance: none;
-        width: 7px;
-        height: 4px;
-    }
+	::-webkit-scrollbar {
+		-webkit-appearance: none;
+		width: 7px;
+		height: 4px;
+	}
 }
 
 @media screen and (min-width: 768px) {
-    ::-webkit-scrollbar-thumb {
-        border-radius: 2rem;
-        background-color: #19191e4d;
-        -webkit-box-shadow: 0 0 1px hsl(0deg 0 100% / 50%);
-    }
+	::-webkit-scrollbar-thumb {
+		border-radius: 2rem;
+		background-color: #19191e4d;
+		-webkit-box-shadow: 0 0 1px hsl(0deg 0 100% / 50%);
+	}
 }
 
 @layer base {
-    :root {
-        --shiki-color-text: theme('colors.white');
-        --shiki-token-constant: theme('colors.forvoyez_orange.300');
-        --shiki-token-string: theme('colors.orange.300');
-        --shiki-token-comment: theme('colors.slate.500');
-        --shiki-token-keyword: theme('colors.sky.300');
-        --shiki-token-parameter: theme('colors.pink.300');
-        --shiki-token-function: theme('colors.violet.300');
-        --shiki-token-string-expression: theme('colors.forvoyez_orange.300');
-        --shiki-token-punctuation: theme('colors.slate.200');
-    }
+	:root {
+		--shiki-color-text: theme('colors.white');
+		--shiki-token-constant: theme('colors.forvoyez_orange.300');
+		--shiki-token-string: theme('colors.orange.300');
+		--shiki-token-comment: theme('colors.slate.500');
+		--shiki-token-keyword: theme('colors.sky.300');
+		--shiki-token-parameter: theme('colors.pink.300');
+		--shiki-token-function: theme('colors.violet.300');
+		--shiki-token-string-expression: theme('colors.forvoyez_orange.300');
+		--shiki-token-punctuation: theme('colors.slate.200');
+	}
 
-    [inert] ::-webkit-scrollbar {
-        display: none;
-    }
+	[inert] ::-webkit-scrollbar {
+		display: none;
+	}
 
-    * {
-        @apply font-sourcesans;
-    }
+	* {
+		@apply font-sourcesans;
+	}
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        @apply font-jost;
-    }
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-jost;
+	}
 }

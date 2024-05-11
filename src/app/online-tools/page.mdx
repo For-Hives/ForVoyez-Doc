@@ -1,8 +1,9 @@
-import {Button} from "@/components/Button";
+import { Button } from '@/components/Button'
 
 export const metadata = {
-    title: 'API Playground',
-    description: 'Explore the ForVoyez API playground to test image analysis with custom context and JSON schemas.',
+	title: 'API Playground',
+	description:
+		'Explore the ForVoyez API playground to test image analysis with custom context and JSON schemas.',
 }
 
 # API Playground
@@ -18,9 +19,13 @@ To analyze an image using the API playground:
 3. Once the image is uploaded, it will be displayed in the playground.
 
 <div className="not-prose">
-    <Button href="https://forvoyez.com/app/playground" variant="text" arrow="right">
-        Launch API Playground
-    </Button>
+	<Button
+		href="https://forvoyez.com/app/playground"
+		variant="text"
+		arrow="right"
+	>
+		Launch API Playground
+	</Button>
 </div>
 
 ## Providing Custom Context
@@ -57,10 +62,11 @@ To analyze the image:
 After the image is analyzed, the API response will be displayed in the "API Response" section of the playground.
 
 The response will include:
+
 - The generated title for the image
 - Alternative text describing the image
 - A caption providing more context about the image
-Or any other metadata based on the JSON schema provided.
+  Or any other metadata based on the JSON schema provided.
 
 You can copy the API response by clicking on the copy button located in the top-right corner of the response section.
 

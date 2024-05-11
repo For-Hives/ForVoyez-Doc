@@ -1,9 +1,10 @@
-import {CodeGroup} from "@/components/Code";
-import {Button} from "@/components/Button";
+import { CodeGroup } from '@/components/Code'
+import { Button } from '@/components/Button'
 
 export const metadata = {
-    title: 'Data Schemas',
-    description: 'Understand the JSON schema structure, learn how to customize schemas, and ensure schema validation when using the ForVoyez API.',
+	title: 'Data Schemas',
+	description:
+		'Understand the JSON schema structure, learn how to customize schemas, and ensure schema validation when using the ForVoyez API.',
 }
 
 # Data Schemas
@@ -16,11 +17,11 @@ The schema you provide in the API request should follow the JSON Schema format. 
 
 ```json
 {
-  "title": "string",
-  "alternativeText": "string",
-  "caption": "string",
-  "tags": ["string"],
-  "categories": ["string"]
+	"title": "string",
+	"alternativeText": "string",
+	"caption": "string",
+	"tags": ["string"],
+	"categories": ["string"]
 }
 ```
 
@@ -32,32 +33,33 @@ You can customize the schema to match your specific requirements. For example, y
 
 ```json
 {
-  "title": {
-    "type": "string",
-    "required": true
-  },
-  "alternativeText": {
-    "type": "string",
-    "required": true
-  },
-  "caption": {
-    "type": "string",
-    "required": false
-  },
-  "tags": {
-    "type": "array",
-    "items": {
-      "type": "string"
-    },
-    "default": []
-  },
-  "customField": {
-    "type": "string"
-  }
+	"title": {
+		"type": "string",
+		"required": true
+	},
+	"alternativeText": {
+		"type": "string",
+		"required": true
+	},
+	"caption": {
+		"type": "string",
+		"required": false
+	},
+	"tags": {
+		"type": "array",
+		"items": {
+			"type": "string"
+		},
+		"default": []
+	},
+	"customField": {
+		"type": "string"
+	}
 }
 ```
 
 In this customized schema:
+
 - The `title` and `alternativeText` fields are marked as required.
 - The `caption` field is optional.
 - The `tags` field is an array of strings with an empty array as the default value.
@@ -76,52 +78,56 @@ https://api.forvoyez.com/v1/describe
 ```
 
 ```js {{ title: 'JavaScript' }}
-        const form = new FormData();
-        form.append('image', fileInput.files[0]);
-        form.append('data', JSON.stringify({
-        schema: {
-        title: {
-        type: 'string',
-        required: true
-    },
-        alternativeText: {
-        type: 'string',
-        required: true
-    },
-        caption: {
-        type: 'string',
-        required: false
-    },
-        tags: {
-        type: 'array',
-        items: {
-        type: 'string'
-    },
-        default: []
-    },
-        customField: {
-        type: 'string'
-    }
-    }
-    }));
+const form = new FormData()
+form.append('image', fileInput.files[0])
+form.append(
+	'data',
+	JSON.stringify({
+		schema: {
+			title: {
+				type: 'string',
+				required: true,
+			},
+			alternativeText: {
+				type: 'string',
+				required: true,
+			},
+			caption: {
+				type: 'string',
+				required: false,
+			},
+			tags: {
+				type: 'array',
+				items: {
+					type: 'string',
+				},
+				default: [],
+			},
+			customField: {
+				type: 'string',
+			},
+		},
+	})
+)
 
-        fetch('https://api.forvoyez.com/v1/describe', {
-        method: 'POST',
-        headers: {
-        'Authorization': 'Bearer YOUR_API_KEY'
-    },
-        body: form
-    })
-        .then(response => response.json())
-        .then(data => {
-        console.log(data);
-        // Handle the API response data
-    })
-        .catch(error => {
-        console.error('Error:', error);
-        // Handle any errors that occurred during the request
-    });
+fetch('https://api.forvoyez.com/v1/describe', {
+	method: 'POST',
+	headers: {
+		Authorization: 'Bearer YOUR_API_KEY',
+	},
+	body: form,
+})
+	.then(response => response.json())
+	.then(data => {
+		console.log(data)
+		// Handle the API response data
+	})
+	.catch(error => {
+		console.error('Error:', error)
+		// Handle any errors that occurred during the request
+	})
 ```
+
 </CodeGroup>
 
 ## Schema Validation
@@ -131,9 +137,9 @@ When providing a custom schema, it's important to ensure that it is valid and we
 If the provided schema is invalid, the API will return a `400 Bad Request` error with details about the validation errors. Make sure to carefully construct your schema and test it before using it in production.
 
 <div className="not-prose">
-    <Button href="/api-documentation" variant="text" arrow="right">
-        See the API documentation for more details on schema validation
-    </Button>
+	<Button href="/api-documentation" variant="text" arrow="right">
+		See the API documentation for more details on schema validation
+	</Button>
 </div>
 
 If you have any questions or need further assistance with data schemas, feel free to reach out to our [support team](/support).

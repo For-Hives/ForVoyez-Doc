@@ -1,9 +1,10 @@
-import {CodeGroup} from "@/components/Code";
-import {Button} from "@/components/Button";
+import { CodeGroup } from '@/components/Code'
+import { Button } from '@/components/Button'
 
 export const metadata = {
-  title: 'Using the API',
-  description: 'Learn about the request format, required and optional parameters, and error handling when using the ForVoyez API.',
+	title: 'Using the API',
+	description:
+		'Learn about the request format, required and optional parameters, and error handling when using the ForVoyez API.',
 }
 
 # Using the API
@@ -33,34 +34,38 @@ curl -X POST \
 ```
 
 ```js {{ title: 'JavaScript' }}
-const form = new FormData();
-form.append('image', fileInput.files[0]);
-form.append('data', JSON.stringify({
-  context: 'Playful kittens among blooming flowers',
-  schema: {
-    title: 'string',
-    alternativeText: 'string',
-    caption: 'string'
-  }
-}));
+const form = new FormData()
+form.append('image', fileInput.files[0])
+form.append(
+	'data',
+	JSON.stringify({
+		context: 'Playful kittens among blooming flowers',
+		schema: {
+			title: 'string',
+			alternativeText: 'string',
+			caption: 'string',
+		},
+	})
+)
 
 fetch('https://api.forvoyez.com/v1/describe', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Bearer YOUR_API_KEY'
-  },
-  body: form
+	method: 'POST',
+	headers: {
+		Authorization: 'Bearer YOUR_API_KEY',
+	},
+	body: form,
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    // Handle the API response data
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    // Handle any errors that occurred during the request
-  });
+	.then(response => response.json())
+	.then(data => {
+		console.log(data)
+		// Handle the API response data
+	})
+	.catch(error => {
+		console.error('Error:', error)
+		// Handle any errors that occurred during the request
+	})
 ```
+
 </CodeGroup>
 
 ## Required and Optional Parameters
@@ -68,6 +73,7 @@ fetch('https://api.forvoyez.com/v1/describe', {
 When making a request to the ForVoyez API, there are both required and optional parameters you can include:
 
 - Required parameters:
+
   - `image`: The image file for which you want to generate metadata.This should be included as a file in the multipart/form-data request body.
 
 - Optional parameters:
@@ -89,9 +95,9 @@ Here's an example of a successful API response:
 
 ```json
 {
-  "title": "Playful Kittens Among Blooming Flowers",
-  "alternativeText": "Two animated kittens playing among blooming flowers with a clear blue sky",
-  "caption": "Adorable kittens having fun in a field of vibrant blossoms under the clear blue sky"
+	"title": "Playful Kittens Among Blooming Flowers",
+	"alternativeText": "Two animated kittens playing among blooming flowers with a clear blue sky",
+	"caption": "Adorable kittens having fun in a field of vibrant blossoms under the clear blue sky"
 }
 ```
 
@@ -99,20 +105,21 @@ And here's an example of an error response:
 
 ```json
 {
-  "error": {
-    "code": 400,
-    "message": "Missing required parameter: image"
-  }
+	"error": {
+		"code": 400,
+		"message": "Missing required parameter: image"
+	}
 }
 ```
 
 <div className="not-prose">
-    <Button href="/api-documentation" variant="text" arrow="right">
-        See the API documentation for more details
-    </Button>
+	<Button href="/api-documentation" variant="text" arrow="right">
+		See the API documentation for more details
+	</Button>
 </div>
 
 ## Next Steps
+
 Now that you know how to make requests to the ForVoyez API, handle errors, and interpret the responses, you can explore further:
 
 - [Data Schemas](/data-schemas): Learn how to customize and validate the metadata output schema.

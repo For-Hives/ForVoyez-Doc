@@ -1,19 +1,19 @@
-import {Guides} from '@/components/Guides'
-import {References} from '@/components/References'
-import {DashboardSupport} from '@/components/DashboardSupport'
-import {HeroPattern} from '@/components/HeroPattern'
-import {Button} from "@/components/Button";
+import { Guides } from '@/components/Guides'
+import { References } from '@/components/References'
+import { DashboardSupport } from '@/components/DashboardSupport'
+import { HeroPattern } from '@/components/HeroPattern'
+import { Button } from '@/components/Button'
 
 export const metadata = {
-    title: 'ForVoyez API Documentation',
-    description:
-        'Learn everything there is to know about the ForVoyez API for automatic image metadata generation and seamlessly integrate it into your product.',
+	title: 'ForVoyez API Documentation',
+	description:
+		'Learn everything there is to know about the ForVoyez API for automatic image metadata generation and seamlessly integrate it into your product.',
 }
 
 export const sections = [
-    {title: 'Guides', id: 'guides'},
-    {title: 'References', id: 'references'},
-    {title: 'Dashboard & Support', id: 'dashboard-support'},
+	{ title: 'Guides', id: 'guides' },
+	{ title: 'References', id: 'references' },
+	{ title: 'Dashboard & Support', id: 'dashboard-support' },
 ]
 
     <HeroPattern />
@@ -23,9 +23,9 @@ export const sections = [
 Use the ForVoyez API to automatically generate alt text and metadata for your images, boost your SEO, and improve accessibility. Seamlessly integrate our AI-powered solution into your product and workflows. {{ className: 'lead' }}
 
 <div className="not-prose mb-16 mt-6 flex gap-3">
-    <Button href="/quickstart" arrow="right">
-        <>Quickstart</>
-    </Button>
+	<Button href="/quickstart" arrow="right">
+		<>Quickstart</>
+	</Button>
 </div>
 
 ## Getting Started {{ anchor: false }}
@@ -33,13 +33,13 @@ Use the ForVoyez API to automatically generate alt text and metadata for your im
 To get started, sign up for an account on our platform and obtain your API key. Refer to our guides and API references to learn how to make requests and integrate our solution into your project. When you're ready to go live, configure your account settings and manage your subscription in the dashboard. {{ className: 'lead' }}
 
 <div className="not-prose">
-    <Button href="/authentication" variant="text" arrow="right">
-        <>Get your API key</>
-    </Button>
+	<Button href="/authentication" variant="text" arrow="right">
+		<>Get your API key</>
+	</Button>
 </div>
 
-<Guides/>
+<Guides />
 
-<References/>
+<References />
 
-<DashboardSupport/>
+<DashboardSupport />

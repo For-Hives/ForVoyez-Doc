@@ -1,9 +1,10 @@
-import {Button} from "@/components/Button";
-import {CodeGroup} from "@/components/Code";
+import { Button } from '@/components/Button'
+import { CodeGroup } from '@/components/Code'
 
 export const metadata = {
-    title: 'Quick Start',
-    description: 'Get started with the ForVoyez API quickly by following this step-by-step guide.',
+	title: 'Quick Start',
+	description:
+		'Get started with the ForVoyez API quickly by following this step-by-step guide.',
 }
 
 # Quick Start
@@ -31,9 +32,9 @@ After logging in to your account, you'll need to obtain your API key. Here's how
 4. Be careful, the key is only displayed once, so make sure to save it securely.
 
 <div className="not-prose">
-    <Button href="/authentication" variant="text" arrow="right">
-        Learn more about authentication
-    </Button>
+	<Button href="/authentication" variant="text" arrow="right">
+		Learn more about authentication
+	</Button>
 </div>
 
 Certainly! Here's an updated version of the "Making Your First API Call" section with a CodeGroup component that includes examples in both cURL and JavaScript:
@@ -53,32 +54,35 @@ curl -X POST \
 ```
 
 ```js {{ title: 'JavaScript' }}
-const form = new FormData();
-form.append('image', fileInput.files[0]);
-form.append('data', JSON.stringify({
-  context: 'Your image context',
-  schema: {
-    alt: 'string',
-    caption: 'string'
-  }
-}));
+const form = new FormData()
+form.append('image', fileInput.files[0])
+form.append(
+	'data',
+	JSON.stringify({
+		context: 'Your image context',
+		schema: {
+			alt: 'string',
+			caption: 'string',
+		},
+	})
+)
 
 fetch('https://api.forvoyez.com/v1/describe', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Bearer YOUR_API_KEY'
-  },
-  body: form
+	method: 'POST',
+	headers: {
+		Authorization: 'Bearer YOUR_API_KEY',
+	},
+	body: form,
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data);
-    // Handle the API response data
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    // Handle any errors that occurred during the request
-  });
+	.then(response => response.json())
+	.then(data => {
+		console.log(data)
+		// Handle the API response data
+	})
+	.catch(error => {
+		console.error('Error:', error)
+		// Handle any errors that occurred during the request
+	})
 ```
 
 </CodeGroup>
@@ -86,15 +90,16 @@ fetch('https://api.forvoyez.com/v1/describe', {
 Make sure to replace `YOUR_API_KEY` with your actual API key and `/path/to/your/image.jpg` with the path to the image file you want to generate metadata for.
 
 The `data` parameter is a JSON object that includes:
+
 - `context`: A string providing additional context about the image (optional).
 - `schema`: An object specifying the desired output schema for the generated metadata (optional).
 
 The API will process your request and return a JSON response containing the generated alt text and other metadata based on your specified schema.
 
 <div className="not-prose">
-    <Button href="/using-the-api" variant="text" arrow="right">
-        Learn more about using the API
-    </Button>
+	<Button href="/using-the-api" variant="text" arrow="right">
+		Learn more about using the API
+	</Button>
 </div>
 
 ## Next Steps
