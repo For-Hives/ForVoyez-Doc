@@ -7,6 +7,7 @@ export function CurrencyDollarIcon() {
 			viewBox="0 0 512.176 512.176"
 			width="512"
 			xmlns="http://www.w3.org/2000/svg"
+			className={'scale-[65%]'}
 		>
 			<g>
 				<g id="Page-1_93_">
