@@ -204,7 +204,7 @@ export const navigation = [
 			{ title: 'API Documentation', href: '/api-documentation' },
 			{ title: 'Code Examples', href: '/code-examples' },
 			{ title: 'Code errors', href: '/error-codes' },
-			{ title: 'API: Describe', href: '/describe' },w
+			{ title: 'API: Describe', href: '/describe' },
 			{ title: 'Additional Resources', href: '/additional-resources' },
 		],
 	},
