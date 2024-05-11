@@ -202,9 +202,9 @@ export const navigation = [
 		title: 'References',
 		links: [
 			{ title: 'API Documentation', href: '/api-documentation' },
+			{ title: 'API: Describe', href: '/describe' },
 			{ title: 'Code Examples', href: '/code-examples' },
 			{ title: 'Code errors', href: '/error-codes' },
-			{ title: 'API: Describe', href: '/describe' },
 			{ title: 'Additional Resources', href: '/additional-resources' },
 		],
 	},
