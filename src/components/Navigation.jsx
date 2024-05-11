@@ -206,7 +206,7 @@ export const navigation = [
   {
     title: 'References',
     links: [
-      { title: 'API Reference', href: '/api-reference' },
+      { title: 'API Documentation', href: '/api-documentation' },
       { title: 'Code Examples', href: '/code-examples' },
       { title: 'Additional Resources', href: '/additional-resources' },
     ],

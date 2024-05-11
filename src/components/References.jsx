@@ -4,8 +4,8 @@ import {Heading} from "@/components/Heading";
 
 const references = [
     {
-        href: '/api-reference',
-        name: 'API Reference',
+        href: '/api-documentation',
+        name: 'API Documentation',
         description: 'Explore the complete reference of endpoints, parameters, and responses.',
     },
     {
