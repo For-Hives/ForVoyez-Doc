@@ -203,6 +203,7 @@ export const navigation = [
 		links: [
 			{ title: 'API Documentation', href: '/api-documentation' },
 			{ title: 'Code Examples', href: '/code-examples' },
+			{ title: 'Code errors', href: '/error-codes' },
 			{ title: 'Additional Resources', href: '/additional-resources' },
 		],
 	},
