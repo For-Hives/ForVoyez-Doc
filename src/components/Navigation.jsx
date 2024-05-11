@@ -212,7 +212,7 @@ export const navigation = [
 			{ title: 'Account Management', href: '/account-management' },
 			{ title: 'Usage Tracking', href: '/usage-tracking' },
 			{ title: 'Online Tools', href: '/online-tools' },
-			{ title: 'Support', href: '/support' },
+			{ title: 'Contact us', href: '/support' },
 			{ title: 'Useful links', href: '/useful-links' },
 			{ title: 'Changelog', href: '/changelog' },
 		],
