@@ -81,14 +81,14 @@ Here's an example of a request and response for the `/v1/describe` endpoint:
     Here are the common error codes you might encounter:
 
     - `400 Bad Request`: The request is invalid or missing required parameters.
-    - `No file uploaded`: The `image` parameter is missing in the request.
-    - `Invalid image file`: The uploaded file is not a valid image format.
-    - `Invalid schema`: The provided schema is invalid or malformed.
+    - `400 No file uploaded`: The `image` parameter is missing in the request.
+    - `400 Invalid image file`: The uploaded file is not a valid image format.
+    - `400 Invalid schema`: The provided schema is invalid or malformed.
 
     - `401 Unauthorized`: Authentication failed.
-    - `Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
-    - `Unauthorized, invalid token`: The provided API key or token is invalid.
-    - `Unauthorized, no credit left`: The user has insufficient credits to make the request.
+    - `401 Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
+    - `401 Unauthorized, invalid token`: The provided API key or token is invalid.
+    - `401 Unauthorized, no credit left`: The user has insufficient credits to make the request.
 
     - `429 Too Many Requests`: The request limit for your subscription plan has been exceeded.
 
