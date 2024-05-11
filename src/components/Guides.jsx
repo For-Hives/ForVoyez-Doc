@@ -19,7 +19,7 @@ const guides = [
 			name: 'Introduction',
 			description:
 				'Discover the need for automated image metadata generation and the benefits of our API.',
-			icon: BookIcon,
+			icon: BoltIcon,
 			pattern: {
 				y: 16,
 				squares: [
@@ -47,7 +47,7 @@ const guides = [
 			name: 'Authentication',
 			description:
 				'Learn how to authenticate your requests to the API and manage your API keys.',
-			icon: KeyIcon,
+			icon: BoltIcon,
 			pattern: {
 				y: 32,
 				squares: [
@@ -61,7 +61,7 @@ const guides = [
 			name: 'Using the API',
 			description:
 				'Understand the request format, parameters, and error handling when using our API.',
-			icon: CodeBracketIcon,
+			icon: BoltIcon,
 			pattern: {
 				y: 22,
 				squares: [
@@ -75,7 +75,7 @@ const guides = [
 			name: 'Data Schemas',
 			description:
 				'Explore the structure of JSON schemas and learn how to customize and validate them.',
-			icon: CubeTransparentIcon,
+			icon: BoltIcon,
 			pattern: {
 				y: 8,
 				squares: [
@@ -89,7 +89,7 @@ const guides = [
 			name: 'Limits and Quotas',
 			description:
 				'Understand the request limits per subscription and how to handle quota overages.',
-			icon: GaugeIcon,
+			icon: BoltIcon,
 			pattern: {
 				y: -12,
 				squares: [
