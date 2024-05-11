@@ -212,6 +212,7 @@ export const navigation = [
 			{ title: 'Account Management', href: '/account-management' },
 			{ title: 'Usage Tracking', href: '/usage-tracking' },
 			{ title: 'Pricing', href: '/pricing' },
+			{ title: 'Billing', href: '/billing' },
 			{ title: 'Online Tools', href: '/online-tools' },
 			{ title: 'Contact us', href: '/support' },
 			{ title: 'Useful links', href: '/useful-links' },
