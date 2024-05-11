@@ -12,14 +12,14 @@ import { CubeTransparentIcon } from '@/components/icons/CubeTransparentIcon'
 import { GaugeIcon } from '@/components/icons/GaugeIcon'
 import { KeyIcon } from '@/components/icons/KeyIcon'
 
-export const guides = [
+const guides = [
 	[
 		{
 			href: '/introduction',
 			name: 'Introduction',
 			description:
 				'Discover the need for automated image metadata generation and the benefits of our API.',
-			icon: 'BookIcon',
+			icon: BookIcon,
 			pattern: {
 				y: 16,
 				squares: [
@@ -33,7 +33,7 @@ export const guides = [
 			name: 'Quick Start',
 			description:
 				'Get up and running quickly with our API by following this step-by-step guide.',
-			icon: 'BoltIcon',
+			icon: BoltIcon,
 			pattern: {
 				y: -6,
 				squares: [
@@ -47,7 +47,7 @@ export const guides = [
 			name: 'Authentication',
 			description:
 				'Learn how to authenticate your requests to the API and manage your API keys.',
-			icon: 'KeyIcon',
+			icon: KeyIcon,
 			pattern: {
 				y: 32,
 				squares: [
@@ -61,7 +61,7 @@ export const guides = [
 			name: 'Using the API',
 			description:
 				'Understand the request format, parameters, and error handling when using our API.',
-			icon: 'CodeBracketIcon',
+			icon: CodeBracketIcon,
 			pattern: {
 				y: 22,
 				squares: [
@@ -75,7 +75,7 @@ export const guides = [
 			name: 'Data Schemas',
 			description:
 				'Explore the structure of JSON schemas and learn how to customize and validate them.',
-			icon: 'CubeTransparentIcon',
+			icon: CubeTransparentIcon,
 			pattern: {
 				y: 8,
 				squares: [
@@ -89,7 +89,7 @@ export const guides = [
 			name: 'Limits and Quotas',
 			description:
 				'Understand the request limits per subscription and how to handle quota overages.',
-			icon: 'GaugeIcon',
+			icon: GaugeIcon,
 			pattern: {
 				y: -12,
 				squares: [
@@ -101,7 +101,7 @@ export const guides = [
 	],
 ]
 
-export function GuideIcon({ icon: Icon }) {
+function GuideIcon({ icon: Icon }) {
 	return (
 		<div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-900/5 ring-1 ring-slate-900/25 backdrop-blur-[2px] transition duration-300 group-hover:bg-white/50 group-hover:ring-slate-900/25">
 			<Icon className="h-5 w-5 fill-slate-700/10 stroke-slate-700 transition-colors duration-300 group-hover:stroke-slate-900" />
