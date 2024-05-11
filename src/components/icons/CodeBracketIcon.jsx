@@ -1,17 +1,15 @@
-export function BookIcon(props) {
+export function CodeBracketIcon(props) {
 	return (
-		<svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
-			<path
-				fill="none"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="m10 5.5-7.5-3v12l7.5 3m0-12 7.5-3v12l-7.5 3m0-12v12"
-			/>
-			<path
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				d="m17.5 2.5-7.5 3v12l7.5-3v-12Z"
-			/>
+		<svg
+			height="512"
+			viewBox="0 0 24 24"
+			width="512"
+			xmlns="http://www.w3.org/2000/svg"
+			id="fi_3573187"
+		>
+			<path d="m1.293 12.707 4 4a1 1 0 1 0 1.414-1.414l-3.293-3.293 3.293-3.293a1 1 0 1 0 -1.414-1.414l-4 4a1 1 0 0 0 0 1.414z"></path>
+			<path d="m18.707 7.293a1 1 0 1 0 -1.414 1.414l3.293 3.293-3.293 3.293a1 1 0 1 0 1.414 1.414l4-4a1 1 0 0 0 0-1.414z"></path>
+			<path d="m13.039 4.726-4 14a1 1 0 0 0 .686 1.236 1.053 1.053 0 0 0 .275.038 1 1 0 0 0 .961-.726l4-14a1 1 0 1 0 -1.922-.548z"></path>
 		</svg>
 	)
 }
