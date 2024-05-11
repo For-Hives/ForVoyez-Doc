@@ -1,0 +1,181 @@
+import {CodeGroup} from "@/components/Code";
+
+export const metadata = {
+    title: '/describe Endpoint',
+    description: 'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
+}
+
+# /describe Endpoint
+
+The `/describe` endpoint allows you to generate metadata for your images using the ForVoyez API. By sending a POST request to this endpoint with an image file and optional parameters, you can obtain a title, alternative text, and caption for the image.
+
+## Request
+
+### Endpoint
+
+```
+POST https://forvoyez.com/api/describe
+```
+
+### Headers
+
+- `Authorization` (required): The authentication token (API key) to authorize the request. The token should be prefixed with `Bearer `.
+- `Content-Type` (required): The content type of the request body. It should be set to `multipart/form-data`.
+
+### Request Body
+
+The request body should be in `multipart/form-data` format and include the following fields:
+
+- `image` (required): The image file for which you want to generate metadata. Supported image formats are JPEG, JPG, PNG, WebP, and GIF.
+- `data` (optional): A JSON object containing additional parameters for metadata generation. The JSON object can include the following fields:
+- `context` (optional): Additional context or description to assist in generating more accurate metadata.
+- `schema` (optional): A custom JSON schema to specify the desired output format of the generated metadata.
+
+### Example Request
+
+```bash
+curl -X POST \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: multipart/form-data" \
+  -F "image=@/path/to/your/image.jpg" \
+  -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+  https://forvoyez.com/api/describe
+```
+
+## Response
+
+### Success Response
+
+If the request is successful, the API will return a JSON object containing the generated metadata for the provided image.
+
+```json
+{
+  "title": "Playful Kittens",
+  "alternativeText": "Two kittens playing with a ball of yarn",
+  "caption": "Adorable kittens having fun and being mischievous"
+}
+```
+
+### Error Responses
+
+If the request is unsuccessful, the API will return an appropriate HTTP status code along with an error message in the response body. Here are the possible error responses:
+
+- `400 Bad Request`
+- `400 No file uploaded`: The `image` parameter is missing in the request.
+- `400 Invalid image file`: The uploaded file is not a valid image format.
+- `400 Invalid schema`: The provided schema is invalid or malformed.
+
+- `401 Unauthorized`
+- `400 Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
+- `400 Unauthorized, invalid token`: The provided API key or token is invalid.
+- `400 Unauthorized, no credit left`: The user has insufficient credits to make the request.
+
+- `500 Internal Server Error`: An unexpected error occurred on the server side.
+
+For more details on error codes and messages, refer to the [Error Codes](/error-codes) documentation.
+
+## Authentication
+
+To use the `/describe` endpoint, you need to include a valid API key in the `Authorization` header of your request. The API key should be prefixed with `Bearer `.
+
+If you don't have an API key yet, sign up for a ForVoyez account and obtain your API key from the [Dashboard](https://forvoyez.com/app/dashboard).
+
+## Rate Limiting
+
+The `/describe` endpoint is subject to rate limiting to ensure fair usage and maintain the stability of the API. The rate limits are determined by your subscription plan.
+
+If you exceed the rate limit, you will receive a `429 Too Many Requests` error response. Upgrade your subscription plan or wait for the rate limit to reset before making further requests.
+
+## Schemas
+
+You can customize the output format of the generated metadata by providing a JSON schema in the `data` parameter of the request. The schema should follow the JSON Schema format and specify the desired structure of the metadata.
+
+Here's an example schema:
+
+```json
+{
+  "title": "string",
+  "alternativeText": "string",
+  "caption": "string",
+  "tags": ["string"],
+  "categories": ["string"]
+}
+```
+
+If no schema is provided, the API will use a default schema to generate the metadata.
+
+## Examples
+
+Here are a few examples of how to use the `/describe` endpoint with different programming languages:
+
+<CodeGroup>
+```bash {{ title: 'cURL' }}
+curl -X POST \
+-H "Authorization: Bearer YOUR_API_KEY" \
+-H "Content-Type: multipart/form-data" \
+-F "image=@/path/to/your/image.jpg" \
+-F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+https://forvoyez.com/api/describe
+```
+
+```python {{ title: 'Python' }}
+import requests
+
+url = "https://forvoyez.com/api/describe"
+api_key = "YOUR_API_KEY"
+
+payload = {
+    "data": '{"context":"Playful kittens","schema":{"title":"string","alternativeText":"string","caption":"string"}}'
+}
+files = [
+    ('image', ('image.jpg', open('/path/to/your/image.jpg', 'rb'), 'image/jpeg'))
+]
+headers = {
+    'Authorization': f'Bearer {api_key}'
+}
+
+response = requests.post(url, headers=headers, data=payload, files=files)
+
+print(response.json())
+```
+
+```javascript {{ title: 'JavaScript' }}
+        const form = new FormData();
+        form.append('image', fileInput.files[0]);
+        form.append('data', JSON.stringify({
+        context: 'Playful kittens',
+        schema: {
+        title: 'string',
+        alternativeText: 'string',
+        caption: 'string'
+    }
+    }));
+
+        fetch('https://forvoyez.com/api/describe', {
+        method: 'POST',
+        headers: {
+        'Authorization': 'Bearer YOUR_API_KEY'
+    },
+        body: form
+    })
+        .then(response => response.json())
+        .then(data => {
+        console.log(data);
+        // Handle the API response data
+    })
+        .catch(error => {
+        console.error('Error:', error);
+        // Handle any errors that occurred during the request
+    });
+        ```
+</CodeGroup>
+
+    For more code examples and detailed usage instructions, refer to the [API Documentation](/api-documentation).
+
+    ## Next Steps
+
+    - Explore the [API Documentation](/api-documentation) to learn more about the available endpoints and their parameters.
+    - Check out the [Guides](/guides) for step-by-step tutorials on integrating the ForVoyez API into your application.
+    - If you encounter any issues or have questions, reach out to our [Support Team](/support).
+
+    Start generating metadata for your images using the `/describe` endpoint and enhance your application's capabilities with the ForVoyez API!
