@@ -1,0 +1,105 @@
+import {Button} from "@/components/Button";
+export const metadata = {
+    title: 'Pricing',
+    description: 'Discover the pricing plans and credit packs available for the ForVoyez API.',
+}
+
+# Pricing
+
+At ForVoyez, we offer flexible pricing plans to suit your needs, whether you're a small project, a growing business, or a large-scale enterprise. Choose the plan that best fits your requirements and budget.
+
+## Subscription Plans
+
+<div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <div className="rounded-lg border border-slate-200 p-6">
+        <h3 className="text-xl font-semibold">Starter</h3>
+        <p className="mt-2 text-slate-600">Perfect for small projects, freelancers, and personal use.</p>
+        <div className="mt-4 text-3xl font-bold">€2.99/month</div>
+        <p className="mt-4 text-sm text-slate-500">Get <strong>20% off</strong> with an <strong>annual</strong> subscription</p>
+        <ul className="mt-6 space-y-4 text-sm">
+            <li>- 100 credits/month</li>
+            <li>- Basic metadata generation</li>
+            <li>- Community support</li>
+            <li>- Classic image formats (JPEG, PNG, WebP)</li>
+            <li>- Full HD image support (up to 1080p)</li>
+            <li>- Limited access to playground</li>
+        </ul>
+    </div>
+
+    <div className="rounded-lg border border-slate-200 p-6">
+        <h3 className="text-xl font-semibold">Growth</h3>
+        <p className="mt-2 text-slate-600">Ideal for growing businesses, automatic tools and advanced users.</p>
+        <div className="mt-4 text-3xl font-bold">€24.90/month</div>
+        <p className="mt-4 text-sm text-slate-500">Get <strong>20% off</strong> with an <strong>annual</strong> subscription</p>
+        <ul className="mt-6 space-y-4 text-sm">
+            <li>- All Starter plan features</li>
+            <li>- 1,000 credits/month</li>
+            <li>- Advanced metadata generation</li>
+            <li>- Priority support</li>
+            <li>- Bulk processing</li>
+            <li>- Ultra HD image support (up to 4K)</li>
+        </ul>
+    </div>
+
+    <div className="rounded-lg border border-slate-200 p-6">
+        <h3 className="text-xl font-semibold">Enterprise</h3>
+        <p className="mt-2 text-slate-600">Tailored for large-scale deployments and complex requirements.</p>
+        <div className="mt-4 text-3xl font-bold">Custom/month</div>
+        <p className="mt-4 text-sm text-slate-500">Get <strong>20% off</strong> with an <strong>annual</strong> subscription</p>
+        <ul className="mt-6 space-y-4 text-sm">
+            <li>- All Growth plan features</li>
+            <li>- Unlimited credits</li>
+            <li>- Advanced metadata generation</li>
+            <li>- 24/7 dedicated support</li>
+            <li>- Custom SLAs</li>
+            <li>- Volume discounts</li>
+            <li>- Access to beta features</li>
+            <li>- Priority access to new features</li>
+            <li>- Priority access to the playground</li>
+            <li>- Dedicated hosting option</li>
+            <li>- Deep integration with existing systems</li>
+        </ul>
+    </div>
+</div>
+
+## One-Time Credit Packs
+
+In addition to our subscription plans, we also offer one-time credit packs for your convenience. These packs provide a cost-effective way to purchase credits without a recurring commitment.
+
+<div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <div className="rounded-lg border border-slate-200 p-6">
+        <h3 className="text-xl font-semibold">50 Credits</h3>
+        <div className="mt-4 text-3xl font-bold">€4.50</div>
+        <p className="mt-2 text-sm text-slate-500">One-time purchase</p>
+        <Button href="/app/billing" variant="secondary" className="mt-6 w-full">Buy Now</Button>
+    </div>
+
+    <div className="rounded-lg border border-slate-200 p-6">
+        <h3 className="text-xl font-semibold">100 Credits</h3>
+        <div className="mt-4 text-3xl font-bold">€9.00</div>
+        <p className="mt-2 text-sm text-slate-500">One-time purchase</p>
+        <Button href="/app/billing" variant="secondary" className="mt-6 w-full">Buy Now</Button>
+    </div>
+
+    <div className="rounded-lg border border-slate-200 p-6">
+        <h3 className="text-xl font-semibold">1000 Credits</h3>
+        <div className="mt-4 text-3xl font-bold">€90.00</div>
+        <p className="mt-2 text-sm text-slate-500">One-time purchase</p>
+        <Button href="/app/billing" variant="secondary" className="mt-6 w-full">Buy Now</Button>
+    </div>
+</div>
+
+<div className="mt-8">
+    <p className="text-sm text-slate-500">
+        * One-time credit packs offer a 10% discount on the per-request price compared to the current subscription plan.
+    </p>
+</div>
+
+## Next Steps
+
+- [Sign up](/app/signup) for a ForVoyez account to get started.
+- Explore the [API Documentation](/api-documentation) to learn about the available endpoints and features.
+- Check out the [Guides](/guides) for tutorials and examples on integrating the ForVoyez API into your application.
+- If you have any questions or need assistance, feel free to [contact our support team](/contact).
+
+Choose the pricing plan that best suits your needs and start generating metadata for your images with the ForVoyez API!
