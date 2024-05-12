@@ -1,10 +1,10 @@
-import {Button} from '@/components/Button'
-import {CodeGroup} from '@/components/Code'
+import { Button } from '@/components/Button'
+import { CodeGroup } from '@/components/Code'
 
 export const metadata = {
-    title: 'API References',
-    description:
-        'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
+	title: 'API References',
+	description:
+		'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
 }
 
 # API Documentation
@@ -20,9 +20,9 @@ The ForVoyez API offers the following endpoints:
 For detailed information about each endpoint, including the required parameters, request examples, and response formats, refer to the individual endpoint documentation:
 
 <div className="not-prose">
-    <Button href="/describe" variant="text" arrow="right">
-        /describe
-    </Button>
+	<Button href="/describe" variant="text" arrow="right">
+		/describe
+	</Button>
 </div>
 
 ## Details of Parameters and Responses
@@ -43,7 +43,7 @@ Here's an example of a request and response for the `/v1/describe` endpoint:
         https://forvoyez.com/api/describe
         ```
 
-```json {{ title: 'JSON Response' }}
+````json {{ title: 'JSON Response' }}
     {
         "title": "Playful Kittens",
         "alternativeText": "Two kittens playing with a ball of yarn",
@@ -76,9 +76,11 @@ Here's an example of a request and response for the `/v1/describe` endpoint:
 
     The error response body will include an error message with more details:
 
-```
+````
+
 400 Bad Request
-```
+
+````
     ```txt
     Missing required parameter: image
     ```
@@ -99,3 +101,4 @@ Here's an example of a request and response for the `/v1/describe` endpoint:
     - If you encounter any issues or have questions, reach out to our [support team](/support) for assistance.
 
     Happy coding with the ForVoyez API!
+````

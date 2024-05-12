@@ -1,8 +1,9 @@
-import {CodeGroup} from "@/components/Code";
+import { CodeGroup } from '@/components/Code'
 
 export const metadata = {
-    title: '/describe Endpoint',
-    description: 'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
+	title: '/describe Endpoint',
+	description:
+		'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
 }
 
 # /describe Endpoint
@@ -50,9 +51,9 @@ If the request is successful, the API will return a JSON object containing the g
 
 ```json
 {
-  "title": "Playful Kittens",
-  "alternativeText": "Two kittens playing with a ball of yarn",
-  "caption": "Adorable kittens having fun and being mischievous"
+	"title": "Playful Kittens",
+	"alternativeText": "Two kittens playing with a ball of yarn",
+	"caption": "Adorable kittens having fun and being mischievous"
 }
 ```
 
@@ -94,11 +95,11 @@ Here's an example schema:
 
 ```json
 {
-  "title": "string",
-  "alternativeText": "string",
-  "caption": "string",
-  "tags": ["string"],
-  "categories": ["string"]
+	"title": "string",
+	"alternativeText": "string",
+	"caption": "string",
+	"tags": ["string"],
+	"categories": ["string"]
 }
 ```
 
@@ -139,7 +140,7 @@ response = requests.post(url, headers=headers, data=payload, files=files)
 print(response.json())
 ```
 
-```javascript {{ title: 'JavaScript' }}
+````javascript {{ title: 'JavaScript' }}
         const form = new FormData();
         form.append('image', fileInput.files[0]);
         form.append('data', JSON.stringify({
@@ -179,3 +180,4 @@ print(response.json())
     - If you encounter any issues or have questions, reach out to our [Support Team](/support).
 
     Start generating metadata for your images using the `/describe` endpoint and enhance your application's capabilities with the ForVoyez API!
+````
