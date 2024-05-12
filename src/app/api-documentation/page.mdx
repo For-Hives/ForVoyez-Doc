@@ -33,15 +33,15 @@ The API responses are returned in JSON format and contain the requested data or 
 
 Here's an example of a request and response for the `/v1/describe` endpoint:
 
-    <CodeGroup>
-        ```bash {{title: 'cURL Request'}}
-        curl -X POST \
-        -H "Authorization: Bearer YOUR_API_KEY" \
-        -H "Content-Type: multipart/form-data" \
-        -F "image=@/path/to/your/image.jpg" \
-        -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
-        https://forvoyez.com/api/describe
-        ```
+<CodeGroup>
+````bash {{title: 'cURL Request'}}
+curl -X POST \
+-H "Authorization: Bearer YOUR_API_KEY" \
+-H "Content-Type: multipart/form-data" \
+-F "image=@/path/to/your/image.jpg" \
+-F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+https://forvoyez.com/api/describe
+````
 
 ````json {{ title: 'JSON Response' }}
     {
@@ -49,7 +49,7 @@ Here's an example of a request and response for the `/v1/describe` endpoint:
         "alternativeText": "Two kittens playing with a ball of yarn",
         "caption": "Adorable kittens having fun and being mischievous"
     }
-        ```
+````
 </CodeGroup>
 
     For more details on the parameters and responses for each endpoint, refer to the individual endpoint documentation.
