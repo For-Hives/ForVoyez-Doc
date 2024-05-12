@@ -151,16 +151,16 @@ function CodePanelHeader({ tag, label }) {
 	)
 }
 
-function CodePanel({ children, tag, label, code }) {
-	let child = Children.only(children)
+function CodePanel(props) {
+	let child = Children.only(props.children)
 
 	if (isValidElement(child)) {
-		tag = child.props.tag ?? tag
-		label = child.props.label ?? label
-		code = child.props.code ?? code
+		props.tag = child.props.tag ?? props.tag
+		props.label = child.props.label ?? props.label
+		props.code = child.props.code ?? props.code
 	}
 
-	if (!code) {
+	if (!props.code) {
 		throw new Error(
 			'`CodePanel` requires a `code` prop, or a child with a `code` prop.'
 		)
@@ -168,10 +168,12 @@ function CodePanel({ children, tag, label, code }) {
 
 	return (
 		<div className="group">
-			<CodePanelHeader tag={tag} label={label} />
+			<CodePanelHeader tag={props.tag} label={props.label} />
 			<div className="relative">
-				<pre className="overflow-x-auto p-4 text-xs text-white">{children}</pre>
-				<CopyButton code={code} />
+				<pre className="overflow-x-auto p-4 text-xs text-white">
+					{props.children}
+				</pre>
+				<CopyButton code={props.code} />
 			</div>
 		</div>
 	)
