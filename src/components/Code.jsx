@@ -221,7 +221,9 @@ function CodeGroupPanels({ children, ...props }) {
 			<Tab.Panels>
 				{Children.map(children, child => (
 					<Tab.Panel>
-						<CodePanel {...props}>{child}</CodePanel>
+						<CodePanel {...props} code={props.code}>
+							{child}
+						</CodePanel>
 					</Tab.Panel>
 				))}
 			</Tab.Panels>
