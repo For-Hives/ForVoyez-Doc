@@ -48,7 +48,7 @@ const social = [
 	},
 	{
 		name: 'GitHub',
-		href: '#',
+		href: 'https://github.com/For-Hives/ForVoyez',
 		icon: props => (
 			<svg fill="currentColor" viewBox="0 0 24 24" {...props}>
 				<path
