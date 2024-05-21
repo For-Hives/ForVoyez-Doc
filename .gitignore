@@ -35,6 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 LICENSE.md
-large.txt
-output.txt
 bun.lockb
+
+output.txt
+large.txt
+
+#pnpm-lock.yaml
