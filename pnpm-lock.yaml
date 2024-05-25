@@ -9,8 +9,8 @@ dependencies:
     specifier: 1.17.1
     version: 1.17.1(@algolia/client-search@4.23.3)(algoliasearch@4.23.3)(search-insights@2.13.0)
   '@headlessui/react':
-    specifier: 2.0.3
-    version: 2.0.3(react-dom@18.3.1)(react@18.3.1)
+    specifier: 2.0.4
+    version: 2.0.4(react-dom@18.3.1)(react@18.3.1)
   '@headlessui/tailwindcss':
     specifier: 0.2.0
     version: 0.2.0(tailwindcss@3.4.3)
@@ -366,8 +366,8 @@ packages:
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
     dev: false
 
-  /@headlessui/react@2.0.3(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-Xd1h0YZgfhxZ7W1w4TvK0/TZ1c4qaX4liYVUkAXqW1HCLcXSqnMeYAUGJS/BBroBAUL9HErjyFcRpCWRQZ/0lA==}
+  /@headlessui/react@2.0.4(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-16d/rOLeYsFsmPlRmXGu8DCBzrWD0zV1Ccx3n73wN87yFu8Y9+X04zflv8EJEt9TAYRyLKOmQXUnOnqQl6NgpA==}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^18
