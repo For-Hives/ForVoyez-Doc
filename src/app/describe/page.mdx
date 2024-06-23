@@ -1,8 +1,8 @@
-import {CodeGroup} from "@/components/Code";
+import { CodeGroup } from '@/components/Code'
 export const metadata = {
-    title: '/describe Endpoint',
-    description:
-        'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
+	title: '/describe Endpoint',
+	description:
+		'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
 }
 
 # /describe Endpoint
@@ -33,14 +33,14 @@ The request body should be in `multipart/form-data` format and include the follo
 
 ### Example Request
 
-````bash
+```bash
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
   -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
   https://forvoyez.com/api/describe
-````
+```
 
 ## Response
 
@@ -48,13 +48,13 @@ curl -X POST \
 
 If the request is successful, the API will return a JSON object containing the generated metadata for the provided image.
 
-````json
+```json
 {
 	"title": "Playful Kittens",
 	"alternativeText": "Two kittens playing with a ball of yarn",
 	"caption": "Adorable kittens having fun and being mischievous"
 }
-````
+```
 
 ### Error Responses
 
@@ -92,7 +92,7 @@ You can customize the output format of the generated metadata by providing a JSO
 
 Here's an example schema:
 
-````json
+```json
 {
 	"title": "string",
 	"alternativeText": "string",
@@ -100,7 +100,7 @@ Here's an example schema:
 	"tags": ["string"],
 	"categories": ["string"]
 }
-````
+```
 
 If no schema is provided, the API will use a default schema to generate the metadata.
 
@@ -118,7 +118,7 @@ curl -X POST \
 https://forvoyez.com/api/describe
 ````
 
-````python {{ title: 'Python' }}
+`````python {{ title: 'Python' }}
         import requests
 
         url = "https://forvoyez.com/api/describe"
@@ -179,3 +179,4 @@ https://forvoyez.com/api/describe
     - If you encounter any issues or have questions, reach out to our [Support Team](/support).
 
     Start generating metadata for your images using the `/describe` endpoint and enhance your application's capabilities with the ForVoyez API!
+`````

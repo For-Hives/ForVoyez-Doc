@@ -43,13 +43,14 @@ curl -X POST \
 https://forvoyez.com/api/describe
 ````
 
-````json {{ title: 'JSON Response' }}
-    {
-        "title": "Playful Kittens",
-        "alternativeText": "Two kittens playing with a ball of yarn",
-        "caption": "Adorable kittens having fun and being mischievous"
-    }
-````
+```json {{ title: 'JSON Response' }}
+{
+	"title": "Playful Kittens",
+	"alternativeText": "Two kittens playing with a ball of yarn",
+	"caption": "Adorable kittens having fun and being mischievous"
+}
+```
+
 </CodeGroup>
 
 For more details on the parameters and responses for each endpoint, refer to the individual endpoint documentation.
@@ -76,9 +77,10 @@ Here are the common error codes you might encounter:
 
 The error response body will include an error message with more details:
 
-````
+```
 400 Bad Request
-````
+```
+
 ```txt
 Missing required parameter: image
 ```
@@ -86,9 +88,9 @@ Missing required parameter: image
 For a complete list of error codes and their meanings, refer to the [Error Codes](/error-codes) documentation.
 
 <div className="not-prose">
-    <Button href="/support" variant="text" arrow="right">
-        Contact support for assistance with error resolution
-    </Button>
+	<Button href="/support" variant="text" arrow="right">
+		Contact support for assistance with error resolution
+	</Button>
 </div>
 
 ## Next Steps
