@@ -1,10 +1,10 @@
 import glob from 'fast-glob'
 import { Jost, Source_Sans_3 } from 'next/font/google'
+import Script from 'next/script'
 
 import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
-import Script from 'next/script'
 
 export const metadata = {
 	title: {

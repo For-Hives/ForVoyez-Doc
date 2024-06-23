@@ -109,16 +109,17 @@ If no schema is provided, the API will use a default schema to generate the meta
 Here are a few examples of how to use the `/describe` endpoint with different programming languages:
 
 <CodeGroup>
-````bash {{title: 'cURL'}}
+
+```bash {{title: 'cURL'}}
 curl -X POST \
 -H "Authorization: Bearer YOUR_API_KEY" \
 -H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
 -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
 https://forvoyez.com/api/describe
-````
+```
 
-`````python {{ title: 'Python' }}
+```python {{ title: 'Python' }}
         import requests
 
         url = "https://forvoyez.com/api/describe"
@@ -137,9 +138,9 @@ https://forvoyez.com/api/describe
         response = requests.post(url, headers=headers, data=payload, files=files)
 
         print(response.json())
-        ````
+```
 
-````javascript {{ title: 'JavaScript' }}
+```javascript {{ title: 'JavaScript' }}
         const form = new FormData();
         form.append('image', fileInput.files[0]);
         form.append('data', JSON.stringify({
@@ -167,7 +168,7 @@ https://forvoyez.com/api/describe
         console.error('Error:', error);
         // Handle any errors that occurred during the request
     });
-        ````
+```
 </CodeGroup>
 
     For more code examples and detailed usage instructions, refer to the [API Documentation](/api-documentation).
@@ -179,4 +180,3 @@ https://forvoyez.com/api/describe
     - If you encounter any issues or have questions, reach out to our [Support Team](/support).
 
     Start generating metadata for your images using the `/describe` endpoint and enhance your application's capabilities with the ForVoyez API!
-`````
