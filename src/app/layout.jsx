@@ -42,6 +42,13 @@ export default async function RootLayout({ children }) {
 			suppressHydrationWarning
 			className={`h-full ${sourcesans.variable} ${jost.variable}`}
 		>
+		<Script
+			async
+			data-domains={'forvoyez.com,doc.forvoyez.com'}
+			data-website-id="705a7c53-7dc4-4cf7-b625-f2f87a428bfb"
+			src="https://umami.wadefade.fr/script.js"
+			strategy="afterInteractive"
+		></Script>
 			<body className="flex min-h-full bg-white antialiased">
 				<div className="w-full">
 					<Layout allSections={allSections}>{children}</Layout>
