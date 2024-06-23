@@ -22,7 +22,7 @@ export function Layout({ children, allSections }) {
 				>
 					<div className="contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-slate-900/10 lg:px-6 lg:pb-8 lg:pt-4 xl:w-80">
 						<div className="hidden lg:flex">
-							<Link href="/" aria-label="Home">
+							<Link href="https://forvoyez.com" aria-label="Home">
 								<Logo className="h-6" />
 							</Link>
 						</div>
