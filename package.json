@@ -24,7 +24,7 @@
 	},
 	"browserslist": "defaults, not ie <= 11",
 	"dependencies": {
-		"@algolia/autocomplete-core": "1.17.2",
+		"@algolia/autocomplete-core": "1.17.3",
 		"@headlessui/react": "2.1.2",
 		"@headlessui/tailwindcss": "0.2.1",
 		"@mdx-js/loader": "3.0.1",
