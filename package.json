@@ -31,7 +31,7 @@
 		"@mdx-js/react": "3.0.1",
 		"@next/mdx": "14.2.7",
 		"@sindresorhus/slugify": "2.2.1",
-		"@tailwindcss/typography": "0.5.14",
+		"@tailwindcss/typography": "0.5.15",
 		"acorn": "8.12.1",
 		"autoprefixer": "10.4.20",
 		"clsx": "2.1.1",
