@@ -196,6 +196,7 @@ export const navigation = [
 			{ title: 'Using the API', href: '/using-the-api' },
 			{ title: 'Data Schemas', href: '/data-schemas' },
 			{ title: 'Limits and Quotas', href: '/limits-and-quotas' },
+			{ title: 'WordPress Plugin', href: '/wordpress-plugin' },
 		],
 	},
 	{
