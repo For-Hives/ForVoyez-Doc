@@ -40,4 +40,6 @@ bun.lockb
 output.txt
 large.txt
 
-#pnpm-lock.yaml
+pnpm-lock.yaml
+.txt
+*.txt

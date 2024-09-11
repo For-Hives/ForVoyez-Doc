@@ -152,32 +152,34 @@ function CodePanelHeader({ tag, label }) {
 }
 
 function CodePanel(props) {
-	let child = Children.only(props.children)
+  let child = Children.only(props.children)
+  let newProps = { ...props }
 
-	if (isValidElement(child)) {
-		props.tag = child.props.tag ?? props.tag
-		props.label = child.props.label ?? props.label
-		props.code = child.props.code ?? props.code
-	}
+  if (isValidElement(child)) {
+    newProps.tag = child.props.tag ?? newProps.tag
+    newProps.label = child.props.label ?? newProps.label
+    newProps.code = child.props.code ?? newProps.code
+  }
 
-	if (!props.code) {
-		throw new Error(
-			'`CodePanel` requires a `code` prop, or a child with a `code` prop.'
-		)
-	}
+  if (!newProps.code) {
+    throw new Error(
+      '`CodePanel` requires a `code` prop, or a child with a `code` prop.'
+    )
+  }
 
-	return (
-		<div className="group">
-			<CodePanelHeader tag={props.tag} label={props.label} />
-			<div className="relative">
-				<pre className="overflow-x-auto p-4 text-xs text-white">
-					{props.children}
-				</pre>
-				<CopyButton code={props.code} />
-			</div>
-		</div>
-	)
+  return (
+    <div className="group">
+      <CodePanelHeader tag={newProps.tag} label={newProps.label} />
+      <div className="relative">
+        <pre className="overflow-x-auto p-4 text-xs text-white">
+          {props.children}
+        </pre>
+        <CopyButton code={newProps.code} />
+      </div>
+    </div>
+  )
 }
+
 
 function CodeGroupHeader({ title, children, selectedIndex }) {
 	let hasTabs = Children.count(children) > 1
