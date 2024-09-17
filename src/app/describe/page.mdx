@@ -141,34 +141,38 @@ https://forvoyez.com/api/describe
 ```
 
 ```javascript {{ title: 'JavaScript' }}
-        const form = new FormData();
-        form.append('image', fileInput.files[0]);
-        form.append('data', JSON.stringify({
-        context: 'Playful kittens',
-        schema: {
-        title: 'string',
-        alternativeText: 'string',
-        caption: 'string'
-    }
-    }));
+const form = new FormData()
+form.append('image', fileInput.files[0])
+form.append(
+	'data',
+	JSON.stringify({
+		context: 'Playful kittens',
+		schema: {
+			title: 'string',
+			alternativeText: 'string',
+			caption: 'string',
+		},
+	})
+)
 
-        fetch('https://forvoyez.com/api/describe', {
-        method: 'POST',
-        headers: {
-        'Authorization': 'Bearer YOUR_API_KEY'
-    },
-        body: form
-    })
-        .then(response => response.json())
-        .then(data => {
-        console.log(data);
-        // Handle the API response data
-    })
-        .catch(error => {
-        console.error('Error:', error);
-        // Handle any errors that occurred during the request
-    });
+fetch('https://forvoyez.com/api/describe', {
+	method: 'POST',
+	headers: {
+		Authorization: 'Bearer YOUR_API_KEY',
+	},
+	body: form,
+})
+	.then(response => response.json())
+	.then(data => {
+		console.log(data)
+		// Handle the API response data
+	})
+	.catch(error => {
+		console.error('Error:', error)
+		// Handle any errors that occurred during the request
+	})
 ```
+
 </CodeGroup>
 
     For more code examples and detailed usage instructions, refer to the [API Documentation](/api-documentation).

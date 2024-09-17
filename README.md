@@ -22,11 +22,13 @@ ForVoyez Documentation is a comprehensive guide for using the ForVoyez API, an A
 To run the ForVoyez documentation project locally, follow these steps:
 
 1. Clone the repository:
+
    ```
    git clone https://github.com/ForHives/forvoyez-doc.git
    ```
 
 2. Navigate to the project directory:
+
    ```
    cd forvoyez-doc
    ```
@@ -35,8 +37,8 @@ To run the ForVoyez documentation project locally, follow these steps:
    ```
    npm install
    ```
-   
 4. Start the development server:
+
    ```
    npm run dev
    ```
