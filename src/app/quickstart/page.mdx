@@ -37,8 +37,6 @@ After logging in to your account, you'll need to obtain your API key. Here's how
 	</Button>
 </div>
 
-Certainly! Here's an updated version of the "Making Your First API Call" section with a CodeGroup component that includes examples in both cURL and JavaScript:
-
 ## Making Your First API Call
 
 Now that you have your API key, you're ready to make your first API call to generate metadata for an image. Below are examples using cURL and JavaScript:
@@ -49,7 +47,8 @@ curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "data={\"context\":\"Your image context\",\"schema\":{\"alt\":\"string\",\"caption\":\"string\"},\"language\":\"en\"}" \
+  -F "data={\"context\":\"Your image context\",\"schema\":{\"alt\":\"string\",\"caption\":\"string\"}}" \
+  -F "language=en" \
   https://forvoyez.com/api/describe
 ```
 
@@ -64,9 +63,9 @@ form.append(
 			alt: 'string',
 			caption: 'string',
 		},
-		language: 'en'
 	})
 )
+form.append('language', 'en')
 
 fetch('https://forvoyez.com/api/describe', {
 	method: 'POST',
@@ -85,18 +84,19 @@ fetch('https://forvoyez.com/api/describe', {
 		// Handle any errors that occurred during the request
 	})
 ```
-
 </CodeGroup>
 
 Make sure to replace `YOUR_API_KEY` with your actual API key and `/path/to/your/image.jpg` with the path to the image file you want to generate metadata for.
 
-The `data` parameter is a JSON object that includes:
+The request includes the following parameters:
 
-- `context`: A string providing additional context about the image (optional).
-- `schema`: An object specifying the desired output schema for the generated metadata (optional).
+- `image`: The image file you want to generate metadata for.
+- `data`: A JSON object that includes:
+  - `context`: A string providing additional context about the image (optional).
+  - `schema`: An object specifying the desired output schema for the generated metadata (optional).
 - `language`: A string specifying the desired language for the metadata output (optional, defaults to 'en' for English).
 
-The API will process your request and return a JSON response containing the generated alt text and other metadata based on your specified schema.
+The API will process your request and return a JSON response containing the generated alt text and other metadata based on your specified schema and language.
 
 <div className="not-prose">
 	<Button href="/using-the-api" variant="text" arrow="right">
