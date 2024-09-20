@@ -1,12 +1,3 @@
-import { CodeGroup } from '@/components/Code'
-import { Button } from '@/components/Button'
-
-export const metadata = {
-	title: 'Using the API',
-	description:
-		'Learn about the request format, required and optional parameters, and error handling when using the ForVoyez API.',
-}
-
 # Using the API
 
 To effectively integrate the ForVoyez API into your application, it's essential to understand the request format, the required and optional parameters, and how to handle errors and responses. In this section, we'll cover these topics in detail.
@@ -20,20 +11,21 @@ When making requests to the ForVoyez API, you'll need to send a `POST` request t
 - The request body should include the following form fields:
   - `image`: The image file you want to generate metadata for.
   - `data`: A JSON object containing the `context` (optional) and `schema` (optional) for the metadata generation.
+  - `language`: A string specifying the desired language for the metadata output (optional).
 
 Here's an example request using cURL and JavaScript:
 
-<CodeGroup>
-```bash {{ title: 'cURL' }}
+```bash
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
   -F "data={\"context\":\"Playful kittens among blooming flowers\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+  -F "language=en" \
   https://forvoyez.com/api/describe
 ```
 
-```js {{ title: 'JavaScript' }}
+```javascript
 const form = new FormData()
 form.append('image', fileInput.files[0])
 form.append(
@@ -47,6 +39,7 @@ form.append(
 		},
 	})
 )
+form.append('language', 'en')
 
 fetch('https://forvoyez.com/api/describe', {
 	method: 'POST',
@@ -66,22 +59,20 @@ fetch('https://forvoyez.com/api/describe', {
 	})
 ```
 
-</CodeGroup>
-
 ## Required and Optional Parameters
 
 When making a request to the ForVoyez API, there are both required and optional parameters you can include:
 
 - Required parameters:
-
-  - `image`: The image file for which you want to generate metadata.This should be included as a file in the multipart/form-data request body.
+  - `image`: The image file for which you want to generate metadata. This should be included as a file in the multipart/form-data request body.
 
 - Optional parameters:
   - `data`: A JSON object that can include the following properties:
     - `context` (string): Additional context or description about the image to assist in generating more accurate metadata.
     - `schema` (object): Specifies the desired output schema for the generated metadata. You can customize the schema based on your requirements.
+  - `language` (string): Specifies the desired language for the metadata output. If not provided, the default is English ('en').
 
-If you don't provide the `data` parameter or omit the `context` or `schema` properties, the API will use default values for metadata generation.
+If you don't provide the optional parameters, the API will use default values for metadata generation.
 
 ## Error Handling and Responses
 
@@ -111,7 +102,6 @@ And here's an example of an error response:
 	}
 }
 ```
-
 <div className="not-prose">
 	<Button href="/api-documentation" variant="text" arrow="right">
 		See the API documentation for more details
