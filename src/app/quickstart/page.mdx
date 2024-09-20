@@ -49,7 +49,7 @@ curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "data={\"context\":\"Your image context\",\"schema\":{\"alt\":\"string\",\"caption\":\"string\"}}" \
+  -F "data={\"context\":\"Your image context\",\"schema\":{\"alt\":\"string\",\"caption\":\"string\"},\"language\":\"en\"}" \
   https://forvoyez.com/api/describe
 ```
 
@@ -64,6 +64,7 @@ form.append(
 			alt: 'string',
 			caption: 'string',
 		},
+		language: 'en'
 	})
 )
 
@@ -93,6 +94,7 @@ The `data` parameter is a JSON object that includes:
 
 - `context`: A string providing additional context about the image (optional).
 - `schema`: An object specifying the desired output schema for the generated metadata (optional).
+- `language`: A string specifying the desired language for the metadata output (optional, defaults to 'en' for English).
 
 The API will process your request and return a JSON response containing the generated alt text and other metadata based on your specified schema.
 
