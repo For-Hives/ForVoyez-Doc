@@ -74,6 +74,7 @@ curl -X POST \
 -H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
 -F "data={\"schema\":{\"title\":{\"type\":\"string\",\"required\":true},\"alternativeText\":{\"type\":\"string\",\"required\":true},\"caption\":{\"type\":\"string\",\"required\":false},\"tags\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"default\":[]},\"customField\":{\"type\":\"string\"}}}" \
+-F "language=en" \
 https://forvoyez.com/api/describe
 ```
 
@@ -109,6 +110,7 @@ form.append(
 		},
 	})
 )
+form.append('language', 'en')
 
 fetch('https://forvoyez.com/api/describe', {
 	method: 'POST',
@@ -127,8 +129,9 @@ fetch('https://forvoyez.com/api/describe', {
 		// Handle any errors that occurred during the request
 	})
 ```
-
 </CodeGroup>
+
+Note that the `language` parameter is now included separately from the `data` object in both the cURL and JavaScript examples.
 
 ## Schema Validation
 
