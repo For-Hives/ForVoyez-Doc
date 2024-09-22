@@ -71,6 +71,14 @@ If you encounter any issues or have questions about the ForVoyez documentation, 
 - Open an issue in this repository for documentation-related problems
 - Contact our support team at support@forvoyez.com for API-specific inquiries
 
+## When change the pricing - quota
+
+- Change the numbers in limits-and-quotas.mdx
+- Change the pricing in pricing.mdx
+- Change the pricing in lemonsqueezy
+- Call /api/sync
+- Change the pricing/number in the database (for the descriptions)
+
 ---
 
 📚 Comprehensive documentation for ForVoyez - Empowering your AI-powered image metadata generation! 📚
