@@ -1,9 +1,9 @@
 import { CodeGroup } from '@/components/Code'
 
 export const metadata = {
-  title: 'Code Examples',
-  description:
-    'Explore code snippets in different programming languages for making requests to the ForVoyez API.',
+	title: 'Code Examples',
+	description:
+		'Explore code snippets in different programming languages for making requests to the ForVoyez API.',
 }
 
 # Code Examples
@@ -52,31 +52,34 @@ print(response.json())
 ```javascript {{ title: 'JavaScript' }}
 const form = new FormData()
 form.append('image', fileInput.files[0])
-form.append('schema', JSON.stringify({
-  title: 'string',
-  alternativeText: 'string',
-  caption: 'string'
-}))
+form.append(
+	'schema',
+	JSON.stringify({
+		title: 'string',
+		alternativeText: 'string',
+		caption: 'string',
+	})
+)
 form.append('keywords', 'playful,kittens')
 form.append('context', 'Playful kittens')
 form.append('language', 'en')
 
 fetch('https://forvoyez.com/api/describe', {
-  method: 'POST',
-  headers: {
-    Authorization: 'Bearer YOUR_API_KEY',
-  },
-  body: form,
+	method: 'POST',
+	headers: {
+		Authorization: 'Bearer YOUR_API_KEY',
+	},
+	body: form,
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data)
-    // Handle the API response data
-  })
-  .catch(error => {
-    console.error('Error:', error)
-    // Handle any errors that occurred during the request
-  })
+	.then(response => response.json())
+	.then(data => {
+		console.log(data)
+		// Handle the API response data
+	})
+	.catch(error => {
+		console.error('Error:', error)
+		// Handle any errors that occurred during the request
+	})
 ```
 
 ```php {{ title: 'PHP' }}
@@ -150,6 +153,7 @@ function build_data_files($boundary, $fields, $file_name, $file_mime, $file_data
 These code examples demonstrate how to make a POST request to the `/describe` endpoint using different programming languages. Make sure to replace `YOUR_API_KEY` with your actual API key and provide the path to your image file.
 
 The request includes the following parameters:
+
 - `image`: The image file (required)
 - `schema`: JSON string specifying the desired output format (optional)
 - `keywords`: Comma-separated list of keywords (optional)

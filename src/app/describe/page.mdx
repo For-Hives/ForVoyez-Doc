@@ -1,8 +1,8 @@
 import { CodeGroup } from '@/components/Code'
 export const metadata = {
-  title: '/describe Endpoint',
-  description:
-    'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
+	title: '/describe Endpoint',
+	description:
+		'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
 }
 
 # /describe Endpoint
@@ -65,12 +65,14 @@ If the request is successful, the API will return a JSON object containing the g
 If the request is unsuccessful, the API will return an appropriate HTTP status code along with an error message in the response body. Here are the possible error responses:
 
 - `400 Bad Request`
+
   - `400 No file uploaded`: The `image` parameter is missing in the request.
   - `400 Invalid image file`: The uploaded file is not a valid image format.
   - `400 Invalid schema`: The provided schema is invalid or malformed.
   - `400 Invalid language`: The provided language code is not supported.
 
 - `401 Unauthorized`
+
   - `401 Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
   - `401 Unauthorized, invalid token`: The provided API key or token is invalid.
   - `401 Unauthorized, no credit left`: The user has insufficient credits to make the request.
@@ -101,11 +103,11 @@ Here's an example schema:
 
 ```json
 {
-  "title": "string",
-  "alternativeText": "string",
-  "caption": "string",
-  "tags": ["string"],
-  "categories": ["string"]
+	"title": "string",
+	"alternativeText": "string",
+	"caption": "string",
+	"tags": ["string"],
+	"categories": ["string"]
 }
 ```
 
@@ -158,31 +160,34 @@ print(response.json())
 ```javascript {{ title: 'JavaScript' }}
 const form = new FormData()
 form.append('image', fileInput.files[0])
-form.append('schema', JSON.stringify({
-  title: 'string',
-  alternativeText: 'string',
-  caption: 'string'
-}))
+form.append(
+	'schema',
+	JSON.stringify({
+		title: 'string',
+		alternativeText: 'string',
+		caption: 'string',
+	})
+)
 form.append('keywords', 'playful,kittens')
 form.append('context', 'Playful kittens')
 form.append('language', 'fr')
 
 fetch('https://forvoyez.com/api/describe', {
-  method: 'POST',
-  headers: {
-    Authorization: 'Bearer YOUR_API_KEY',
-  },
-  body: form,
+	method: 'POST',
+	headers: {
+		Authorization: 'Bearer YOUR_API_KEY',
+	},
+	body: form,
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data)
-    // Handle the API response data
-  })
-  .catch(error => {
-    console.error('Error:', error)
-    // Handle any errors that occurred during the request
-  })
+	.then(response => response.json())
+	.then(data => {
+		console.log(data)
+		// Handle the API response data
+	})
+	.catch(error => {
+		console.error('Error:', error)
+		// Handle any errors that occurred during the request
+	})
 ```
 
 </CodeGroup>

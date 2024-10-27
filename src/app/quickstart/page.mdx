@@ -2,9 +2,9 @@ import { Button } from '@/components/Button'
 import { CodeGroup } from '@/components/Code'
 
 export const metadata = {
-  title: 'Quick Start',
-  description:
-    'Get started with the ForVoyez API quickly by following this step-by-step guide.',
+	title: 'Quick Start',
+	description:
+		'Get started with the ForVoyez API quickly by following this step-by-step guide.',
 }
 
 # Quick Start
@@ -20,9 +20,9 @@ Welcome to the quick start guide for the ForVoyez API. In this section, we'll wa
 [Previous obtaining API key section remains the same]
 
 <div className="not-prose">
-  <Button href="/authentication" variant="text" arrow="right">
-    Learn more about authentication
-  </Button>
+	<Button href="/authentication" variant="text" arrow="right">
+		Learn more about authentication
+	</Button>
 </div>
 
 ## Making Your First API Call
@@ -45,32 +45,36 @@ curl -X POST \
 ```js {{ title: 'JavaScript' }}
 const form = new FormData()
 form.append('image', fileInput.files[0])
-form.append('schema', JSON.stringify({
-  title: 'string',
-  alternativeText: 'string',
-  caption: 'string'
-}))
+form.append(
+	'schema',
+	JSON.stringify({
+		title: 'string',
+		alternativeText: 'string',
+		caption: 'string',
+	})
+)
 form.append('keywords', 'image,description')
 form.append('context', 'Your image context')
 form.append('language', 'en')
 
 fetch('https://forvoyez.com/api/describe', {
-  method: 'POST',
-  headers: {
-    Authorization: 'Bearer YOUR_API_KEY',
-  },
-  body: form,
+	method: 'POST',
+	headers: {
+		Authorization: 'Bearer YOUR_API_KEY',
+	},
+	body: form,
 })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data)
-    // Handle the API response data
-  })
-  .catch(error => {
-    console.error('Error:', error)
-    // Handle any errors that occurred during the request
-  })
+	.then(response => response.json())
+	.then(data => {
+		console.log(data)
+		// Handle the API response data
+	})
+	.catch(error => {
+		console.error('Error:', error)
+		// Handle any errors that occurred during the request
+	})
 ```
+
 </CodeGroup>
 
 Make sure to replace `YOUR_API_KEY` with your actual API key and `/path/to/your/image.jpg` with the path to the image file you want to generate metadata for.
@@ -86,9 +90,9 @@ The request includes the following parameters:
 The API will process your request and return a JSON response containing the generated metadata based on your specified schema and language.
 
 <div className="not-prose">
-  <Button href="/using-the-api" variant="text" arrow="right">
-    Learn more about using the API
-  </Button>
+	<Button href="/using-the-api" variant="text" arrow="right">
+		Learn more about using the API
+	</Button>
 </div>
 
 ## Next Steps
