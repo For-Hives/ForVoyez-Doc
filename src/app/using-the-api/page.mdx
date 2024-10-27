@@ -9,9 +9,11 @@ When making requests to the ForVoyez API, you'll need to send a `POST` request t
 - The `Authorization` header should include your API key as a Bearer token.
 - The `Content-Type` header should be set to `multipart/form-data`.
 - The request body should include the following form fields:
-  - `image`: The image file you want to generate metadata for.
-  - `data`: A JSON object containing the `context` (optional) and `schema` (optional) for the metadata generation.
-  - `language`: A string specifying the desired language for the metadata output (optional).
+  - `image`: The image file you want to generate metadata for (required)
+  - `schema`: A JSON string specifying the desired output format (optional)
+  - `keywords`: Comma-separated keywords to help with image analysis (optional)
+  - `context`: Additional context about the image (optional)
+  - `language`: Desired language for the output (optional, defaults to 'en')
 
 Here's an example request using cURL and JavaScript:
 
@@ -20,7 +22,9 @@ curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "data={\"context\":\"Playful kittens among blooming flowers\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+  -F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+  -F "keywords=playful,kittens,flowers" \
+  -F "context=Playful kittens among blooming flowers" \
   -F "language=en" \
   https://forvoyez.com/api/describe
 ```
@@ -28,35 +32,31 @@ curl -X POST \
 ```javascript
 const form = new FormData()
 form.append('image', fileInput.files[0])
-form.append(
-	'data',
-	JSON.stringify({
-		context: 'Playful kittens among blooming flowers',
-		schema: {
-			title: 'string',
-			alternativeText: 'string',
-			caption: 'string',
-		},
-	})
-)
+form.append('schema', JSON.stringify({
+  title: 'string',
+  alternativeText: 'string',
+  caption: 'string'
+}))
+form.append('keywords', 'playful,kittens,flowers')
+form.append('context', 'Playful kittens among blooming flowers')
 form.append('language', 'en')
 
 fetch('https://forvoyez.com/api/describe', {
-	method: 'POST',
-	headers: {
-		Authorization: 'Bearer YOUR_API_KEY',
-	},
-	body: form,
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer YOUR_API_KEY',
+  },
+  body: form,
 })
-	.then(response => response.json())
-	.then(data => {
-		console.log(data)
-		// Handle the API response data
-	})
-	.catch(error => {
-		console.error('Error:', error)
-		// Handle any errors that occurred during the request
-	})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+    // Handle the API response data
+  })
+  .catch(error => {
+    console.error('Error:', error)
+    // Handle any errors that occurred during the request
+  })
 ```
 
 ## Required and Optional Parameters
@@ -67,10 +67,10 @@ When making a request to the ForVoyez API, there are both required and optional 
   - `image`: The image file for which you want to generate metadata. This should be included as a file in the multipart/form-data request body.
 
 - Optional parameters:
-  - `data`: A JSON object that can include the following properties:
-    - `context` (string): Additional context or description about the image to assist in generating more accurate metadata.
-    - `schema` (object): Specifies the desired output schema for the generated metadata. You can customize the schema based on your requirements.
-  - `language` (string): Specifies the desired language for the metadata output. If not provided, the default is English ('en').
+  - `schema`: A JSON string that specifies the desired output format for the generated metadata (e.g., `{"title":"string","alternativeText":"string"}`)
+  - `keywords`: A comma-separated list of keywords to help guide the image analysis
+  - `context`: Additional context or description about the image to assist in generating more accurate metadata
+  - `language`: Specifies the desired language for the metadata output (defaults to 'en')
 
 If you don't provide the optional parameters, the API will use default values for metadata generation.
 
@@ -86,9 +86,9 @@ Here's an example of a successful API response:
 
 ```json
 {
-	"title": "Playful Kittens Among Blooming Flowers",
-	"alternativeText": "Two animated kittens playing among blooming flowers with a clear blue sky",
-	"caption": "Adorable kittens having fun in a field of vibrant blossoms under the clear blue sky"
+  "title": "Playful Kittens Among Blooming Flowers",
+  "alternativeText": "Two animated kittens playing among blooming flowers with a clear blue sky",
+  "caption": "Adorable kittens having fun in a field of vibrant blossoms under the clear blue sky"
 }
 ```
 
@@ -96,16 +96,17 @@ And here's an example of an error response:
 
 ```json
 {
-	"error": {
-		"code": 400,
-		"message": "Missing required parameter: image"
-	}
+  "error": {
+    "code": 400,
+    "message": "Missing required parameter: image"
+  }
 }
 ```
+
 <div className="not-prose">
-	<Button href="/api-documentation" variant="text" arrow="right">
-		See the API documentation for more details
-	</Button>
+  <Button href="/api-documentation" variant="text" arrow="right">
+    See the API documentation for more details
+  </Button>
 </div>
 
 ## Next Steps

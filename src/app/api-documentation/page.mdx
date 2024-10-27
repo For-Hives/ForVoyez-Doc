@@ -2,9 +2,9 @@ import { Button } from '@/components/Button'
 import { CodeGroup } from '@/components/Code'
 
 export const metadata = {
-	title: 'API References',
-	description:
-		'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
+  title: 'API References',
+  description:
+    'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
 }
 
 # API Documentation
@@ -20,14 +20,14 @@ The ForVoyez API offers the following endpoints:
 For detailed information about each endpoint, including the required parameters, request examples, and response formats, refer to the individual endpoint documentation:
 
 <div className="not-prose">
-	<Button href="/describe" variant="text" arrow="right">
-		/describe
-	</Button>
+  <Button href="/describe" variant="text" arrow="right">
+    /describe
+  </Button>
 </div>
 
 ## Details of Parameters and Responses
 
-Each endpoint in the ForVoyez API requires specific parameters to be included in the request. These parameters can be provided as query parameters, path parameters, or request body parameters, depending on the endpoint.
+Each endpoint in the ForVoyez API requires specific parameters to be included in the request. These parameters are provided as form fields in a multipart/form-data request.
 
 The API responses are returned in JSON format and contain the requested data or relevant error information. The response format varies based on the endpoint and the success or failure of the request.
 
@@ -39,21 +39,28 @@ curl -X POST \
 -H "Authorization: Bearer YOUR_API_KEY" \
 -H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
--F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+-F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+-F "keywords=playful,kittens" \
+-F "context=Playful kittens" \
 -F "language=en" \
 https://forvoyez.com/api/describe
 ```
 
 ```json {{ title: 'JSON Response' }}
 {
-	"title": "Playful Kittens",
-	"alternativeText": "Two kittens playing with a ball of yarn",
-	"caption": "Adorable kittens having fun and being mischievous"
+  "title": "Playful Kittens",
+  "alternativeText": "Two kittens playing with a ball of yarn",
+  "caption": "Adorable kittens having fun and being mischievous"
 }
 ```
 </CodeGroup>
 
-Note the addition of the `language` parameter in the cURL request. This parameter allows you to specify the desired language for the generated metadata.
+The available parameters for the `/describe` endpoint are:
+- `image`: The image file (required)
+- `schema`: JSON string specifying the desired output format (optional)
+- `keywords`: Comma-separated list of keywords (optional)
+- `context`: Additional context about the image (optional)
+- `language`: Desired language for the output (optional, defaults to 'en')
 
 For more details on the parameters and responses for each endpoint, refer to the individual endpoint documentation.
 
@@ -91,17 +98,19 @@ Missing required parameter: image
 For a complete list of error codes and their meanings, refer to the [Error Codes](/error-codes) documentation.
 
 <div className="not-prose">
-	<Button href="/support" variant="text" arrow="right">
-		Contact support for assistance with error resolution
-	</Button>
+  <Button href="/support" variant="text" arrow="right">
+    Contact support for assistance with error resolution
+  </Button>
 </div>
 
 ## Next Steps
 
 Now that you have a good understanding of the API documentation, you can:
 
-- Implement the `language` parameter in your requests to get metadata in your desired language.
-- Handle [error codes and messages](/error-codes) gracefully in your application.
+- Start making requests with the simplified parameter structure
+- Use keywords to improve image analysis accuracy
+- Customize the output format using the schema parameter
+- Handle [error codes and messages](/error-codes) gracefully in your application
 - If you encounter any issues or have questions, reach out to our [support team](/support) for assistance.
 
 Happy coding with the ForVoyez API!
