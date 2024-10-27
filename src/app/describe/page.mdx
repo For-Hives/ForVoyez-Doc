@@ -152,7 +152,7 @@ headers = {
     'Authorization': f'Bearer {api_key}'
 }
 
-response = requests.post(url, headers=headers, data=data, files=files)
+response = requests.post(url, headers=headers, data=payload, files=files)
 
 print(response.json())
 ```
