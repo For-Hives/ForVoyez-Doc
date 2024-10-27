@@ -2,9 +2,9 @@ import { Button } from '@/components/Button'
 import { CodeGroup } from '@/components/Code'
 
 export const metadata = {
-  title: 'API References',
-  description:
-    'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
+	title: 'API References',
+	description:
+		'Explore the complete reference of API endpoints, parameters, responses, error codes, and error messages for the ForVoyez API.',
 }
 
 # API Documentation
@@ -20,9 +20,9 @@ The ForVoyez API offers the following endpoints:
 For detailed information about each endpoint, including the required parameters, request examples, and response formats, refer to the individual endpoint documentation:
 
 <div className="not-prose">
-  <Button href="/describe" variant="text" arrow="right">
-    /describe
-  </Button>
+	<Button href="/describe" variant="text" arrow="right">
+		/describe
+	</Button>
 </div>
 
 ## Details of Parameters and Responses
@@ -48,14 +48,16 @@ https://forvoyez.com/api/describe
 
 ```json {{ title: 'JSON Response' }}
 {
-  "title": "Playful Kittens",
-  "alternativeText": "Two kittens playing with a ball of yarn",
-  "caption": "Adorable kittens having fun and being mischievous"
+	"title": "Playful Kittens",
+	"alternativeText": "Two kittens playing with a ball of yarn",
+	"caption": "Adorable kittens having fun and being mischievous"
 }
 ```
+
 </CodeGroup>
 
 The available parameters for the `/describe` endpoint are:
+
 - `image`: The image file (required)
 - `schema`: JSON string specifying the desired output format (optional)
 - `keywords`: Comma-separated list of keywords (optional)
@@ -98,9 +100,9 @@ Missing required parameter: image
 For a complete list of error codes and their meanings, refer to the [Error Codes](/error-codes) documentation.
 
 <div className="not-prose">
-  <Button href="/support" variant="text" arrow="right">
-    Contact support for assistance with error resolution
-  </Button>
+	<Button href="/support" variant="text" arrow="right">
+		Contact support for assistance with error resolution
+	</Button>
 </div>
 
 ## Next Steps
