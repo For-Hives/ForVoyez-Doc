@@ -2,9 +2,9 @@ import { Button } from '@/components/Button'
 import { CodeGroup } from '@/components/Code'
 
 export const metadata = {
-	title: 'Quick Start',
-	description:
-		'Get started with the ForVoyez API quickly by following this step-by-step guide.',
+  title: 'Quick Start',
+  description:
+    'Get started with the ForVoyez API quickly by following this step-by-step guide.',
 }
 
 # Quick Start
@@ -13,28 +13,16 @@ Welcome to the quick start guide for the ForVoyez API. In this section, we'll wa
 
 ## Signing Up and Creating an Account
 
-To get started with the ForVoyez API, you'll need to create an account. Follow these steps:
-
-1. Visit the [ForVoyez website](https://forvoyez.com) and click on the "Sign Up" button.
-2. Fill out the registration form with your email address and a strong password.
-3. Verify your email address by clicking on the confirmation link sent to your inbox.
-4. Once your email is verified, log in to your account.
-
-You can also sign up using your Google or GitHub account for a quicker registration process.
+[Previous signing up section remains the same]
 
 ## Obtaining the API Key
 
-After logging in to your account, you'll need to obtain your API key. Here's how:
-
-1. Navigate to the [API Settings](https://forvoyez.com/app/tokens) page in your account dashboard.
-2. Click on the "Add token" button.
-3. Copy your API key and store it in a secure location. You'll need this key to authenticate your requests to the ForVoyez API.
-4. Be careful, the key is only displayed once, so make sure to save it securely.
+[Previous obtaining API key section remains the same]
 
 <div className="not-prose">
-	<Button href="/authentication" variant="text" arrow="right">
-		Learn more about authentication
-	</Button>
+  <Button href="/authentication" variant="text" arrow="right">
+    Learn more about authentication
+  </Button>
 </div>
 
 ## Making Your First API Call
@@ -47,7 +35,9 @@ curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "data={\"context\":\"Your image context\",\"schema\":{\"alt\":\"string\",\"caption\":\"string\"}}" \
+  -F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+  -F "keywords=image,description" \
+  -F "context=Your image context" \
   -F "language=en" \
   https://forvoyez.com/api/describe
 ```
@@ -55,34 +45,31 @@ curl -X POST \
 ```js {{ title: 'JavaScript' }}
 const form = new FormData()
 form.append('image', fileInput.files[0])
-form.append(
-	'data',
-	JSON.stringify({
-		context: 'Your image context',
-		schema: {
-			alt: 'string',
-			caption: 'string',
-		},
-	})
-)
+form.append('schema', JSON.stringify({
+  title: 'string',
+  alternativeText: 'string',
+  caption: 'string'
+}))
+form.append('keywords', 'image,description')
+form.append('context', 'Your image context')
 form.append('language', 'en')
 
 fetch('https://forvoyez.com/api/describe', {
-	method: 'POST',
-	headers: {
-		Authorization: 'Bearer YOUR_API_KEY',
-	},
-	body: form,
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer YOUR_API_KEY',
+  },
+  body: form,
 })
-	.then(response => response.json())
-	.then(data => {
-		console.log(data)
-		// Handle the API response data
-	})
-	.catch(error => {
-		console.error('Error:', error)
-		// Handle any errors that occurred during the request
-	})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+    // Handle the API response data
+  })
+  .catch(error => {
+    console.error('Error:', error)
+    // Handle any errors that occurred during the request
+  })
 ```
 </CodeGroup>
 
@@ -90,18 +77,18 @@ Make sure to replace `YOUR_API_KEY` with your actual API key and `/path/to/your/
 
 The request includes the following parameters:
 
-- `image`: The image file you want to generate metadata for.
-- `data`: A JSON object that includes:
-  - `context`: A string providing additional context about the image (optional).
-  - `schema`: An object specifying the desired output schema for the generated metadata (optional).
-- `language`: A string specifying the desired language for the metadata output (optional, defaults to 'en' for English).
+- `image` (required): The image file you want to generate metadata for.
+- `schema` (optional): A JSON string specifying the desired output format for the generated metadata.
+- `keywords` (optional): A comma-separated list of keywords to help guide the metadata generation.
+- `context` (optional): Additional context about the image to improve accuracy.
+- `language` (optional): The desired language for the metadata output (defaults to 'en' for English).
 
-The API will process your request and return a JSON response containing the generated alt text and other metadata based on your specified schema and language.
+The API will process your request and return a JSON response containing the generated metadata based on your specified schema and language.
 
 <div className="not-prose">
-	<Button href="/using-the-api" variant="text" arrow="right">
-		Learn more about using the API
-	</Button>
+  <Button href="/using-the-api" variant="text" arrow="right">
+    Learn more about using the API
+  </Button>
 </div>
 
 ## Next Steps

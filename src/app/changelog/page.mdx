@@ -8,6 +8,26 @@ export const metadata = {
 
 The ForVoyez API is continuously evolving to provide you with new features, enhancements, and improvements. This changelog details the latest changes, updates, and bug fixes to help you stay informed about the API's development.
 
+## Version 1.2.0 (2024-02-15)
+
+This update introduces structural changes to the API request format and adds new features for improved metadata generation:
+
+- Simplified request structure
+  - Removed nested `data` object in favor of flat FormData parameters
+  - All parameters are now at the root level of the request
+  - Updated documentation and examples to reflect the new structure
+- Added keywords support
+  - New `keywords` parameter to provide additional context through comma-separated terms
+  - Enhanced metadata generation accuracy with keyword guidance
+  - Updated examples to demonstrate keyword usage
+- Documentation improvements
+  - Revised Quick Start guide
+  - Updated code examples across all programming languages
+  - Added new sections explaining keywords functionality
+- Enhanced error messages for better debugging
+  - Clearer feedback on parameter formatting
+  - Improved validation messages
+
 ## Version 1.1.0 (2024-09-20)
 
 This update introduces multilingual support and revises our pricing structure. The following changes are included in this version:

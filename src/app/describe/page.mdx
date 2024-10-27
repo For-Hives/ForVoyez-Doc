@@ -1,8 +1,8 @@
 import { CodeGroup } from '@/components/Code'
 export const metadata = {
-	title: '/describe Endpoint',
-	description:
-		'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
+  title: '/describe Endpoint',
+  description:
+    'Learn how to use the /describe endpoint to generate metadata for your images using the ForVoyez API.',
 }
 
 # /describe Endpoint
@@ -27,9 +27,9 @@ POST https://forvoyez.com/api/describe
 The request body should be in `multipart/form-data` format and include the following fields:
 
 - `image` (required): The image file for which you want to generate metadata. Supported image formats are JPEG, JPG, PNG, WebP, and GIF.
-- `data` (optional): A JSON object containing additional parameters for metadata generation. The JSON object can include the following fields:
-  - `context` (optional): Additional context or description to assist in generating more accurate metadata.
-  - `schema` (optional): A custom JSON schema to specify the desired output format of the generated metadata.
+- `schema` (optional): A JSON string specifying the desired output format of the generated metadata.
+- `keywords` (optional): A comma-separated list of keywords to assist in generating more accurate metadata.
+- `context` (optional): Additional context or description to assist in generating more accurate metadata.
 - `language` (optional): A string specifying the desired language for the metadata output. If not provided, the default is English ('en').
 
 ### Example Request
@@ -39,7 +39,9 @@ curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+  -F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+  -F "keywords=playful,kittens" \
+  -F "context=Playful kittens" \
   -F "language=fr" \
   https://forvoyez.com/api/describe
 ```
@@ -93,17 +95,17 @@ If you exceed the rate limit, you will receive a `429 Too Many Requests` error r
 
 ## Schemas
 
-You can customize the output format of the generated metadata by providing a JSON schema in the `data` parameter of the request. The schema should follow the JSON Schema format and specify the desired structure of the metadata.
+You can customize the output format of the generated metadata by providing a JSON schema in the `schema` parameter of the request. The schema should specify the desired structure of the metadata.
 
 Here's an example schema:
 
 ```json
 {
-	"title": "string",
-	"alternativeText": "string",
-	"caption": "string",
-	"tags": ["string"],
-	"categories": ["string"]
+  "title": "string",
+  "alternativeText": "string",
+  "caption": "string",
+  "tags": ["string"],
+  "categories": ["string"]
 }
 ```
 
@@ -120,7 +122,9 @@ curl -X POST \
 -H "Authorization: Bearer YOUR_API_KEY" \
 -H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
--F "data={\"context\":\"Playful kittens\",\"schema\":{\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}}" \
+-F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+-F "keywords=playful,kittens" \
+-F "context=Playful kittens" \
 -F "language=fr" \
 https://forvoyez.com/api/describe
 ```
@@ -131,21 +135,22 @@ import requests
 url = "https://forvoyez.com/api/describe"
 api_key = "YOUR_API_KEY"
 
-payload = {
-    "data": '{"context":"Playful kittens","schema":{"title":"string","alternativeText":"string","caption":"string"}}'
+files = {
+    'image': ('image.jpg', open('/path/to/your/image.jpg', 'rb'), 'image/jpeg')
 }
-files = [
-    ('image', ('image.jpg', open('/path/to/your/image.jpg', 'rb'), 'image/jpeg'))
-]
+
+data = {
+    'schema': '{"title":"string","alternativeText":"string","caption":"string"}',
+    'keywords': 'playful,kittens',
+    'context': 'Playful kittens',
+    'language': 'fr'
+}
+
 headers = {
     'Authorization': f'Bearer {api_key}'
 }
 
-data = {
-    'language': 'fr'
-}
-
-response = requests.post(url, headers=headers, data={**payload, **data}, files=files)
+response = requests.post(url, headers=headers, data=data, files=files)
 
 print(response.json())
 ```
@@ -153,45 +158,33 @@ print(response.json())
 ```javascript {{ title: 'JavaScript' }}
 const form = new FormData()
 form.append('image', fileInput.files[0])
-form.append(
-	'data',
-	JSON.stringify({
-		context: 'Playful kittens',
-		schema: {
-			title: 'string',
-			alternativeText: 'string',
-			caption: 'string',
-		},
-	})
-)
+form.append('schema', JSON.stringify({
+  title: 'string',
+  alternativeText: 'string',
+  caption: 'string'
+}))
+form.append('keywords', 'playful,kittens')
+form.append('context', 'Playful kittens')
 form.append('language', 'fr')
 
 fetch('https://forvoyez.com/api/describe', {
-	method: 'POST',
-	headers: {
-		Authorization: 'Bearer YOUR_API_KEY',
-	},
-	body: form,
+  method: 'POST',
+  headers: {
+    Authorization: 'Bearer YOUR_API_KEY',
+  },
+  body: form,
 })
-	.then(response => response.json())
-	.then(data => {
-		console.log(data)
-		// Handle the API response data
-	})
-	.catch(error => {
-		console.error('Error:', error)
-		// Handle any errors that occurred during the request
-	})
+  .then(response => response.json())
+  .then(data => {
+    console.log(data)
+    // Handle the API response data
+  })
+  .catch(error => {
+    console.error('Error:', error)
+    // Handle any errors that occurred during the request
+  })
 ```
 
 </CodeGroup>
 
 For more code examples and detailed usage instructions, refer to the [API Documentation](/api-documentation).
-
-## Next Steps
-
-- Explore the [API Documentation](/api-documentation) to learn more about the available endpoints and their parameters.
-- Check out the [Guides](/guides) for step-by-step tutorials on integrating the ForVoyez API into your application.
-- If you encounter any issues or have questions, reach out to our [Support Team](/support).
-
-Start generating metadata for your images in multiple languages using the `/describe` endpoint and enhance your application's capabilities with the ForVoyez API!
