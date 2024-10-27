@@ -29,11 +29,11 @@ import requests
 url = "https://forvoyez.com/api/describe"
 api_key = "YOUR_API_KEY"
 
-payload = [
+file = [
     ('image', ('image.jpg', open('/path/to/your/image.jpg', 'rb'), 'image/jpeg'))
 ]
 
-data = {
+payload = {
     'schema': '{"title":"string","alternativeText":"string","caption":"string"}',
     'keywords': 'playful,kittens',
     'context': 'Playful kittens',
