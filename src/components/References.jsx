@@ -27,7 +27,7 @@ const references = [
 		},
 	},
 	{
-		href: '/api-reference/describe',
+		href: '/describe',
 		name: 'API: Describe',
 		description:
 			'Learn how to use the /describe endpoint to generate metadata for your images.',
