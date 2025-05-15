@@ -33,7 +33,7 @@
 		"@sindresorhus/slugify": "2.2.1",
 		"@tailwindcss/typography": "0.5.16",
 		"acorn": "8.14.0",
-		"autoprefixer": "10.4.20",
+		"autoprefixer": "10.4.21",
 		"clsx": "2.1.1",
 		"eslint-plugin-no-only-tests": "3.1.0",
 		"eslint-plugin-prettier": "5.1.3",
