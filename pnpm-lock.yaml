@@ -51,8 +51,8 @@ importers:
         specifier: 3.3.3
         version: 3.3.3
       flexsearch:
-        specifier: 0.7.43
-        version: 0.7.43
+        specifier: 0.8.204
+        version: 0.8.204
       framer-motion:
         specifier: 12.11.3
         version: 12.11.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1290,8 +1290,8 @@ packages:
   flatted@3.3.1:
     resolution: {integrity: sha512-X8cqMLLie7KsNUDSdzeN8FYK9rEt4Dt67OsG/DNGnYTSDBG4uFAJFBnUeiV+zCVAvwFy56IjM9sH51jVaEhNxw==}
 
-  flexsearch@0.7.43:
-    resolution: {integrity: sha512-c5o/+Um8aqCSOXGcZoqZOm+NqtVwNsvVpWv6lfmSclU954O3wvQKxxK8zj74fPaSJbXpSLTs4PRhh+wnoCXnKg==}
+  flexsearch@0.8.204:
+    resolution: {integrity: sha512-Vh+WUZfUHsVP6w4o5uAkYle8Gz/oEuztSWvpSY3h71AE8ox+goTQ2X5YG4x6VlKKfubkMwhewk8kBTOVKMObHA==}
 
   for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -4096,7 +4096,7 @@ snapshots:
 
   flatted@3.3.1: {}
 
-  flexsearch@0.7.43: {}
+  flexsearch@0.8.204: {}
 
   for-each@0.3.3:
     dependencies:
