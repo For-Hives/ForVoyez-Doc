@@ -58,7 +58,7 @@
 		"zustand": "5.0.6"
 	},
 	"devDependencies": {
-		"eslint": "8.57.1",
+		"eslint": "9.39.2",
 		"eslint-config-next": "15.3.4",
 		"eslint-config-prettier": "10.1.5",
 		"husky": "9.1.7",
