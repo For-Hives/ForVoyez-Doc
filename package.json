@@ -38,7 +38,7 @@
 		"eslint-plugin-no-only-tests": "3.3.0",
 		"eslint-plugin-prettier": "5.4.0",
 		"fast-glob": "3.3.3",
-		"flexsearch": "0.8.204",
+		"flexsearch": "0.8.212",
 		"framer-motion": "12.12.2",
 		"mdast-util-to-string": "4.0.0",
 		"mdx-annotations": "0.1.4",
