@@ -65,14 +65,12 @@ If the request is successful, the API will return a JSON object containing the g
 If the request is unsuccessful, the API will return an appropriate HTTP status code along with an error message in the response body. Here are the possible error responses:
 
 - `400 Bad Request`
-
   - `400 No file uploaded`: The `image` parameter is missing in the request.
   - `400 Invalid image file`: The uploaded file is not a valid image format.
   - `400 Invalid schema`: The provided schema is invalid or malformed.
   - `400 Invalid language`: The provided language code is not supported.
 
 - `401 Unauthorized`
-
   - `401 Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
   - `401 Unauthorized, invalid token`: The provided API key or token is invalid.
   - `401 Unauthorized, no credit left`: The user has insufficient credits to make the request.
