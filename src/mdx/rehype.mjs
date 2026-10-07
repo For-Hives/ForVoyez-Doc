@@ -2,7 +2,7 @@ import { slugifyWithCounter } from '@sindresorhus/slugify'
 import * as acorn from 'acorn'
 import { toString } from 'mdast-util-to-string'
 import { mdxAnnotations } from 'mdx-annotations'
-import shiki from 'shiki'
+import { createCssVariablesTheme, createHighlighter } from 'shiki'
 import { visit } from 'unist-util-visit'
 
 function rehypeParseCodeBlocks() {
@@ -18,36 +18,100 @@ function rehypeParseCodeBlocks() {
 	}
 }
 
-let highlighter
+// Token colors come from the `--shiki-*` CSS variables in src/styles/tailwind.css
+const cssVariablesTheme = createCssVariablesTheme({
+	name: 'css-variables',
+	variablePrefix: '--shiki-',
+})
+
+const FONT_STYLE_ITALIC = 1
+const FONT_STYLE_BOLD = 2
+const FONT_STYLE_UNDERLINE = 4
+
+let highlighterPromise
+
+function getHighlighter() {
+	highlighterPromise =
+		highlighterPromise ??
+		createHighlighter({ themes: [cssVariablesTheme], langs: [] })
+	return highlighterPromise
+}
+
+function escapeHtml(html) {
+	return html.replace(
+		/[&<>"']/g,
+		chr =>
+			({
+				'&': '&amp;',
+				'<': '&lt;',
+				'>': '&gt;',
+				'"': '&quot;',
+				"'": '&#39;',
+			})[chr]
+	)
+}
+
+// One `<span>` per line (joined by newlines), one styled `<span>` per token
+function renderTokens(lines) {
+	return lines
+		.map(
+			line =>
+				`<span>${line
+					.map(token => {
+						let declarations = []
+						if (token.color) {
+							declarations.push(`color: ${token.color}`)
+						}
+						if (token.fontStyle & FONT_STYLE_ITALIC) {
+							declarations.push('font-style: italic')
+						}
+						if (token.fontStyle & FONT_STYLE_BOLD) {
+							declarations.push('font-weight: bold')
+						}
+						if (token.fontStyle & FONT_STYLE_UNDERLINE) {
+							declarations.push('text-decoration: underline')
+						}
+						let style = declarations.length
+							? ` style="${declarations.join('; ')}"`
+							: ''
+						return `<span${style}>${escapeHtml(token.content)}</span>`
+					})
+					.join('')}</span>`
+		)
+		.join('\n')
+}
 
 function rehypeShiki() {
 	return async tree => {
-		highlighter =
-			highlighter ?? (await shiki.getHighlighter({ theme: 'css-variables' }))
+		let highlighter = await getHighlighter()
+		let codeBlocks = []
 
 		visit(tree, 'element', node => {
 			if (node.tagName === 'pre' && node.children[0]?.tagName === 'code') {
-				let codeNode = node.children[0]
-				let textNode = codeNode.children[0]
-
-				node.properties.code = textNode.value
-
-				if (node.properties.language) {
-					let tokens = highlighter.codeToThemedTokens(
-						textNode.value,
-						node.properties.language
-					)
-
-					textNode.value = shiki.renderToHtml(tokens, {
-						elements: {
-							pre: ({ children }) => children,
-							code: ({ children }) => children,
-							line: ({ children }) => `<span>${children}</span>`,
-						},
-					})
-				}
+				codeBlocks.push(node)
 			}
 		})
+
+		let languages = [
+			...new Set(codeBlocks.map(node => node.properties.language)),
+		].filter(Boolean)
+		await highlighter.loadLanguage(...languages)
+
+		for (let node of codeBlocks) {
+			let codeNode = node.children[0]
+			let textNode = codeNode.children[0]
+
+			node.properties.code = textNode.value
+
+			if (node.properties.language) {
+				let tokens = highlighter.codeToTokensBase(textNode.value, {
+					lang: node.properties.language,
+					theme: cssVariablesTheme.name,
+				})
+
+				textNode.value = renderTokens(tokens)
+			}
+		}
 	}
 }
 

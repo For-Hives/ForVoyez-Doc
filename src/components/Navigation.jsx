@@ -1,10 +1,10 @@
 'use client'
 
 import clsx from 'clsx'
-import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
+import { AnimatePresence, motion, useIsPresent } from 'motion/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useRef } from 'react'
+import { useState } from 'react'
 
 import { Button } from '@/components/Button'
 import { useIsInsideMobileNavigation } from '@/components/MobileNavigation'
@@ -13,7 +13,7 @@ import { Tag } from '@/components/Tag'
 import { remToPx } from '@/lib/remToPx'
 
 function useInitialValue(value, condition = true) {
-	let initialValue = useRef(value).current
+	let [initialValue] = useState(value)
 	return condition ? initialValue : value
 }
 

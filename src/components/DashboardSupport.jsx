@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useMotionTemplate, useMotionValue } from 'framer-motion'
+import { motion, useMotionTemplate, useMotionValue } from 'motion/react'
 import Link from 'next/link'
 
 import { GridPattern } from '@/components/GridPattern'
@@ -143,17 +143,17 @@ function DashboardSupportPattern({ mouseX, mouseY, ...gridProps }) {
 
 	return (
 		<div className="pointer-events-none">
-			<div className="absolute inset-0 rounded-2xl transition duration-300 [mask-image:linear-gradient(white,transparent)] group-hover:opacity-50">
+			<div className="absolute inset-0 rounded-2xl mask-[linear-gradient(white,transparent)] transition duration-300 group-hover:opacity-50">
 				<GridPattern
 					width={72}
 					height={56}
 					x="50%"
-					className="absolute inset-x-0 inset-y-[-30%] h-[160%] w-full skew-y-[-18deg] fill-black/[0.02] stroke-black/5"
+					className="absolute inset-x-0 inset-y-[-30%] h-[160%] w-full skew-y-[-18deg] fill-black/2 stroke-black/5"
 					{...gridProps}
 				/>
 			</div>
 			<motion.div
-				className="absolute inset-0 rounded-2xl bg-gradient-to-r from-forvoyez_orange-200/15 to-forvoyez_orange-300/15 opacity-0 transition duration-300 group-hover:opacity-100"
+				className="absolute inset-0 rounded-2xl bg-linear-to-r from-forvoyez_orange-200/15 to-forvoyez_orange-300/15 opacity-0 transition duration-300 group-hover:opacity-100"
 				style={style}
 			/>
 			<motion.div
@@ -193,10 +193,10 @@ function DashboardSupportItem({ item }) {
 				mouseX={mouseX}
 				mouseY={mouseY}
 			/>
-			<div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-slate-900/7.5 group-hover:ring-slate-900/10" />
-			<div className="relative rounded-2xl px-4 pb-4 pt-16">
+			<div className="absolute inset-0 rounded-2xl ring-1 ring-slate-900/7.5 ring-inset group-hover:ring-slate-900/10" />
+			<div className="relative rounded-2xl px-4 pt-16 pb-4">
 				<DashboardSupportIcon icon={item.icon} />
-				<h3 className="mt-4 text-sm font-semibold leading-7 text-slate-900">
+				<h3 className="mt-4 text-sm leading-7 font-semibold text-slate-900">
 					<Link href={item.href}>
 						<span className="absolute inset-0 rounded-2xl" />
 						{item.name}

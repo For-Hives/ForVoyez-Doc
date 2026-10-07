@@ -1,34 +1,123 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@import './typography.css' layer(components);
 
-@media screen and (min-width: 768px) {
-	::-webkit-scrollbar {
-		-webkit-appearance: none;
-		width: 7px;
-		height: 4px;
+@plugin '@headlessui/tailwindcss';
+
+/* Same as `darkMode: 'selector'` in Tailwind CSS v3 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@source inline('font-{sourcesans,jost}');
+
+@theme {
+	--text-*: initial;
+	--text-2xs: 0.75rem;
+	--text-2xs--line-height: 1.25rem;
+	--text-xs: 0.8125rem;
+	--text-xs--line-height: 1.5rem;
+	--text-sm: 0.875rem;
+	--text-sm--line-height: 1.5rem;
+	--text-base: 1rem;
+	--text-base--line-height: 1.75rem;
+	--text-lg: 1.125rem;
+	--text-lg--line-height: 1.75rem;
+	--text-xl: 1.25rem;
+	--text-xl--line-height: 1.75rem;
+	--text-2xl: 1.5rem;
+	--text-2xl--line-height: 2rem;
+	--text-3xl: 1.875rem;
+	--text-3xl--line-height: 2.25rem;
+	--text-4xl: 2.25rem;
+	--text-4xl--line-height: 2.5rem;
+	--text-5xl: 3rem;
+	--text-5xl--line-height: 1;
+	--text-6xl: 3.75rem;
+	--text-6xl--line-height: 1;
+	--text-7xl: 4.5rem;
+	--text-7xl--line-height: 1;
+	--text-8xl: 6rem;
+	--text-8xl--line-height: 1;
+	--text-9xl: 8rem;
+	--text-9xl--line-height: 1;
+
+	--color-forvoyez_orange-50: #fff3f1;
+	--color-forvoyez_orange-100: #ffe5df;
+	--color-forvoyez_orange-200: #ffcfc5;
+	--color-forvoyez_orange-300: #ffae9d;
+	--color-forvoyez_orange-400: #ff7f64;
+	--color-forvoyez_orange-500: #ff6545;
+	--color-forvoyez_orange-600: #ed3a15;
+	--color-forvoyez_orange-700: #c82d0d;
+	--color-forvoyez_orange-800: #a5290f;
+	--color-forvoyez_orange-900: #882814;
+	--color-forvoyez_orange-950: #4b1004;
+
+	--shadow-glow: 0 0 4px rgb(0 0 0 / 0.1);
+
+	--container-lg: 33rem;
+	--container-2xl: 40rem;
+	--container-3xl: 50rem;
+	--container-5xl: 66rem;
+}
+
+/* next/font variables, set on <html> in src/app/layout.jsx */
+@theme inline {
+	--font-sourcesans: var(--next-font-sourcesans);
+	--font-jost: var(--next-font-jost);
+}
+
+/*
+  Compatibility with the Tailwind CSS v3 defaults the site was designed with:
+  gray-200 default border color, gray-400 placeholders, pointer on buttons.
+*/
+@layer base {
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentcolor);
+	}
+
+	input::placeholder,
+	textarea::placeholder {
+		color: var(--color-gray-400);
+	}
+
+	button:not(:disabled),
+	[role='button']:not(:disabled) {
+		cursor: pointer;
 	}
 }
 
-@media screen and (min-width: 768px) {
-	::-webkit-scrollbar-thumb {
-		border-radius: 2rem;
-		background-color: #19191e4d;
-		-webkit-box-shadow: 0 0 1px hsl(0deg 0 100% / 50%);
+@layer utilities {
+	@media screen and (min-width: 768px) {
+		::-webkit-scrollbar {
+			-webkit-appearance: none;
+			width: 7px;
+			height: 4px;
+		}
+	}
+
+	@media screen and (min-width: 768px) {
+		::-webkit-scrollbar-thumb {
+			border-radius: 2rem;
+			background-color: #19191e4d;
+			-webkit-box-shadow: 0 0 1px hsl(0deg 0 100% / 50%);
+		}
 	}
 }
 
 @layer base {
 	:root {
-		--shiki-color-text: theme('colors.white');
-		--shiki-token-constant: theme('colors.forvoyez_orange.300');
-		--shiki-token-string: theme('colors.orange.300');
-		--shiki-token-comment: theme('colors.slate.500');
-		--shiki-token-keyword: theme('colors.sky.300');
-		--shiki-token-parameter: theme('colors.pink.300');
-		--shiki-token-function: theme('colors.violet.300');
-		--shiki-token-string-expression: theme('colors.forvoyez_orange.300');
-		--shiki-token-punctuation: theme('colors.slate.200');
+		--shiki-foreground: var(--color-white);
+		--shiki-token-constant: var(--color-forvoyez_orange-300);
+		--shiki-token-string: var(--color-orange-300);
+		--shiki-token-comment: var(--color-slate-500);
+		--shiki-token-keyword: var(--color-sky-300);
+		--shiki-token-parameter: var(--color-pink-300);
+		--shiki-token-function: var(--color-violet-300);
+		--shiki-token-string-expression: var(--color-forvoyez_orange-300);
+		--shiki-token-punctuation: var(--color-slate-200);
 	}
 
 	[inert] ::-webkit-scrollbar {

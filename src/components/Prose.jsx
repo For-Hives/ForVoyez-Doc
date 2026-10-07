@@ -9,7 +9,8 @@ export function Prose({ as, className, ...props }) {
 				className,
 				'prose',
 				// `html :where(& > *)` is used to select all direct children without an increase in specificity like you'd get from just `& > *`
-				'[html_:where(&>*)]:mx-auto [html_:where(&>*)]:max-w-2xl [html_:where(&>*)]:lg:mx-[calc(50%-min(50%,theme(maxWidth.lg)))] [html_:where(&>*)]:lg:max-w-3xl'
+				// `hr` is left out: it keeps the full-bleed width and margins from typography.css (utilities now sit in a later cascade layer than `.prose`)
+				'[html_:where(&>:not(hr))]:mx-auto [html_:where(&>:not(hr))]:max-w-2xl lg:[html_:where(&>:not(hr))]:mx-[calc(50%-min(50%,var(--container-lg)))] lg:[html_:where(&>:not(hr))]:max-w-3xl'
 			)}
 			{...props}
 		/>
