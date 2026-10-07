@@ -1,8 +1,9 @@
-# use the official Bun image
-# see all versions at https://hub.docker.com/r/oven/bun/tags
-ARG NODE_VERSION=20
+# Node.js base image, pnpm comes from corepack (version pinned by the
+# "packageManager" field of package.json)
+# see all versions at https://hub.docker.com/_/node/tags
+ARG NODE_VERSION=24
 
-FROM node:${NODE_VERSION}-slim as base
+FROM node:${NODE_VERSION}-slim AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
@@ -20,12 +21,12 @@ FROM base AS install
 RUN mkdir -p /tmp/dev
 
 COPY package.json pnpm-lock.yaml /tmp/dev/
-RUN cd /tmp/dev && pnpm install --frozen-lockfile  --verbose --ignore-scripts
+RUN cd /tmp/dev && pnpm install --frozen-lockfile --ignore-scripts
 
-# install with --production (exclude devDependencies)
+# install with --prod (exclude devDependencies)
 RUN mkdir -p /tmp/prod
 COPY package.json pnpm-lock.yaml /tmp/prod/
-RUN cd /tmp/prod && pnpm install --frozen-lockfile --production --ignore-scripts  && chmod -R 755 node_modules && chown -R node:node node_modules
+RUN cd /tmp/prod && pnpm install --frozen-lockfile --prod --ignore-scripts  && chmod -R 755 node_modules && chown -R node:node node_modules
 
 # copy node_modules from temp directory
 # then copy all (non-ignored) project files into the image
@@ -34,7 +35,7 @@ FROM base AS prerelease
 COPY --from=install /tmp/dev/node_modules node_modules
 COPY . .
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 RUN pnpm run build
 
@@ -49,8 +50,11 @@ COPY --from=prerelease /usr/src/app/public public
 COPY --from=prerelease /usr/src/app/src src
 COPY --from=prerelease /usr/src/app/package.json .
 
-ENV NODE_ENV production
-ENV PATH /usr/src/app/node_modules/.bin:$PATH
+# fetch the pnpm version pinned in package.json now, not at container start
+RUN corepack install
+
+ENV NODE_ENV=production
+ENV PATH=/usr/src/app/node_modules/.bin:$PATH
 
 USER root
 
