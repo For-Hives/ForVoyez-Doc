@@ -42,7 +42,9 @@ It's a good security practice to periodically renew your API keys and revoke the
 
 1. Log in to your ForVoyez account and navigate to the [API Settings](https://forvoyez.com/app/tokens) page.
 2. To renew your API key, delete the existing key and generate a new one. Click on the "Add token" button to create a new API key.
-3. To revoke your API key, click on the "Delete" button. This will immediately invalidate the API key, and any requests made with it will be rejected.
+3. To revoke your API key, click on the "Delete" button. Deleting a key revokes it immediately: any request made with it is rejected with a `401 Unauthorized` error (`{"error": "Unauthorized, invalid token"}`).
+
+An API key also stops working after the expiration date you chose when you created it. Expired keys are rejected with the same `401` error.
 
 Make sure to update your application's configuration with the new API key after renewing or revoking the old one.
 

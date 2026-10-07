@@ -10,7 +10,7 @@ When making requests to the ForVoyez API, you'll need to send a `POST` request t
 - The `Content-Type` header should be set to `multipart/form-data`.
 - The request body should include the following form fields:
   - `image`: The image file you want to generate metadata for (required)
-  - `schema`: A JSON string specifying the desired output format (optional)
+  - `schema`: A JSON string mapping each output field to a description (optional)
   - `keywords`: Comma-separated keywords to help with image analysis (optional)
   - `context`: Additional context about the image (optional)
   - `language`: Desired language for the output (optional, defaults to 'en')
@@ -22,7 +22,7 @@ curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+  -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
   -F "keywords=playful,kittens,flowers" \
   -F "context=Playful kittens among blooming flowers" \
   -F "language=en" \
@@ -35,9 +35,9 @@ form.append('image', fileInput.files[0])
 form.append(
 	'schema',
 	JSON.stringify({
-		title: 'string',
-		alternativeText: 'string',
-		caption: 'string',
+		title: 'A short title for the image',
+		alternativeText: 'Alt text for screen readers',
+		caption: 'A one-sentence caption',
 	})
 )
 form.append('keywords', 'playful,kittens,flowers')
@@ -70,7 +70,7 @@ When making a request to the ForVoyez API, there are both required and optional 
   - `image`: The image file for which you want to generate metadata. This should be included as a file in the multipart/form-data request body.
 
 - Optional parameters:
-  - `schema`: A JSON string that specifies the desired output format for the generated metadata (e.g., `{"title":"string","alternativeText":"string"}`)
+  - `schema`: A JSON string with a flat object that maps each output field to a description of what to generate; every field is returned as a string (e.g., `{"title":"A short title for the image","alternativeText":"Alt text for screen readers"}`)
   - `keywords`: A comma-separated list of keywords to help guide the image analysis
   - `context`: Additional context or description about the image to assist in generating more accurate metadata
   - `language`: Specifies the desired language for the metadata output (defaults to 'en')
@@ -82,7 +82,7 @@ If you don't provide the optional parameters, the API will use default values fo
 When making requests to the ForVoyez API, it's important to handle errors gracefully and understand the structure of the API responses. Here are a few things to keep in mind:
 
 - Successful requests will return a `200 OK` status code along with a JSON response containing the generated metadata.
-- If there's an error with your request, such as missing required parameters or an invalid API key, the API will return an appropriate HTTP status code (e.g., `400 Bad Request`, `401 Unauthorized`) and a JSON error response with more details.
+- If there's an error with your request, such as missing required parameters or an invalid API key, the API will return an appropriate HTTP status code (e.g., `400 Bad Request`, `401 Unauthorized`) and a JSON error response whose `error` field gives more details.
 - Make sure to catch and handle any errors in your application code to provide a smooth user experience.
 
 Here's an example of a successful API response:
@@ -95,14 +95,11 @@ Here's an example of a successful API response:
 }
 ```
 
-And here's an example of an error response:
+And here's an example of an error response (`400 Bad Request`, sent when the `image` field is missing):
 
 ```json
 {
-	"error": {
-		"code": 400,
-		"message": "Missing required parameter: image"
-	}
+	"error": "Bad Request, No file uploaded"
 }
 ```
 

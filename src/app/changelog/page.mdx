@@ -8,6 +8,29 @@ export const metadata = {
 
 The ForVoyez API is continuously evolving to provide you with new features, enhancements, and improvements. This changelog details the latest changes, updates, and bug fixes to help you stay informed about the API's development.
 
+## Version 1.3.0 (2026-10-07)
+
+This update makes API errors easier to handle, strengthens API key security, and upgrades metadata generation. The request fields and the format of successful responses are unchanged:
+
+- JSON error responses
+  - Error responses now have a JSON body `{"error": "<message>"}` sent with the `Content-Type: application/json` header
+  - HTTP status codes are unchanged (`400`, `401`, `500`)
+  - Read the `error` field instead of the plain-text body
+- Immediate API key revocation
+  - Deleting an API key in the dashboard now revokes it immediately
+  - Requests made with a deleted or expired key are rejected with `401 Unauthorized, invalid token`
+- Single-call generation on a newer model
+  - Metadata is now generated in a single call to a newer AI model, instead of a chain of several calls
+  - Same output fields as before: `title`, `alternativeText`, and `caption` by default, or exactly the keys of your `schema`, every value as a string
+- Input length limits
+  - `context` and `keywords` are cut to their first 1,000 characters, and `language` to 64 characters; longer values are not rejected
+  - A `schema` can have at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters; a larger schema is rejected with `400 Bad Request` and an `Invalid schema: ...` message
+  - Keep your context and keywords short and focused for the best results
+- Documentation fixes
+  - Data Schemas now describes the supported schema format: a flat map of field names to descriptions
+  - Pricing and Limits pages list the current Starter and Growth plans and credit packs; unused credits never expire
+  - Removed the rate limiting (`429`) and `Invalid language` errors, which the API does not return
+
 ## Version 1.2.0 (2024-10-15)
 
 This update introduces structural changes to the API request format and adds new features for improved metadata generation:

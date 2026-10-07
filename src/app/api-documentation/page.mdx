@@ -39,7 +39,7 @@ curl -X POST \
 -H "Authorization: Bearer YOUR_API_KEY" \
 -H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
--F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+-F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
 -F "keywords=playful,kittens" \
 -F "context=Playful kittens" \
 -F "language=en" \
@@ -59,7 +59,7 @@ https://forvoyez.com/api/describe
 The available parameters for the `/describe` endpoint are:
 
 - `image`: The image file (required)
-- `schema`: JSON string specifying the desired output format (optional)
+- `schema`: JSON string with a flat object mapping each output field to a description (optional, see [Data Schemas](/data-schemas))
 - `keywords`: Comma-separated list of keywords (optional)
 - `context`: Additional context about the image (optional)
 - `language`: Desired language for the output (optional, defaults to 'en')
@@ -68,33 +68,28 @@ For more details on the parameters and responses for each endpoint, refer to the
 
 ## Error Codes and Error Messages
 
-If a request to the ForVoyez API fails, you'll receive an appropriate HTTP status code along with an error message in the response body. The error message provides more information about the cause of the error and helps you troubleshoot the issue.
+If a request to the ForVoyez API fails, you'll receive an appropriate HTTP status code along with a JSON error body. Its `error` field provides more information about the cause of the error and helps you troubleshoot the issue.
 
 Here are the common error codes you might encounter:
 
 - `400 Bad Request`: The request is invalid or missing required parameters.
-- `400 No file uploaded`: The `image` parameter is missing in the request.
-- `400 Invalid image file`: The uploaded file is not a valid image format.
-- `400 Invalid schema`: The provided schema is invalid or malformed.
-- `400 Invalid language`: The provided language code is not supported.
+- `400 Bad Request, No file uploaded`: The `image` parameter is missing in the request.
+- `400 Bad Request, Invalid image file`: The uploaded file is not a JPEG, PNG, WebP, or GIF image.
+- `400 Invalid schema: ...`: The `schema` has more than 20 fields, a field name longer than 64 characters, a description longer than 1,000 characters, or a field named `__proto__` (see [Data Schemas](/data-schemas#schema-validation)).
 
 - `401 Unauthorized`: Authentication failed.
 - `401 Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
-- `401 Unauthorized, invalid token`: The provided API key or token is invalid.
+- `401 Unauthorized, invalid token`: The provided API key is invalid, has expired, or has been deleted from the dashboard.
 - `401 Unauthorized, no credit left`: The user has insufficient credits to make the request.
 
-- `429 Too Many Requests`: The request limit for your subscription plan has been exceeded.
+- `500 Internal Server Error`: An unexpected error occurred on the server side, or the image could not be processed (for example, when it is larger than 10 MB, in which case the message is `Image processing failed: ...` or, for much larger uploads, `Internal Server Error`).
 
-- `500 Internal Server Error`: An unexpected error occurred on the server side.
+The error response is sent with `Content-Type: application/json` and an `error` field with more details. For example, a request without an image returns `400 Bad Request` with this body:
 
-The error response body will include an error message with more details:
-
-```
-400 Bad Request
-```
-
-```txt
-Missing required parameter: image
+```json
+{
+	"error": "Bad Request, No file uploaded"
+}
 ```
 
 For a complete list of error codes and their meanings, refer to the [Error Codes](/error-codes) documentation.
