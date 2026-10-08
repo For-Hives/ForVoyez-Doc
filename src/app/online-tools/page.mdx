@@ -3,12 +3,14 @@ import { Button } from '@/components/Button'
 export const metadata = {
 	title: 'API Playground',
 	description:
-		'Explore the ForVoyez API playground to test image analysis with custom context and JSON schemas.',
+		'Explore the ForVoyez API playground to test image analysis with custom context, keywords, language, and JSON schemas.',
 }
 
 # API Playground
 
-The ForVoyez API playground is an interactive tool that allows you to test the image analysis capabilities of our API. You can upload an image, provide custom context, and specify a JSON schema to customize the structure of the API response.
+The ForVoyez API playground is an interactive tool in your dashboard that allows you to test the image analysis capabilities of our API. You can upload an image, provide custom context, keywords, and an output language, and specify a JSON schema to customize the structure of the API response. It is the only online tool of the dashboard.
+
+Each analysis in the playground uses 1 credit, like an API request, and appears under "Playground" on the [Usage](/usage-tracking) page.
 
 ## Uploading an Image
 
@@ -34,8 +36,16 @@ You can provide additional context to help the API better understand and process
 
 To add custom context:
 
-1. In the "Add Your Context" section, enter your context in the text area provided.
+1. In the "Add Your Context (Optional)" section, enter your context in the text area provided.
 2. The more context you provide, the more accurate the API results will be.
+
+## Adding Keywords
+
+In the "Keywords (Optional)" field, enter comma-separated keywords (for example `Cat, Dog, Animal`) that the generated metadata should include. This is the `keywords` field of the API.
+
+## Choosing the Language
+
+In the "Language (Optional)" field, enter the language of the generated metadata, as a language code such as `en`, `fr`, or `es`. This is the `language` field of the API; without it, the metadata is in English.
 
 ## Specifying a JSON Schema
 
@@ -43,9 +53,9 @@ The API playground allows you to customize the structure and format of the API r
 
 To specify a custom JSON schema:
 
-1. In the "JSON Schema" section, enter your desired schema using valid JSON syntax.
-2. The JSON schema defines the structure and format of the data returned by the API.
-3. If the provided schema is invalid, an error message will be displayed.
+1. In the "JSON Schema (Optional)" section, enter your desired schema using valid JSON syntax: a flat object that maps each output field to a description of what to generate (see [Data Schemas](/data-schemas)).
+2. The JSON schema defines the fields returned by the API; every value is a string.
+3. The playground shows whether your schema is valid JSON. A schema over the [schema limits](/data-schemas#schema-validation) is rejected without using a credit.
 
 ## Analyzing the Image
 
@@ -72,7 +82,7 @@ You can copy the API response by clicking on the copy button located in the top-
 
 ## Request Preview
 
-The "Request Preview" section shows a preview of the request that is sent to the API when you click the "Analyze your image" button. It includes the HTTP method, API URL, request headers, and the request body containing the selected image, additional context, and JSON schema.
+The "Request Preview" section shows the same request made to the API from your own server, as ready-to-run code in cURL, raw HTTP, JavaScript (Node.js), PHP and Python. It sends the selected image, context, keywords, language and JSON schema as `multipart/form-data` to `POST https://forvoyez.com/api/describe`; replace `YOUR_API_KEY` with one of your API keys. Keep the key on your server: never put it in code that runs in a browser.
 
 You can copy the request preview by clicking on the copy button located in the top-right corner of the preview section.
 

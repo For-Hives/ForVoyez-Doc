@@ -128,7 +128,8 @@ describe('code examples', () => {
 		}
 	})
 
-	test('every request example calls the production describe endpoint', () => {
+	test('every request example calls a production endpoint of the API', () => {
+		// the two public endpoints: POST /api/describe and GET /api/tokens
 		for (const { code, index, page } of blocksOf(
 			'bash',
 			'javascript',
@@ -139,7 +140,7 @@ describe('code examples', () => {
 			if (!/forvoyez\.com\/api/.test(code)) continue
 			assert.match(
 				code,
-				/https:\/\/forvoyez\.com\/api\/describe/,
+				/https:\/\/forvoyez\.com\/api\/(describe|tokens)\b/,
 				`${page} block ${index}`
 			)
 		}
