@@ -10,7 +10,7 @@ The ForVoyez API is continuously evolving to provide you with new features, enha
 
 ## Version 1.3.0 (2026-10-07)
 
-This update makes API errors easier to handle, strengthens API key security, and upgrades metadata generation. The request fields and the format of successful responses are unchanged:
+This update makes API errors easier to handle, strengthens API key security, and upgrades metadata generation. The request fields and the format of successful responses are unchanged, except for an `alt_text` field added when no `schema` is sent:
 
 - JSON error responses
   - Error responses now have a JSON body `{"error": "<message>"}` sent with the `Content-Type: application/json` header
@@ -22,6 +22,7 @@ This update makes API errors easier to handle, strengthens API key security, and
 - Single-call generation on a newer model
   - Metadata is now generated in a single call to a newer AI model, instead of a chain of several calls
   - Same output fields as before: `title`, `alternativeText`, and `caption` by default, or exactly the keys of your `schema`, every value as a string
+  - A request without a `schema` field also gets `alt_text`, a copy of `alternativeText`: the WordPress plugin up to version 1.1.40 reads this field and saved an empty alt text without it
 - Input length limits
   - `context` and `keywords` are cut to their first 1,000 characters, and `language` to 64 characters; longer values are not rejected
   - A `schema` can have at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters; a larger schema is rejected with `400 Bad Request` and an `Invalid schema: ...` message

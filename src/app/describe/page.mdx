@@ -50,7 +50,7 @@ curl -X POST \
 
 ### Success Response
 
-If the request is successful, the API will return a `200 OK` status and a flat JSON object containing the generated metadata for the provided image in the specified language. The object has exactly the keys of your schema (or `title`, `alternativeText`, and `caption` when no schema is sent), and every value is a string.
+If the request is successful, the API will return a `200 OK` status and a flat JSON object containing the generated metadata for the provided image in the specified language. The object has exactly the keys of your schema (or `title`, `alternativeText`, and `caption` when no schema is sent), and every value is a string. When the request has no `schema` field, the object also has `alt_text`, a copy of `alternativeText` kept for older versions of the WordPress plugin.
 
 ```json
 {

@@ -33,7 +33,7 @@ The response contains exactly the keys of your schema, and every value is return
 }
 ```
 
-If you don't send a schema, the API uses its default schema, which returns the `title`, `alternativeText`, and `caption` fields.
+If you don't send a schema, the API uses its default schema, which returns the `title`, `alternativeText`, and `caption` fields. Without a `schema` field, the response also has `alt_text`, a copy of `alternativeText` kept for older versions of the WordPress plugin.
 
 ## Customizing Schemas
 
