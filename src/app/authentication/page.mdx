@@ -14,7 +14,7 @@ Securing your API requests is crucial to protect your data and ensure only autho
 Your API key is a unique identifier that authenticates your requests to the ForVoyez API. It's essential to keep your API key secure and not share it with anyone. Here are some guidelines for managing your API keys:
 
 - Store your API key securely in your application's configuration files or environment variables.
-- Never expose your API key in client-side code or publicly accessible repositories.
+- Never expose your API key in client-side code or publicly accessible repositories: call the ForVoyez API from your server only (see [Calling the API From Your Server](#calling-the-api-from-your-server)).
 - Use different API keys for different environments (e.g., development, staging, production) to isolate access.
 - Regularly rotate your API keys, especially if you suspect unauthorized access.
 
@@ -23,6 +23,14 @@ Your API key is a unique identifier that authenticates your requests to the ForV
 		Manage your API keys
 	</Button>
 </div>
+
+## Calling the API From Your Server
+
+Every request to the ForVoyez API sends your API key in the `Authorization: Bearer YOUR_API_KEY` header. Anyone who can read that key can use your credits, so send your requests from your server (or a script on your computer), never from a web page or a mobile app: the API key of a request sent from a browser can be read in the page source or in the browser's network tools.
+
+To analyse images that your visitors upload, send the images to your own server first, and call the ForVoyez API from there with the key read from an environment variable. The [code examples](/code-examples) follow this pattern: the JavaScript examples run on Node.js and read the key from the `FORVOYEZ_API_KEY` environment variable.
+
+To check that a key works, and how many credits its account has left, without using a credit, send a `GET` request to the [/tokens](/tokens) endpoint.
 
 ## Security Best Practices
 
@@ -40,11 +48,11 @@ By adhering to these best practices, you can minimize the risk of unauthorized a
 
 It's a good security practice to periodically renew your API keys and revoke them if you suspect any unauthorized access. Here's how you can renew or revoke your API keys:
 
-1. Log in to your ForVoyez account and navigate to the [API Settings](https://forvoyez.com/app/tokens) page.
-2. To renew your API key, delete the existing key and generate a new one. Click on the "Add token" button to create a new API key.
+1. Log in to your ForVoyez account and navigate to the [API Keys](https://forvoyez.com/app/tokens) page.
+2. To renew your API key, generate a new one, update your application, then delete the old key. Click on the "Add token" button to create a new API key.
 3. To revoke your API key, click on the "Delete" button. Deleting a key revokes it immediately: any request made with it is rejected with a `401 Unauthorized` error (`{"error": "Unauthorized, invalid token"}`).
 
-An API key also stops working after the expiration date you chose when you created it. Expired keys are rejected with the same `401` error.
+An API key also stops working after the expiration date you chose when you created it. Expired keys are rejected with the same `401` error by `/describe` (the [/tokens](/tokens) endpoint answers `401` with `{"error": "Invalid or expired token"}`).
 
 Make sure to update your application's configuration with the new API key after renewing or revoking the old one.
 

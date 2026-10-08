@@ -61,7 +61,7 @@ Keep the following rules in mind:
 - Every value in the response is a string. To get a list, ask for a comma-separated list in the description (as with `tags` above) and split it in your code.
 - Every key of the schema is present in the response, and keys that are not in the schema are never returned.
 
-To use a customized schema in your API request, send it as a JSON string in the `schema` field, next to the other form fields. Here are examples using cURL and JavaScript:
+To use a customized schema in your API request, send it as a JSON string in the `schema` field, next to the other form fields. Here are examples using cURL and JavaScript (Node.js 20 or later, run on your server with your API key in the `FORVOYEZ_API_KEY` environment variable):
 
 <CodeGroup>
 ```bash {{ title: 'cURL' }}
@@ -74,8 +74,14 @@ https://forvoyez.com/api/describe
 ```
 
 ```js {{ title: 'JavaScript' }}
+// Server-side only (Node.js 20 or later): never put your API key in browser
+// code. The key is read from the FORVOYEZ_API_KEY environment variable.
+import { readFile } from 'node:fs/promises'
+
+const image = new Blob([await readFile('/path/to/your/image.jpg')])
+
 const form = new FormData()
-form.append('image', fileInput.files[0])
+form.append('image', image, 'image.jpg')
 form.append(
 	'schema',
 	JSON.stringify({
@@ -87,22 +93,21 @@ form.append(
 )
 form.append('language', 'en')
 
-fetch('https://forvoyez.com/api/describe', {
+const response = await fetch('https://forvoyez.com/api/describe', {
 	method: 'POST',
 	headers: {
-		Authorization: 'Bearer YOUR_API_KEY',
+		Authorization: `Bearer ${process.env.FORVOYEZ_API_KEY}`,
 	},
 	body: form,
 })
-	.then(response => response.json())
-	.then(data => {
-		console.log(data)
-		// Handle the API response data
-	})
-	.catch(error => {
-		console.error('Error:', error)
-		// Handle any errors that occurred during the request
-	})
+const data = await response.json()
+
+if (!response.ok) {
+	// Error bodies are {"error": "<message>"}: see the Error Codes page
+	throw new Error(`ForVoyez API error ${response.status}: ${data.error}`)
+}
+
+console.log(data)
 ```
 
 </CodeGroup>
