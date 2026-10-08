@@ -228,6 +228,19 @@ describe('pricing', () => {
 			assert.ok(pricing.includes(claim), `pricing does not say "${claim}"`)
 		}
 	})
+
+	// every plan runs the same code: same model, same image handling (resized
+	// to 1000 px), same playground; plans only differ by their credits
+	test('no plan promises a feature the API does not enforce', () => {
+		for (const claim of [
+			/1080p|4K|Full HD|Ultra HD/i,
+			/(Basic|Advanced) metadata/i,
+			/(Limited|Full|Priority) access to (the )?playground/i,
+			/24\/7|SLA|Priority support|beta features|Dedicated hosting/i,
+		]) {
+			assert.ok(!claim.test(pricing), `pricing still promises ${claim}`)
+		}
+	})
 })
 
 describe('error documentation', () => {
