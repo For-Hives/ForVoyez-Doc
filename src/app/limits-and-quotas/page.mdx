@@ -2,12 +2,12 @@ import { Button } from '@/components/Button'
 export const metadata = {
 	title: 'Limits and Usage Quotas',
 	description:
-		'Understand the request limits per subscription, how to handle quota overages, and the option to purchase additional credit packs.',
+		'Understand the credits included in each subscription, the size limits of a request, how to handle quota overages, and the option to purchase additional credit packs.',
 }
 
 # Limits and Usage Quotas
 
-To ensure fair usage and maintain the performance of the ForVoyez API, we have implemented request limits and usage quotas. In this section, we'll discuss the request limits per subscription, how to handle quota overages, and the possibility to purchase additional credit packs.
+Your use of the ForVoyez API is limited by your credit balance, and each request by a few size limits. In this section, we'll discuss the credits included in each subscription, the limits of a single request, how to handle quota overages, and the possibility to purchase additional credit packs.
 
 ## Request Limits per Subscription
 
@@ -20,13 +20,27 @@ Each API request that generates metadata for one image uses 1 credit. Each subsc
 
 Unused credits accumulate in your balance: they never expire and are not reset when your subscription renews.
 
-If your credit balance reaches zero, the API will return a `401` error with the body `{"error": "Unauthorized, no credit left"}`. It's important to monitor your usage and upgrade your subscription plan if needed to avoid interruptions in your service.
+If your credit balance reaches zero, the API will return a `401` error with the body `{"error": "Unauthorized, no credit left"}`. It's important to monitor your usage and upgrade your subscription plan if needed to avoid interruptions in your service. To read your balance from your code without using a credit, call the [/tokens](/tokens) endpoint: its `user.credits` field is your current balance.
 
 <div className="not-prose">
 	<Button href="/pricing" variant="text" arrow="right">
 		See our pricing plans for more details
 	</Button>
 </div>
+
+## Limits of a Single Request
+
+These limits apply to every `/describe` request, whatever your plan. A request rejected because of one of them does not use a credit.
+
+- Image size: at most 10 MB. A larger image gets `413 Payload Too Large` with `{"error": "Image too large: the maximum is 10 MB"}`.
+- Request body: at most 11 MB in total (the image, the form framing, and the text fields). When the `Content-Length` header announces a larger body, the API answers `413` before reading the upload.
+- Image formats: JPEG, PNG, WebP, and GIF, detected from the file content. Other formats, such as AVIF, HEIC, SVG, or TIFF, get `400 Bad Request, Invalid image file`.
+- Image resolution: the API scales every image down to at most 1,000 pixels on its longest side before analysing it, so a larger image does not give a more detailed result.
+- `schema`: at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters (see [Data Schemas](/data-schemas#schema-validation)). All the fields of one answer must fit in about 1,500 words.
+- `context` and `keywords`: only the first 1,000 characters of each are used. `language`: only the first 64 characters are used.
+- Response time: the generation of the metadata is stopped after about 25 seconds, and the request then fails with `500 Internal Server Error`. Use a client timeout of at least 30 seconds.
+
+See [Error Codes](/error-codes) for the exact error messages.
 
 ## Handling Quota Overages
 

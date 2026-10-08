@@ -14,7 +14,7 @@ ForVoyez Documentation is a comprehensive guide for using the ForVoyez API, an A
 - 🔐 Authentication and security best practices
 - 📊 Usage tracking and quota management information
 - 💳 Billing and subscription management details
-- 🧪 Interactive API playground for testing
+- 🧪 Guide to the API playground of the dashboard
 - 🎨 Responsive and user-friendly design
 
 ## Getting Started
@@ -71,7 +71,7 @@ Please ensure your code adheres to our coding standards and includes appropriate
 
 If you encounter any issues or have questions about the ForVoyez documentation, please:
 
-- Open an issue in this repository for documentation-related problems
+- Open an issue on [For-Hives/ForVoyez](https://github.com/For-Hives/ForVoyez/issues), the tracker of the app, this documentation and the WordPress plugin
 - Contact our support team at support@forvoyez.com for API-specific inquiries
 
 ## When change the pricing - quota

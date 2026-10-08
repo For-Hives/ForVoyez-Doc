@@ -75,7 +75,7 @@ const dashboardSupportItems = [
 		href: '/online-tools',
 		name: 'Online Tools',
 		description:
-			'Explore our online tools, including the API playground, JSON schema generator, and request validator.',
+			'Test the API in the playground with your own image, context, keywords, language and schema.',
 		icon: SquaresPlusIcon,
 		pattern: {
 			y: 8,
