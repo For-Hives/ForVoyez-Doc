@@ -14,22 +14,35 @@ This update makes API errors easier to handle, strengthens API key security, and
 
 - JSON error responses
   - Error responses now have a JSON body `{"error": "<message>"}` sent with the `Content-Type: application/json` header
-  - HTTP status codes are unchanged (`400`, `401`, `500`)
   - Read the `error` field instead of the plain-text body
+  - The status codes are the same as before (`400`, `401`, `500`), except for the upload cases below (`400` and `413` instead of `500`) and the new answer length limit (`400`)
+- Image uploads
+  - The image format (JPEG, PNG, WebP, or GIF) is now detected from the file content instead of the content type sent with the file, so uploads sent as `application/octet-stream` work, for example `curl -F "image=@photo.webp"`
+  - A file that is not a supported image, such as a text file renamed to `photo.jpg`, now gets `400 Bad Request, Invalid image file` instead of `500`
+  - An image over 10 MB, or a request body over 11 MB, now gets `413 Payload Too Large` with `{"error": "Image too large: the maximum is 10 MB"}` instead of `500`
+  - A body that is not `multipart/form-data` (JSON, empty, or a `Content-Type` header set by hand without its boundary) now gets `400 Bad Request, the body must be multipart/form-data` instead of `500`
 - Immediate API key revocation
   - Deleting an API key in the dashboard now revokes it immediately
   - Requests made with a deleted or expired key are rejected with `401 Unauthorized, invalid token`
+  - The account endpoint used by the WordPress plugin to show your credits (`GET /api/tokens`) now applies the same API key checks, so it rejects deleted keys too
 - Single-call generation on a newer model
   - Metadata is now generated in a single call to a newer AI model, instead of a chain of several calls
   - Same output fields as before: `title`, `alternativeText`, and `caption` by default, or exactly the keys of your `schema`, every value as a string
   - A request without a `schema` field also gets `alt_text`, a copy of `alternativeText`: the WordPress plugin up to version 1.1.40 reads this field and saved an empty alt text without it
+  - The `language` field is followed reliably for language codes: two-letter codes such as `he`, `el`, `it`, or `no` used to give English or another wrong language; codes with a region (`pt-BR`) and language names (`French`) keep working
+  - Safer retries: a temporary error of the AI provider is retried up to twice inside the request, within the same 25-second limit for the AI call; a request that still fails returns `500 Internal Server Error` without using a credit, so you can safely send it again
 - Input length limits
   - `context` and `keywords` are cut to their first 1,000 characters, and `language` to 64 characters; longer values are not rejected
   - A `schema` can have at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters; a larger schema is rejected with `400 Bad Request` and an `Invalid schema: ...` message
+  - All the fields of one answer must fit in about 1,500 words; a schema that asks for more gets `400 Bad Request` with a message asking for fewer or shorter fields, and no credit is used
   - Keep your context and keywords short and focused for the best results
 - Documentation fixes
   - Data Schemas now describes the supported schema format: a flat map of field names to descriptions
   - Pricing and Limits pages list the current Starter and Growth plans and credit packs; unused credits never expire
+  - Pricing now gives the real annual saving of each plan (14.7% for Starter, 16.6% for Growth) instead of a flat 20% discount
+  - Error Codes and /describe list every status code (`400`, `401`, `413`, `500`) with its exact JSON body
+  - Usage Tracking describes the Usage page as it is (credit balance, remaining credits over time, usage by API key); the alerts and email notifications it described do not exist
+  - The code examples no longer set the `Content-Type` header by hand: your HTTP client adds it with the multipart boundary
   - Removed the rate limiting (`429`) and `Invalid language` errors, which the API does not return
 
 ## Version 1.2.0 (2024-10-15)
