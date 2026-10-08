@@ -23,19 +23,22 @@ When an error occurs, the ForVoyez API returns the HTTP status code of the error
 
 A request that fails never uses a credit, whatever the error.
 
+The `/describe` endpoint checks the API key and your credit balance before it reads the request body: a request with an invalid key gets a `401` even when its image is too large or missing. The `/tokens` endpoint has its own error messages, listed in [/tokens Error Messages](#tokens-error-messages) below.
+
 ## HTTP Status Codes
 
 The ForVoyez API uses standard HTTP status codes to indicate the success or failure of a request:
 
 - `200 OK`: The request was successful. 1 credit is used.
-- `400 Bad Request`: The body is not `multipart/form-data`, the image is missing or is not a JPEG, PNG, WebP, or GIF image, the `schema` is over the schema limits, or the requested fields need a longer answer than the API can return.
-- `401 Unauthorized`: The API key is missing, invalid, expired, or deleted, or your credit balance is empty.
-- `413 Payload Too Large`: The image is over 10 MB, or the request body is over 11 MB.
+- `400 Bad Request`: The body is not `multipart/form-data`, the image is missing or is not a JPEG, PNG, WebP, or GIF image, the `schema` is over the schema limits, or the requested fields need a longer answer than the API can return. With `/tokens`: the key was not created from the dashboard.
+- `401 Unauthorized`: The API key is missing, invalid, expired, or deleted. With `/describe`, also when your credit balance is empty.
+- `404 Not Found`: With `/tokens` only: the API key is valid but its account no longer exists.
+- `413 Payload Too Large`: With `/describe` only: the image is over 10 MB, or the request body is over 11 MB.
 - `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed or timed out), the image could not be processed, or another unexpected error occurred on the server side. No credit is used, so you can retry the request.
 
 ## ForVoyez API Error Messages
 
-Each error message below comes with its status code and the exact JSON body the API returns.
+Each error message of the `/describe` endpoint below comes with its status code and the exact JSON body the API returns.
 
 ### 400 Bad Request
 
@@ -102,7 +105,7 @@ Each error message below comes with its status code and the exact JSON body the 
 - `Image too large: the maximum is 10 MB`
   - Status Code: `413`
   - Body: `{"error": "Image too large: the maximum is 10 MB"}`
-  - Description: The image is over 10 MB, or the whole request body is over 11 MB. No credit is used.
+  - Description: The image is over 10 MB, or the whole request body is over 11 MB. When the `Content-Length` header announces a body over 11 MB, the API answers before reading the upload. No credit is used.
   - Solution: Resize or compress the image to 10 MB or less. The API scales every image down to at most 1,000 pixels on its longest side before analysing it, so a smaller upload gives the same result.
 
 ### 500 Internal Server Error
@@ -118,6 +121,46 @@ Each error message below comes with its status code and the exact JSON body the 
   - Body, for example: `{"error": "Image processing failed: VipsJpeg: premature end of JPEG image"}`
   - Description: The file is a JPEG, PNG, WebP, or GIF image, but it could not be decoded, for example because it is truncated or corrupt. The rest of the message gives the cause. No credit is used.
   - Solution: Open the image in an image editor, save it again, and send the new file.
+
+## /tokens Error Messages
+
+The `GET /api/tokens` endpoint, which checks an API key and returns its credit balance (see [/tokens](/tokens)), answers with these messages. It never uses a credit, and an empty credit balance is not an error for it.
+
+- `Missing or invalid authentication token`
+  - Status Code: `401`
+  - Body: `{"error": "Missing or invalid authentication token"}`
+  - Description: The `Authorization` header is missing, or it does not start with `Bearer `.
+  - Solution: Send your API key in the `Authorization: Bearer YOUR_API_KEY` header.
+
+- `Invalid or expired token`
+  - Status Code: `401`
+  - Body: `{"error": "Invalid or expired token"}`
+  - Description: The value sent is not a ForVoyez API key (for example a truncated copy), or the key has passed its expiration date.
+  - Solution: Copy the whole key again, or create a new API key in the [dashboard](https://forvoyez.com/app/tokens).
+
+- `Unauthorized, invalid token`
+  - Status Code: `401`
+  - Body: `{"error": "Unauthorized, invalid token"}`
+  - Description: The API key has been deleted from the dashboard.
+  - Solution: Create a new API key in the [dashboard](https://forvoyez.com/app/tokens) and update your application.
+
+- `Malformed token: missing userId`
+  - Status Code: `400`
+  - Body: `{"error": "Malformed token: missing userId"}`
+  - Description: The key is signed by ForVoyez but was not created from the dashboard.
+  - Solution: Create a new API key in the [dashboard](https://forvoyez.com/app/tokens).
+
+- `User not found`
+  - Status Code: `404`
+  - Body: `{"error": "User not found"}`
+  - Description: The API key is valid but the account it belongs to no longer exists.
+  - Solution: Contact our support team.
+
+- `Server error`
+  - Status Code: `500`
+  - Body: `{"error": "Server error"}`
+  - Description: An unexpected error occurred on the server side.
+  - Solution: Retry the request after a short wait.
 
 ## Handling Errors
 

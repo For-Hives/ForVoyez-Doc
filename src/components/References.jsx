@@ -9,6 +9,7 @@ import { BookOpenIcon } from '@/components/icons/BookOpenIcon'
 import { CodeIcon } from '@/components/icons/CodeIcon'
 import { DocumentTextIcon } from '@/components/icons/DocumentTextIcon'
 import { ExclamationCircleIcon } from '@/components/icons/ExclamationCircleIcon'
+import { KeyIcon } from '@/components/icons/KeyIcon'
 import { LinkIcon } from '@/components/icons/LinkIcon'
 
 const references = [
@@ -37,6 +38,20 @@ const references = [
 			squares: [
 				[-1, 2],
 				[1, 3],
+			],
+		},
+	},
+	{
+		href: '/tokens',
+		name: 'API: Tokens',
+		description:
+			'Check an API key and read your credit balance with the /tokens endpoint.',
+		icon: KeyIcon,
+		pattern: {
+			y: 12,
+			squares: [
+				[-1, 1],
+				[1, 2],
 			],
 		},
 	},

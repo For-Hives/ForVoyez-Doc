@@ -13,9 +13,12 @@ This section provides a comprehensive reference for the ForVoyez API. You'll fin
 
 ## Complete Reference of Endpoints
 
-The ForVoyez API offers the following endpoints:
+The ForVoyez API offers the following endpoints, both under `https://forvoyez.com/api/`:
 
-- `POST /describe`: Generate metadata for an image.
+- `POST /describe`: Generate metadata for an image. Each successful request uses 1 credit.
+- `GET /tokens`: Check an API key and read the credit balance of its account. It uses no credit; the WordPress plugin calls it to check your key and show your remaining credits.
+
+Both endpoints authenticate with your API key in the `Authorization: Bearer YOUR_API_KEY` header. Call them from your server, never from browser code: see [Authentication](/authentication).
 
 For detailed information about each endpoint, including the required parameters, request examples, and response formats, refer to the individual endpoint documentation:
 
@@ -23,11 +26,14 @@ For detailed information about each endpoint, including the required parameters,
 	<Button href="/describe" variant="text" arrow="right">
 		/describe
 	</Button>
+	<Button href="/tokens" variant="text" arrow="right">
+		/tokens
+	</Button>
 </div>
 
 ## Details of Parameters and Responses
 
-Each endpoint in the ForVoyez API requires specific parameters to be included in the request. These parameters are provided as form fields in a multipart/form-data request.
+The `/describe` endpoint takes its parameters as form fields in a `multipart/form-data` request. The `/tokens` endpoint takes no parameters: the API key in the `Authorization` header is enough.
 
 The API responses are returned in JSON format and contain the requested data or relevant error information. The response format varies based on the endpoint and the success or failure of the request.
 
@@ -69,7 +75,9 @@ For more details on the parameters and responses for each endpoint, refer to the
 
 If a request to the ForVoyez API fails, you'll receive an appropriate HTTP status code along with a JSON error body. Its `error` field provides more information about the cause of the error and helps you troubleshoot the issue.
 
-Here are the common error codes you might encounter:
+The API checks the API key and your credit balance before it reads the request body: a request with an invalid key gets a `401` even when its image is too large or missing.
+
+Here are the error codes of the `/describe` endpoint:
 
 - `400 Bad Request`: The request is invalid or missing required parameters.
 - `400 Bad Request, the body must be multipart/form-data`: The request body is not a `multipart/form-data` form (let your HTTP client set the `Content-Type` header).
@@ -82,7 +90,7 @@ Here are the common error codes you might encounter:
 - `401 Unauthorized, invalid token`: The provided API key is invalid, has expired, or has been deleted from the dashboard.
 - `401 Unauthorized, no credit left`: The user has insufficient credits to make the request.
 
-- `413 Image too large: the maximum is 10 MB`: The image is over 10 MB, or the request body is over 11 MB.
+- `413 Image too large: the maximum is 10 MB`: The image is over 10 MB, or the request body is over 11 MB. A body announced as larger than 11 MB by its `Content-Length` header is refused before it is read.
 
 - `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed) or another unexpected error occurred on the server side. No credit is used, so you can retry the request.
 - `500 Image processing failed: ...`: The image is a supported format but could not be decoded (truncated or corrupt file).
@@ -94,6 +102,8 @@ The error response is sent with `Content-Type: application/json` and an `error` 
 	"error": "Bad Request, No file uploaded"
 }
 ```
+
+The `/tokens` endpoint has its own messages: `401` with `Missing or invalid authentication token`, `Invalid or expired token`, or `Unauthorized, invalid token`, `400 Malformed token: missing userId`, `404 User not found`, and `500 Server error`. See [/tokens](/tokens#response).
 
 For a complete list of error codes and their meanings, refer to the [Error Codes](/error-codes) documentation.
 

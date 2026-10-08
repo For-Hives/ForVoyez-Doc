@@ -204,6 +204,7 @@ export const navigation = [
 		links: [
 			{ title: 'API Documentation', href: '/api-documentation' },
 			{ title: 'API: Describe', href: '/describe' },
+			{ title: 'API: Tokens', href: '/tokens' },
 			{ title: 'Code Examples', href: '/code-examples' },
 			{ title: 'Code errors', href: '/error-codes' },
 			{ title: 'Additional Resources', href: '/additional-resources' },
