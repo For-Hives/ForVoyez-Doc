@@ -236,7 +236,9 @@ describe('pricing', () => {
 			/1080p|4K|Full HD|Ultra HD/i,
 			/(Basic|Advanced) metadata/i,
 			/(Limited|Full|Priority) access to (the )?playground/i,
-			/24\/7|SLA|Priority support|beta features|Dedicated hosting/i,
+			/24\/7|Priority support|beta features|Dedicated hosting/i,
+			// case-sensitive: /sla/i would match the `text-slate-*` classes
+			/\bSLAs?\b/,
 		]) {
 			assert.ok(!claim.test(pricing), `pricing still promises ${claim}`)
 		}
