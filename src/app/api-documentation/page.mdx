@@ -37,7 +37,6 @@ Here's an example of a request and response for the `/describe` endpoint:
 ```bash {{title: 'cURL Request'}}
 curl -X POST \
 -H "Authorization: Bearer YOUR_API_KEY" \
--H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
 -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
 -F "keywords=playful,kittens" \

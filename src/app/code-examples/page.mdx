@@ -14,7 +14,6 @@ To help you get started with integrating the ForVoyez API into your application,
 ```bash {{ title: 'cURL' }}
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
   -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
   -F "keywords=playful,kittens" \
@@ -123,7 +122,6 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 $result = curl_exec($ch);
-curl_close($ch);
 
 echo $result;
 

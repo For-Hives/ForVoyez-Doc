@@ -7,7 +7,7 @@ To effectively integrate the ForVoyez API into your application, it's essential 
 When making requests to the ForVoyez API, you'll need to send a `POST` request to the `/describe` endpoint with the following format:
 
 - The `Authorization` header should include your API key as a Bearer token.
-- The `Content-Type` header should be set to `multipart/form-data`.
+- The request body must be `multipart/form-data`. Let your HTTP client set the `Content-Type` header, which includes the form boundary: do not set it yourself.
 - The request body should include the following form fields:
   - `image`: The image file you want to generate metadata for (required)
   - `schema`: A JSON string mapping each output field to a description (optional)
@@ -20,7 +20,6 @@ Here's an example request using cURL and JavaScript:
 ```bash
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
   -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
   -F "keywords=playful,kittens,flowers" \

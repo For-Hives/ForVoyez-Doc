@@ -20,7 +20,7 @@ POST https://forvoyez.com/api/describe
 ### Headers
 
 - `Authorization` (required): The authentication token (API key) to authorize the request. The token should be prefixed with `Bearer `.
-- `Content-Type` (required): The content type of the request body. It should be set to `multipart/form-data`.
+- `Content-Type`: `multipart/form-data` with a boundary. Your HTTP client sets this header for you when you send a form (cURL `-F`, `FormData` in JavaScript, `files=` in Python requests): do not set it yourself, or the boundary is lost and the API cannot read the request.
 
 ### Request Body
 
@@ -37,7 +37,6 @@ The request body should be in `multipart/form-data` format and include the follo
 ```bash
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
   -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
   -F "keywords=playful,kittens" \
@@ -124,7 +123,6 @@ Here are a few examples of how to use the `/describe` endpoint with different pr
 ```bash {{title: 'cURL'}}
 curl -X POST \
 -H "Authorization: Bearer YOUR_API_KEY" \
--H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
 -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
 -F "keywords=playful,kittens" \
