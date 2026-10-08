@@ -33,7 +33,7 @@ const dashboardSupportItems = [
 		href: '/usage-tracking',
 		name: 'Usage Tracking',
 		description:
-			'Track your API usage statistics, quota limits, and receive alerts and notifications.',
+			'See your credit balance, your remaining credits over time and your usage by API key.',
 		icon: GaugeIcon,
 		pattern: {
 			y: -6,

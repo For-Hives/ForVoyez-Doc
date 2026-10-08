@@ -2,88 +2,40 @@ import { Button } from '@/components/Button'
 export const metadata = {
 	title: 'Usage Tracking',
 	description:
-		'Track your ForVoyez API usage statistics, monitor quotas and limits, and receive alerts and notifications.',
+		'See your ForVoyez credit balance, your remaining credits over time and your usage by API key in the dashboard.',
 }
 
 # Usage Tracking
 
-Monitoring your API usage is essential to ensure you stay within your subscription limits and optimize your usage. The ForVoyez API provides tools to track your usage statistics, monitor quotas and limits, and receive alerts and notifications.
+The Usage page of your dashboard shows how many credits you have left and how you have been using them. Each successful request uses 1 credit; a request that fails is not charged and does not appear on this page.
 
-## API Usage Statistics
+## The Usage Page
 
-To view your API usage statistics:
+To open it:
 
 1. Sign in to your ForVoyez account and navigate to the [Dashboard](https://forvoyez.com/app).
-2. Click on the "Usage" tab in the sidebar.
-3. On the usage tracking page, you'll find:
+2. Click on "Usage" in the sidebar.
 
-- Total API requests made
-- Usage history and trends
-- Top consuming applications or integrations
+The page has three parts:
 
-Use these insights to understand your API usage patterns, identify peak usage periods, and make informed decisions about your subscription plan.
+- **Credits left**: your current credit balance.
+- **Remaining Credits Over Time**: a chart of your balance over time, with one point per hour in which your balance changed.
+- **Usage by Token**: a bar chart with one bar per API key, labelled with the name you gave the key, showing how many times each key was used. Requests made from the Playground, without an API key, appear under "Playground". Use it to see which of your integrations uses the most credits.
 
 <div className="not-prose">
 	<Button href="https://forvoyez.com/app/usage" variant="text" arrow="right">
-		View Usage Statistics
+		Open the Usage page
 	</Button>
 </div>
 
-## Quota and Limit Tracking
+## Running Low on Credits
 
-To monitor your API usage against your subscription quotas and limits:
+ForVoyez does not send usage alerts or emails. Check the Usage page from time to time, and handle the API's answer when your balance is empty: it returns `401 Unauthorized` with the body `{"error": "Unauthorized, no credit left"}`, and no credit is charged.
 
-1. Sign in to your ForVoyez account and navigate to the [Dashboard](https://forvoyez.com/app).
-2. Click on the "Usage" tab in the sidebar.
-3. On the usage tracking page, you'll see:
-
-- Your current subscription plan and its limits
-- Visual indicators of approaching or exceeded limits
-- Link to upgrade your subscription for higher limits
-
-Keep an eye on your quota and limit tracking to avoid any disruptions in service due to exceeding your limits.
-
-<div className="not-prose">
-	<Button
-		href="https://forvoyez.com/app/usage#quota"
-		variant="text"
-		arrow="right"
-	>
-		Monitor Quotas and Limits
-	</Button>
-</div>
-
-## Alerts and Notifications
-
-ForVoyez provides alerts and notifications to keep you informed about your API usage and help you stay within your limits. You can configure alerts and notifications settings to receive:
-
-- Email notifications when you reach a certain percentage of your quota
-- Daily or weekly usage summary reports
-
-To set up alerts and notifications:
-
-1. Sign in to your ForVoyez account and navigate to the [Dashboard](https://forvoyez.com/app).
-2. Click on the "Usage" tab in the sidebar.
-3. Scroll down to the "Alerts and Notifications" section.
-4. Configure your desired alerts and notification channels.
-5. Save your settings.
-
-Stay proactive and informed about your API usage with timely alerts and notifications.
-
-<div className="not-prose">
-	<Button
-		href="https://forvoyez.com/app/usage#alerts"
-		variant="text"
-		arrow="right"
-	>
-		Set Up Alerts and Notifications
-	</Button>
-</div>
+To add credits, renew or upgrade your subscription, or buy a credit pack from the [Plans](https://forvoyez.com/app/plans) page. See [Limits and Quotas](/limits-and-quotas) for details.
 
 ## Next Steps
 
 - Review your [Subscription and Billing](/account-management#subscription-management) details to ensure you have the appropriate plan for your usage needs
 - Explore the [Online Tools](/online-tools) available in the dashboard to optimize your API integration
 - Contact our [Support Team](https://forvoyez.com/contact) if you have any questions or concerns about your API usage
-
-By actively monitoring your usage statistics, quotas, and limits, and leveraging alerts and notifications, you can ensure a smooth and uninterrupted experience with the ForVoyez API.
