@@ -46,7 +46,7 @@ To run the ForVoyez documentation project locally, follow these steps:
 
 5. Open your browser and visit `http://localhost:3000` to view the documentation.
 
-Other scripts: `pnpm lint` (ESLint), `pnpm format:check` (Prettier), `pnpm build` and `pnpm start`.
+Other scripts: `pnpm lint` (ESLint), `pnpm format:check` (Prettier), `pnpm test` (content checks of the pages in `tests/`: code examples, links to the app, prices, error bodies; it syntax-checks the examples with bash, Node, Python 3 and PHP when they are installed), `pnpm build` and `pnpm start`.
 
 ## Prerequisites
 
@@ -77,7 +77,7 @@ If you encounter any issues or have questions about the ForVoyez documentation, 
 ## When change the pricing - quota
 
 - Change the numbers in `src/app/limits-and-quotas/page.mdx`
-- Change the pricing in `src/app/pricing/page.mdx`
+- Change the pricing in `src/app/pricing/page.mdx`, including the yearly price and saving on the Starter and Growth cards (`pnpm test` checks the saving against the prices)
 - Change the pricing in lemonsqueezy
 - Call `/api/sync` on the app with the `x-sync-secret` header set to the app's `SYNC_SECRET` environment variable (requests without the right header are refused, and the route answers `404` when `SYNC_SECRET` is not set on the app; the old `?true=true` query is no longer needed):
 
