@@ -1,4 +1,4 @@
-import { Logo, ScreenSchema } from '../../components/icons/ScreenSchema'
+import { ScreenSchema } from '../../components/icons/ScreenSchema'
 import { ScreenConfiguration } from '../../components/icons/ScreenConfiguration'
 import { ScreenDashboard } from '../../components/icons/ScreenDashboard'
 import { ScreenManage } from '../../components/icons/ScreenManage'
@@ -6,96 +6,126 @@ import { ScreenManage } from '../../components/icons/ScreenManage'
 export const metadata = {
 	title: 'WordPress Plugin - ForVoyez Auto Alt Text for Images',
 	description:
-		'Learn how to use the ForVoyez Auto Alt Text for Images WordPress plugin to automatically generate SEO-optimized alt text for your images.',
+		'Install and configure the Auto Alt Text for Images WordPress plugin to generate SEO-optimized alt texts, titles, and captions for your images with ForVoyez.',
 }
 
-# WordPress Plugin: ForVoyez Auto Alt Text for Images
+# WordPress Plugin: Auto Alt Text for Images
 
 ## Introduction
 
-ForVoyez Auto Alt Text for Images is a powerful WordPress plugin that uses artificial intelligence to automatically generate SEO-optimized alternative texts (alt text) for your images. This plugin enhances your website's accessibility and search engine optimization effortlessly.
+Auto Alt Text for Images is the ForVoyez plugin for WordPress. It sends the images of your media library to the ForVoyez API and saves the generated alternative text (alt text), title, and caption on each image, to improve your website's accessibility and search engine optimization.
+
+The plugin is free and published on WordPress.org: [wordpress.org/plugins/auto-alt-text-for-images](https://wordpress.org/plugins/auto-alt-text-for-images/). Each analysed image uses 1 credit from your ForVoyez account.
 
 <ScreenSchema />
 
 ## Key Features
 
-- 🤖 AI-powered alt text generation
-- 🖼️ Bulk processing for existing images
-- 🔄 Automatic processing for new uploads
-- 🎨 Customizable output formats
-- 🌐 Multi-language support
-- 🧰 User-friendly WordPress admin interface
+- AI-generated alt text, title, and caption for each image
+- Analysis of a single image from the media library
+- Bulk analysis of existing images, from the plugin's Manage Images tab or from the Media Library bulk actions
+- Optional automatic analysis of new uploads
+- Output in the language of your choice, with an optional context sent with every image
+- Your remaining ForVoyez credits shown in the plugin
+
+## Requirements
+
+- WordPress 5.6 or later and PHP 8.0 or later
+- A ForVoyez account with credits, and an API key (see [Configuration](#configuration))
+- Images in JPEG, PNG, WebP, or GIF format, up to 10 MB each: the API refuses other formats, such as AVIF or HEIC, and larger files
 
 ## Installation
 
-1. Download the plugin zip file on GitHub (or through the workplace plugin marketplace)
+1. In your WordPress admin area, go to **Plugins > Add New Plugin**.
+2. Search for **Auto Alt Text for Images**.
+3. Click **Install Now** on the plugin by ForVoyez, then **Activate**.
 
-```sh
-https://github.com/For-Hives/ForVoyez-Wordpress-plugin/releases/
-```
+The plugin adds an **Auto Alt Text** menu to your WordPress admin area, with three tabs: **Dashboard**, **Manage Images**, and **Configuration**.
 
-2. Activate the plugin through the WordPress admin interface. (drop the zip file on the plugin page in your wordpress)
+You can also download the zip file from the [plugin page on WordPress.org](https://wordpress.org/plugins/auto-alt-text-for-images/) and install it from **Plugins > Add New Plugin > Upload Plugin**. The source code is on [GitHub](https://github.com/For-Hives/ForVoyez-Wordpress-plugin).
 
 ## Configuration
 
-1. Go to the ForVoyez Auto Alt Text settings page in your WordPress admin area.
+### Getting an API Key
 
-2. Enter your ForVoyez API key.
+If you don't have an API key yet:
+
+1. Visit the [ForVoyez signup page](https://forvoyez.com/sign-up) to create an account, and choose a plan or a credit pack on the [Plans](https://forvoyez.com/app/plans) page.
+2. Open the [API Keys](https://forvoyez.com/app/tokens) page of your dashboard and click **Add token**.
+3. Give the key a name (for example the name of your website) and an expiration date, then click **Create Token**.
+4. Copy the key: it is displayed only once.
+
+### Saving the API Key in WordPress
+
+1. Go to **Auto Alt Text > Configuration**.
+2. Paste the key in the **API Key** field of the **API Configuration** section.
+3. Click **Save API Key**. The plugin refuses a value that does not have the format of a ForVoyez API key, such as a password filled in by your browser.
 
 <ScreenConfiguration />
 
-To obtain an API key if you haven't one:
+The **Dashboard** tab then shows your **Remaining Credits**. If the key is wrong, deleted, or expired, it shows the error returned by the API instead, for example `Unauthorized, invalid token`: create a new key and save it again.
 
-- Visit the [ForVoyez signup page](https://forvoyez.com/sign-up) to create an account.
-- Once logged in, navigate to your [ForVoyez dashboard](https://forvoyez.com/app).
-- Generate an API key in the API section of your dashboard.
-- Copy the API key and paste it into the provided field.
+### Additional Settings
 
-3. Click "Save API Key" to store your settings.
+The **Additional Configuration (optional)** section of the **Configuration** tab has three settings:
 
-4. Configure any additional settings according to your preferences.
+- **Context**: a text sent with every image to guide the generation, for example the topic of your website.
+- **Language**: the language of the generated texts, as a language code (`en`, `fr`, `pt-BR`...) or a language name. When it is empty, the texts are in English.
+- **Enable automatic image analysis on upload**: when this switch is on, every new image you upload is analysed automatically. It is off by default, and it is saved as soon as you change it.
+
+Click **Save Additional Settings** to save the context and the language.
 
 ## Usage
 
 ### Dashboard
 
-The dashboard gives you a quick overview of your image status:
+The **Dashboard** tab gives you an overview of your media library:
 
 <ScreenDashboard />
 
-- **Total Images**: Total number of images in your media library.
-- **Images Completed**: Number of images that have generated alt text.
-- **Images Without alt/caption**: Number of images still requiring processing.
+- **Total Images**: the number of items in your media library.
+- **Images Completed**: the number of images that have an alt text.
+- **Images Without alt / caption**: the number of images that miss an alt text, a title, or a caption.
+- **Automatic Image Analysis**: whether automatic analysis of new uploads is enabled.
+- **ForVoyez Credits**: your remaining ForVoyez credits.
 
-### Managing Images
+### Manage Images
 
-1. Go to the "Manage Images" tab in the plugin interface.
+The **Manage Images** tab shows your images in a grid, with a legend for the missing metadata (Missing Alt Text, Missing title, Missing caption, All complete).
 
 <ScreenManage />
 
-2. You'll see a grid view of your images with visual indicators for missing metadata.
+To analyse images from this tab:
 
-3. To process images:
+- Click **Analyse** under an image to analyse only that image, or **Details** to see its current alt text, title, and caption.
+- Select images with their checkboxes (or **Select All**), then click **Analyze Selected Images**.
+- Or click one of the buttons at the top: **Analyze all missing alt/caption/title images**, **Analyze all missing alt images**, or **Analyze all images**. Each button shows the number of images it will analyse.
 
-- Select the images you want to process.
-- Choose "Generate Alt Text" from the bulk actions dropdown.
-- Click "Apply" to start the process.
+Before a bulk analysis starts, a confirmation shows its cost in credits (1 credit per image) and your remaining credits.
 
-4. Once processing is complete, you can view the results
+### Media Library
 
-The plugin will generate high-quality titles, alt texts, and captions for a variety of image types.
+You can also analyse images from **Media > Library**:
 
-5. You can manually edit any generated text as needed.
+- In the list view, select images, choose **Analyze with ForVoyez** in the **Bulk actions** menu, and click **Apply**. A notice shows the number of images and your credits: click **Start Analysis** to run it.
+- In the details of an image, click the **Analyze with ForVoyez** button.
 
-### Automatic Processing
+### Automatic Analysis
 
-The plugin will automatically process new images as they are uploaded. You can adjust this behavior in the plugin settings.
+When **Enable automatic image analysis on upload** is on, the plugin analyses each new image shortly after the upload, in the background (with WP-Cron). No image is sent to ForVoyez while no API key is saved.
+
+### Results
+
+For each analysed image, the plugin saves the generated alt text in the image's **Alternative Text** field, the title in its **Title**, and the caption in its **Caption**. An empty value never replaces existing text, and you can edit any generated text by hand in the media library.
+
+When an analysis fails, the plugin shows the error message returned by the API, and the image keeps its current texts. The most common ones are `Unauthorized, no credit left` (buy credits on the [Plans](https://forvoyez.com/app/plans) page), `Bad Request, Invalid image file` (the image is not a JPEG, PNG, WebP, or GIF file), and `Image too large: the maximum is 10 MB`. See [Error Codes](/error-codes) for the others. A failed analysis does not use a credit.
 
 ## Support
 
 If you encounter any issues or have questions, please don't hesitate to:
 
 - Check our [full documentation](https://doc.forvoyez.com)
+- Ask on the [plugin's support forum](https://wordpress.org/support/plugin/auto-alt-text-for-images/) on WordPress.org
 - Contact our support team at support@forvoyez.com
 
 ---
