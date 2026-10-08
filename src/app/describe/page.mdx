@@ -20,17 +20,17 @@ POST https://forvoyez.com/api/describe
 ### Headers
 
 - `Authorization` (required): The authentication token (API key) to authorize the request. The token should be prefixed with `Bearer `.
-- `Content-Type`: `multipart/form-data` with a boundary. Your HTTP client sets this header for you when you send a form (cURL `-F`, `FormData` in JavaScript, `files=` in Python requests): do not set it yourself, or the boundary is lost and the API cannot read the request.
+- `Content-Type`: `multipart/form-data` with a boundary. Your HTTP client sets this header for you when you send a form (cURL `-F`, `FormData` in JavaScript, `files=` in Python requests): do not set it yourself, or the boundary is lost and the API answers `400 Bad Request, the body must be multipart/form-data`.
 
 ### Request Body
 
 The request body should be in `multipart/form-data` format and include the following fields:
 
-- `image` (required): The image file for which you want to generate metadata. Supported image formats are JPEG, JPG, PNG, WebP, and GIF, up to 10 MB.
+- `image` (required): The image file for which you want to generate metadata, up to 10 MB. Supported image formats are JPEG, PNG, WebP, and GIF. The API detects the format from the file content, so the file name and the content type of the form part do not matter (a part sent as `application/octet-stream` works).
 - `schema` (optional): A JSON string with a flat object that maps each output field to a short description of what to generate, with at most 20 fields. See [Schemas](#schemas) below.
 - `keywords` (optional): A comma-separated list of keywords to assist in generating more accurate metadata. Only the first 1,000 characters are used.
 - `context` (optional): Additional context or description to assist in generating more accurate metadata. Only the first 1,000 characters are used.
-- `language` (optional): A string specifying the desired language for the metadata output, up to 64 characters. If not provided, the default is English ('en').
+- `language` (optional): The language of the metadata output, as a language code (`en`, `fr`, `it`, `pt-BR`, `zh-TW`...) or a language name (`French`, `Brazilian Portuguese`...), up to 64 characters. If not provided, the default is English (`en`).
 
 ### Example Request
 
@@ -61,7 +61,7 @@ If the request is successful, the API will return a `200 OK` status and a flat J
 
 ### Error Responses
 
-If the request is unsuccessful, the API will return an appropriate HTTP status code along with a JSON body (`Content-Type: application/json`) whose `error` field contains a human-readable message:
+If the request is unsuccessful, the API returns the HTTP status code of the error and a JSON body (`Content-Type: application/json`) whose `error` field contains a human-readable message:
 
 ```json
 {
@@ -69,19 +69,34 @@ If the request is unsuccessful, the API will return an appropriate HTTP status c
 }
 ```
 
-Here are the possible error responses:
+Here are the possible error responses, with an example body for each:
 
 - `400 Bad Request`
+  - `Bad Request, the body must be multipart/form-data`: The request body is not a `multipart/form-data` form, or its `Content-Type` header was set by hand without the boundary.
+    - Body: `{"error": "Bad Request, the body must be multipart/form-data"}`
   - `Bad Request, No file uploaded`: The `image` field is missing in the request.
-  - `Bad Request, Invalid image file`: The uploaded file is not a JPEG, PNG, WebP, or GIF image.
-  - `Invalid schema: ...`: The `schema` is over the [schema limits](/data-schemas#schema-validation): more than 20 fields, a field name longer than 64 characters, a description longer than 1,000 characters, or a field named `__proto__`. The rest of the message names the limit, for example `Invalid schema: at most 20 fields are allowed`.
+    - Body: `{"error": "Bad Request, No file uploaded"}`
+  - `Bad Request, Invalid image file`: The uploaded file is not a JPEG, PNG, WebP, or GIF image. The format is detected from the file content, so a renamed file of another type gets this error.
+    - Body: `{"error": "Bad Request, Invalid image file"}`
+  - `Invalid schema: ...`: The `schema` is over the [schema limits](/data-schemas#schema-validation): more than 20 fields, a field name longer than 64 characters, a description longer than 1,000 characters, or a field named `__proto__`. The rest of the message names the limit.
+    - Body: `{"error": "Invalid schema: at most 20 fields are allowed"}`
+  - `Invalid schema: the requested fields need a longer answer than the API can return ...`: The schema asks for more text than one answer can hold (about 1,500 words for all fields together).
+    - Body: `{"error": "Invalid schema: the requested fields need a longer answer than the API can return (about 1,500 words for all fields together), ask for fewer or shorter fields"}`
 
 - `401 Unauthorized`
-  - `Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
+  - `Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request, or it does not start with `Bearer `.
+    - Body: `{"error": "Unauthorized, missing Authorization header"}`
   - `Unauthorized, invalid token`: The provided API key is invalid, has expired, or has been deleted from the dashboard.
-  - `Unauthorized, no credit left`: The user has insufficient credits to make the request.
+    - Body: `{"error": "Unauthorized, invalid token"}`
+  - `Unauthorized, no credit left`: Your credit balance is empty.
+    - Body: `{"error": "Unauthorized, no credit left"}`
 
-- `500 Internal Server Error`: An unexpected error occurred on the server side, or the image could not be processed. An image larger than 10 MB also returns this status: the `error` message is then usually `Image processing failed: Image size exceeds the maximum limit of 10 MB`, but it can be `Internal Server Error` for much larger uploads.
+- `413 Payload Too Large`: The image is over 10 MB, or the request body is over 11 MB.
+  - Body: `{"error": "Image too large: the maximum is 10 MB"}`
+
+- `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed or did not answer in time) or another unexpected error occurred. No credit is used, so you can retry the request.
+  - Body: `{"error": "Internal Server Error"}`
+  - A JPEG, PNG, WebP, or GIF file that cannot be decoded (truncated or corrupt) also gets `500`, with a message that starts with `Image processing failed: ` and gives the cause.
 
 For more details on error codes and messages, refer to the [Error Codes](/error-codes) documentation.
 
@@ -93,7 +108,7 @@ If you don't have an API key yet, sign up for a ForVoyez account and obtain your
 
 ## Credits
 
-Each successful request to the `/describe` endpoint uses 1 credit from your balance. A request that fails does not use any credit. When your balance is empty, the API returns `401 Unauthorized` with the message `Unauthorized, no credit left`.
+Each successful request to the `/describe` endpoint uses 1 credit from your balance. A request that fails does not use any credit, whatever the error, including a `500` when the metadata could not be generated. When your balance is empty, the API returns `401 Unauthorized` with the message `Unauthorized, no credit left`.
 
 See [Limits and Quotas](/limits-and-quotas) to learn how credits are added to your balance.
 
@@ -112,7 +127,7 @@ Here's an example schema:
 }
 ```
 
-If no schema is provided, the API will use a default schema that returns `title`, `alternativeText`, and `caption`. A schema can have at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters; a larger schema is rejected with `400 Bad Request`. See [Data Schemas](/data-schemas) for more details.
+If no schema is provided, the API will use a default schema that returns `title`, `alternativeText`, and `caption`. A schema can have at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters; a larger schema is rejected with `400 Bad Request`. All fields together must also fit in one answer of about 1,500 words: a schema that asks for more is rejected with `400 Bad Request` and no credit is used. See [Data Schemas](/data-schemas) for more details.
 
 ## Examples
 

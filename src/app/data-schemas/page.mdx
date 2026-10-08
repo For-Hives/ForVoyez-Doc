@@ -134,6 +134,14 @@ A schema over these limits is rejected with `400 Bad Request` and no credit is u
 }
 ```
 
+All the fields of one answer must also fit in about 1,500 words. A schema that asks for more, for example many fields that each ask for several paragraphs, is rejected with `400 Bad Request` and no credit is used:
+
+```json
+{
+	"error": "Invalid schema: the requested fields need a longer answer than the API can return (about 1,500 words for all fields together), ask for fewer or shorter fields"
+}
+```
+
 Test your schema in the [API Playground](https://forvoyez.com/app/playground) before using it in production.
 
 <div className="not-prose">

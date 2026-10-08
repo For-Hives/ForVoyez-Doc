@@ -72,16 +72,20 @@ If a request to the ForVoyez API fails, you'll receive an appropriate HTTP statu
 Here are the common error codes you might encounter:
 
 - `400 Bad Request`: The request is invalid or missing required parameters.
+- `400 Bad Request, the body must be multipart/form-data`: The request body is not a `multipart/form-data` form (let your HTTP client set the `Content-Type` header).
 - `400 Bad Request, No file uploaded`: The `image` parameter is missing in the request.
-- `400 Bad Request, Invalid image file`: The uploaded file is not a JPEG, PNG, WebP, or GIF image.
-- `400 Invalid schema: ...`: The `schema` has more than 20 fields, a field name longer than 64 characters, a description longer than 1,000 characters, or a field named `__proto__` (see [Data Schemas](/data-schemas#schema-validation)).
+- `400 Bad Request, Invalid image file`: The uploaded file is not a JPEG, PNG, WebP, or GIF image (the format is detected from the file content).
+- `400 Invalid schema: ...`: The `schema` has more than 20 fields, a field name longer than 64 characters, a description longer than 1,000 characters, or a field named `__proto__` (see [Data Schemas](/data-schemas#schema-validation)), or it asks for a longer answer than the API can return (about 1,500 words for all fields together).
 
 - `401 Unauthorized`: Authentication failed.
 - `401 Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
 - `401 Unauthorized, invalid token`: The provided API key is invalid, has expired, or has been deleted from the dashboard.
 - `401 Unauthorized, no credit left`: The user has insufficient credits to make the request.
 
-- `500 Internal Server Error`: An unexpected error occurred on the server side, or the image could not be processed (for example, when it is larger than 10 MB, in which case the message is `Image processing failed: ...` or, for much larger uploads, `Internal Server Error`).
+- `413 Image too large: the maximum is 10 MB`: The image is over 10 MB, or the request body is over 11 MB.
+
+- `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed) or another unexpected error occurred on the server side. No credit is used, so you can retry the request.
+- `500 Image processing failed: ...`: The image is a supported format but could not be decoded (truncated or corrupt file).
 
 The error response is sent with `Content-Type: application/json` and an `error` field with more details. For example, a request without an image returns `400 Bad Request` with this body:
 
