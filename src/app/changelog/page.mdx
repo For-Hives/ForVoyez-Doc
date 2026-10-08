@@ -8,7 +8,7 @@ export const metadata = {
 
 The ForVoyez API is continuously evolving to provide you with new features, enhancements, and improvements. This changelog details the latest changes, updates, and bug fixes to help you stay informed about the API's development.
 
-## Version 1.3.0 (2026-10-07)
+## Version 1.3.0 (2026-10-08)
 
 This update makes API errors easier to handle, strengthens API key security, and upgrades metadata generation. The request fields and the format of successful responses are unchanged, except for an `alt_text` field added when no `schema` is sent:
 
@@ -24,7 +24,7 @@ This update makes API errors easier to handle, strengthens API key security, and
 - Immediate API key revocation
   - Deleting an API key in the dashboard now revokes it immediately
   - Requests made with a deleted or expired key are rejected with `401 Unauthorized, invalid token`
-  - The account endpoint used by the WordPress plugin to show your credits (`GET /api/tokens`) now applies the same API key checks, so it rejects deleted keys too
+  - The account endpoint used by the WordPress plugin to show your credits ([`GET /api/tokens`](/tokens)) now applies the same API key checks, so it rejects deleted keys too, with `401` and `{"error": "Unauthorized, invalid token"}`
 - Single-call generation on a newer model
   - Metadata is now generated in a single call to a newer AI model, instead of a chain of several calls
   - Same output fields as before: `title`, `alternativeText`, and `caption` by default, or exactly the keys of your `schema`, every value as a string
@@ -44,6 +44,11 @@ This update makes API errors easier to handle, strengthens API key security, and
   - Usage Tracking describes the Usage page as it is (credit balance, remaining credits over time, usage by API key); the alerts and email notifications it described do not exist
   - The code examples no longer set the `Content-Type` header by hand: your HTTP client adds it with the multipart boundary
   - Removed the rate limiting (`429`) and `Invalid language` errors, which the API does not return
+  - New [/tokens](/tokens) page: `GET /api/tokens` checks an API key and returns the credit balance of its account without using a credit, with its response fields and its error messages (also listed in Error Codes)
+  - The JavaScript examples now run on your server with Node.js 20 or later and read the API key from an environment variable, instead of calling the API from a web page with the key in the code
+  - Limits and Quotas lists the limits of a single request (10 MB image, 11 MB body, formats, schema and text lengths, 25-second generation limit), and /describe gives the order in which a request is checked
+  - The WordPress Plugin page describes the current plugin: installation from WordPress.org, the Configuration tab, and the Analyze with ForVoyez and Analyze Selected Images actions
+  - The Online Tools page describes the Playground with its keywords and language fields, and the home page no longer mentions a JSON schema generator and a request validator, which do not exist
 
 ## Version 1.2.0 (2024-10-15)
 
