@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # 22: Coolify/Nixpacks runtime (pinned by .nvmrc), 24: Docker image runtime
+        # 24: Coolify/Nixpacks (pinned by .nvmrc) and Docker image runtime, 22: oldest supported
         node-version: [22, 24]
     steps:
       - name: Checkout code
@@ -31,6 +31,25 @@ jobs:
         run: pnpm test
       - name: Build
         run: pnpm build
+
+  nixpacks-install:
+    # Production (Coolify, Nixpacks 1.41.0) installs with corepack 0.24.1 on the
+    # Node major from .nvmrc. Replay that path so a package manager it cannot
+    # run (e.g. pnpm 11+) fails here instead of on the next deploy.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Setup Node.js (version from .nvmrc)
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Install like Nixpacks (corepack 0.24.1)
+        run: |
+          npm install -g corepack@0.24.1
+          corepack enable
+          pnpm --version
+          pnpm i --frozen-lockfile
 
   docker:
     runs-on: ubuntu-latest
