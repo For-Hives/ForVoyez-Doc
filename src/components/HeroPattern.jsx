@@ -3,8 +3,8 @@ import { GridPattern } from '@/components/GridPattern'
 export function HeroPattern() {
 	return (
 		<div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
-			<div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem]">
-				<div className="absolute inset-0 bg-gradient-to-r from-forvoyez_orange-300 to-white opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)]">
+			<div className="absolute top-0 left-1/2 -ml-152 h-100 w-325">
+				<div className="absolute inset-0 bg-linear-to-r from-forvoyez_orange-300 to-white mask-[radial-gradient(farthest-side_at_top,white,transparent)] opacity-40">
 					<GridPattern
 						width={72}
 						height={56}
@@ -22,7 +22,7 @@ export function HeroPattern() {
 				<svg
 					viewBox="0 0 1113 440"
 					aria-hidden="true"
-					className="absolute left-1/2 top-0 ml-[-19rem] w-[69.5625rem] fill-white blur-[26px]"
+					className="absolute top-0 left-1/2 -ml-76 w-278.25 fill-white blur-[26px]"
 				>
 					<path d="M.016 439.5s-9.5-300 434-300S882.516 20 882.516 20V0h230.004v439.5H.016Z" />
 				</svg>

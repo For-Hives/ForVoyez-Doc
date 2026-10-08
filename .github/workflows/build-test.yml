@@ -5,11 +5,38 @@ on:
     branches: ['main']
 
 jobs:
-  build:
+  lint-and-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # 22: Coolify/Nixpacks runtime (pinned by .nvmrc), 24: Docker image runtime
+        node-version: [22, 24]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+      - name: Install pnpm (version from package.json "packageManager")
+        uses: pnpm/action-setup@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Check formatting
+        run: pnpm format:check
+      - name: Test
+        run: pnpm test
+      - name: Build
+        run: pnpm build
+
+  docker:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:

@@ -1,6 +1,6 @@
 'use client'
 
-import { useInView } from 'framer-motion'
+import { useInView } from 'motion/react'
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 
@@ -47,8 +47,8 @@ function Anchor({ id, inView, children }) {
 			className="group text-inherit no-underline hover:text-inherit"
 		>
 			{inView && (
-				<div className="absolute ml-[calc(-1*var(--width))] mt-1 hidden w-[var(--width)] opacity-0 transition [--width:calc(2.625rem+0.5px+50%-min(50%,calc(theme(maxWidth.lg)+theme(spacing.8))))] group-hover:opacity-100 group-focus:opacity-100 md:block lg:z-50 2xl:[--width:theme(spacing.10)]">
-					<div className="group/anchor block h-5 w-5 rounded-lg bg-slate-50 ring-1 ring-inset ring-slate-300 transition hover:ring-slate-500">
+				<div className="absolute mt-1 -ml-(--width) hidden w-(--width) opacity-0 transition [--width:calc(2.625rem+0.5px+50%-min(50%,calc(var(--container-lg)+(--spacing(8)))))] group-hover:opacity-100 group-focus:opacity-100 md:block lg:z-50 2xl:[--width:--spacing(10)]">
+					<div className="group/anchor block h-5 w-5 rounded-lg bg-slate-50 ring-1 ring-slate-300 transition ring-inset hover:ring-slate-500">
 						<AnchorIcon className="h-5 w-5 stroke-slate-500 transition" />
 					</div>
 				</div>
@@ -66,8 +66,8 @@ export function Heading({
 	anchor = true,
 	...props
 }) {
-	level = level ?? 2
-	let Component = `h${level}`
+	let headingLevel = level ?? 2
+	let Component = `h${headingLevel}`
 	let ref = useRef(null)
 	let registerHeading = useSectionStore(s => s.registerHeading)
 
@@ -77,7 +77,7 @@ export function Heading({
 	})
 
 	useEffect(() => {
-		if (level === 2) {
+		if (headingLevel === 2) {
 			registerHeading({ id: props.id, ref, offsetRem: tag || label ? 8 : 6 })
 		}
 	})

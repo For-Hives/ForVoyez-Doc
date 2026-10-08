@@ -14,9 +14,8 @@ To help you get started with integrating the ForVoyez API into your application,
 ```bash {{ title: 'cURL' }}
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+  -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
   -F "keywords=playful,kittens" \
   -F "context=Playful kittens" \
   -F "language=en" \
@@ -34,7 +33,7 @@ files = [
 ]
 
 payload = {
-    'schema': '{"title":"string","alternativeText":"string","caption":"string"}',
+    'schema': '{"title":"A short title for the image","alternativeText":"Alt text for screen readers","caption":"A one-sentence caption"}',
     'keywords': 'playful,kittens',
     'context': 'Playful kittens',
     'language': 'en'
@@ -55,9 +54,9 @@ form.append('image', fileInput.files[0])
 form.append(
 	'schema',
 	JSON.stringify({
-		title: 'string',
-		alternativeText: 'string',
-		caption: 'string',
+		title: 'A short title for the image',
+		alternativeText: 'Alt text for screen readers',
+		caption: 'A one-sentence caption',
 	})
 )
 form.append('keywords', 'playful,kittens')
@@ -90,9 +89,9 @@ $api_key = 'YOUR_API_KEY';
 
 $data = [
     'schema' => json_encode([
-        'title' => 'string',
-        'alternativeText' => 'string',
-        'caption' => 'string'
+        'title' => 'A short title for the image',
+        'alternativeText' => 'Alt text for screen readers',
+        'caption' => 'A one-sentence caption'
     ]),
     'keywords' => 'playful,kittens',
     'context' => 'Playful kittens',
@@ -123,7 +122,6 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 $result = curl_exec($ch);
-curl_close($ch);
 
 echo $result;
 
@@ -155,7 +153,7 @@ These code examples demonstrate how to make a POST request to the `/describe` en
 The request includes the following parameters:
 
 - `image`: The image file (required)
-- `schema`: JSON string specifying the desired output format (optional)
+- `schema`: JSON string with a flat object mapping each output field to a description (optional)
 - `keywords`: Comma-separated list of keywords (optional)
 - `context`: Additional context about the image (optional)
 - `language`: Desired language for the output (optional, defaults to 'en')

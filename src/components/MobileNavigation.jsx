@@ -1,7 +1,7 @@
 'use client'
 
 import { Dialog, Transition } from '@headlessui/react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { usePathname, useSearchParams } from 'next/navigation'
 import {
 	createContext,
@@ -9,7 +9,7 @@ import {
 	Suspense,
 	useContext,
 	useEffect,
-	useRef,
+	useState,
 } from 'react'
 import { create } from 'zustand'
 
@@ -49,8 +49,8 @@ const IsInsideMobileNavigationContext = createContext(false)
 function MobileNavigationDialog({ isOpen, close }) {
 	let pathname = usePathname()
 	let searchParams = useSearchParams()
-	let initialPathname = useRef(pathname).current
-	let initialSearchParams = useRef(searchParams).current
+	let [initialPathname] = useState(pathname)
+	let [initialSearchParams] = useState(searchParams)
 
 	useEffect(() => {
 		if (pathname !== initialPathname || searchParams !== initialSearchParams) {
@@ -89,7 +89,7 @@ function MobileNavigationDialog({ isOpen, close }) {
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<div className="fixed inset-0 top-14 bg-slate-400/20 backdrop-blur-sm" />
+					<div className="fixed inset-0 top-14 bg-slate-400/20 backdrop-blur-xs" />
 				</Transition.Child>
 
 				<Dialog.Panel>
@@ -116,7 +116,7 @@ function MobileNavigationDialog({ isOpen, close }) {
 					>
 						<motion.div
 							layoutScroll
-							className="fixed bottom-0 left-0 top-14 w-full overflow-y-auto bg-white px-4 pb-4 pt-6 shadow-lg shadow-slate-900/10 ring-1 ring-slate-900/7.5 min-[416px]:max-w-sm sm:px-6 sm:pb-10"
+							className="fixed top-14 bottom-0 left-0 w-full overflow-y-auto bg-white px-4 pt-6 pb-4 shadow-lg ring-1 shadow-slate-900/10 ring-slate-900/7.5 min-[416px]:max-w-sm sm:px-6 sm:pb-10"
 						>
 							<Navigation />
 						</motion.div>

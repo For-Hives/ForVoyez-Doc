@@ -11,65 +11,121 @@ export const metadata = {
 
 When making requests to the ForVoyez API, you may encounter various error codes and error messages that indicate the status of your request. This page provides a comprehensive list of the error codes and messages you may receive, along with their descriptions and possible solutions.
 
+## Error Response Format
+
+When an error occurs, the ForVoyez API returns the HTTP status code of the error and a JSON body (`Content-Type: application/json`) with a single `error` field that contains a human-readable message. For example, a request without an `Authorization` header gets `401 Unauthorized` with this body:
+
+```json
+{
+	"error": "Unauthorized, missing Authorization header"
+}
+```
+
+A request that fails never uses a credit, whatever the error.
+
 ## HTTP Status Codes
 
-The ForVoyez API uses standard HTTP status codes to indicate the success or failure of a request. Here are the common status codes you may encounter:
+The ForVoyez API uses standard HTTP status codes to indicate the success or failure of a request:
 
-- `200 OK`: The request was successful.
-- `400 Bad Request`: The request was invalid or cannot be served.
-- `401 Unauthorized`: The request lacks valid authentication credentials.
-- `500 Internal Server Error`: The server encountered an unexpected condition that prevented it from fulfilling the request.
+- `200 OK`: The request was successful. 1 credit is used.
+- `400 Bad Request`: The body is not `multipart/form-data`, the image is missing or is not a JPEG, PNG, WebP, or GIF image, the `schema` is over the schema limits, or the requested fields need a longer answer than the API can return.
+- `401 Unauthorized`: The API key is missing, invalid, expired, or deleted, or your credit balance is empty.
+- `413 Payload Too Large`: The image is over 10 MB, or the request body is over 11 MB.
+- `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed or timed out), the image could not be processed, or another unexpected error occurred on the server side. No credit is used, so you can retry the request.
 
 ## ForVoyez API Error Messages
 
-In addition to the standard HTTP status codes, the ForVoyez API returns specific error messages in the response body to provide more detailed information about the error. These error messages are accompanied by the corresponding HTTP status code.
+Each error message below comes with its status code and the exact JSON body the API returns.
 
-Here are the ForVoyez API error messages you may encounter:
+### 400 Bad Request
 
-- `Unauthorized`
-- Status Code: `401`
-- Description: The request lacks valid authentication credentials.
-- Possible Causes:
-- The `Authorization` header is missing in the request.
-- The provided API key or token is invalid.
-- The user has insufficient credits to make the request.
+- `Bad Request, the body must be multipart/form-data`
+  - Status Code: `400`
+  - Body: `{"error": "Bad Request, the body must be multipart/form-data"}`
+  - Description: The request body cannot be read as `multipart/form-data`: it is JSON, empty, or sent with a `Content-Type: multipart/form-data` header set by hand, without the boundary that separates the form fields.
+  - Solution: Send a form (cURL `-F`, `FormData` in JavaScript, `files=` in Python requests) and let your HTTP client set the `Content-Type` header.
 
-- `No file uploaded`
-- Status Code: `400`
-- Description: The `image` parameter is missing in the request.
-- Solution: Ensure that you are including the `image` parameter in the multipart/form-data request body.
+- `Bad Request, No file uploaded`
+  - Status Code: `400`
+  - Body: `{"error": "Bad Request, No file uploaded"}`
+  - Description: The request has no `image` field.
+  - Solution: Send the image in the `image` field of a `multipart/form-data` request body.
 
-- `Invalid image file`
-- Status Code: `400`
-- Description: The uploaded file is not a valid image format.
-- Solution: Verify that the uploaded file is in one of the supported image formats: JPEG, JPG, PNG, WebP, or GIF.
+- `Bad Request, Invalid image file`
+  - Status Code: `400`
+  - Body: `{"error": "Bad Request, Invalid image file"}`
+  - Description: The `image` field is not a JPEG, PNG, WebP, or GIF image. The API detects the format from the file content, not from the file name or the content type sent with the file: an SVG or TIFF image, or a text file renamed to `photo.jpg`, gets this error, whatever content type it is sent with.
+  - Solution: Convert the image to JPEG, PNG, WebP, or GIF.
 
-- `Invalid schema`
-- Status Code: `400`
-- Description: The provided schema is invalid or malformed.
-- Solution: Ensure that the schema provided in the `data` parameter is valid and follows the expected structure.
+- `Invalid schema: ...` (schema limits)
+  - Status Code: `400`
+  - Body, depending on the limit:
+    - `{"error": "Invalid schema: at most 20 fields are allowed"}`
+    - `{"error": "Invalid schema: field names must be at most 64 characters"}`
+    - `{"error": "Invalid schema: field descriptions must be at most 1000 characters"}`
+    - `{"error": "Invalid schema: \"__proto__\" is not allowed as a field name"}`
+  - Description: The `schema` field is over the schema limits.
+  - Solution: Reduce your schema to at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters. See [Data Schemas](/data-schemas#schema-validation).
+
+- `Invalid schema: the requested fields need a longer answer than the API can return ...` (answer too long)
+  - Status Code: `400`
+  - Body: `{"error": "Invalid schema: the requested fields need a longer answer than the API can return (about 1,500 words for all fields together), ask for fewer or shorter fields"}`
+  - Description: The schema asks for more text than one answer can hold, for example many fields that each ask for several paragraphs. The limit is about 1,500 words for all fields together.
+  - Solution: Ask for fewer fields, or for shorter values in the field descriptions.
+
+### 401 Unauthorized
+
+- `Unauthorized, missing Authorization header`
+  - Status Code: `401`
+  - Body: `{"error": "Unauthorized, missing Authorization header"}`
+  - Description: The `Authorization` header is missing in the request, or it does not start with `Bearer `.
+  - Solution: Send your API key in the `Authorization: Bearer YOUR_API_KEY` header.
+
+- `Unauthorized, invalid token`
+  - Status Code: `401`
+  - Body: `{"error": "Unauthorized, invalid token"}`
+  - Description: The request lacks valid authentication credentials.
+  - Possible Causes:
+    - The provided API key is invalid or malformed.
+    - The API key has passed the expiration date set when it was created.
+    - The API key has been deleted from the dashboard (deleting a key revokes it immediately).
+  - Solution: Create a new API key in the [dashboard](https://forvoyez.com/app/tokens) and update your application.
+
+- `Unauthorized, no credit left`
+  - Status Code: `401`
+  - Body: `{"error": "Unauthorized, no credit left"}`
+  - Description: Your credit balance is empty.
+  - Solution: Wait for your next subscription renewal, upgrade your plan, or buy a credit pack. See [Limits and Quotas](/limits-and-quotas).
+
+### 413 Payload Too Large
+
+- `Image too large: the maximum is 10 MB`
+  - Status Code: `413`
+  - Body: `{"error": "Image too large: the maximum is 10 MB"}`
+  - Description: The image is over 10 MB, or the whole request body is over 11 MB. No credit is used.
+  - Solution: Resize or compress the image to 10 MB or less. The API scales every image down to at most 1,000 pixels on its longest side before analysing it, so a smaller upload gives the same result.
+
+### 500 Internal Server Error
 
 - `Internal Server Error`
-- Status Code: `500`
-- Description: An unexpected error occurred on the server side.
-- Solution: If you encounter this error repeatedly, please contact our support team for assistance.
+  - Status Code: `500`
+  - Body: `{"error": "Internal Server Error"}`
+  - Description: The metadata could not be generated, for example because the AI model failed or did not answer in time, or another unexpected error occurred on the server side. No credit is used.
+  - Solution: Retry the request after a short wait. If you encounter this error repeatedly, please contact our support team for assistance.
 
-## Error Response Format
-
-When an error occurs, the ForVoyez API returns an error response with the appropriate HTTP status code and an error message in the response body.
-
-Example error response:
-
-```txt
-Unauthorized, missing Authorization header
-```
+- `Image processing failed: ...`
+  - Status Code: `500`
+  - Body, for example: `{"error": "Image processing failed: VipsJpeg: premature end of JPEG image"}`
+  - Description: The file is a JPEG, PNG, WebP, or GIF image, but it could not be decoded, for example because it is truncated or corrupt. The rest of the message gives the cause. No credit is used.
+  - Solution: Open the image in an image editor, save it again, and send the new file.
 
 ## Handling Errors
 
 When consuming the ForVoyez API, it's important to handle errors gracefully in your application. Here are some best practices for error handling:
 
 - Check the HTTP status code of the response to determine the general category of the error.
-- Read the error message in the response body to understand the specific cause of the error.
+- Read the `error` field of the JSON response body to understand the specific cause of the error.
+- Retry a `500` after a short wait: a failed request is not charged. Do not retry a `400`, `401`, or `413` unchanged: fix the request, the API key, or your credit balance first.
 - Display user-friendly error messages to your users based on the error message received.
 - Implement appropriate error logging and monitoring mechanisms to track and investigate errors.
 - If you encounter persistent or unexpected errors, reach out to our support team for further assistance.

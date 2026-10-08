@@ -20,26 +20,25 @@ POST https://forvoyez.com/api/describe
 ### Headers
 
 - `Authorization` (required): The authentication token (API key) to authorize the request. The token should be prefixed with `Bearer `.
-- `Content-Type` (required): The content type of the request body. It should be set to `multipart/form-data`.
+- `Content-Type`: `multipart/form-data` with a boundary. Your HTTP client sets this header for you when you send a form (cURL `-F`, `FormData` in JavaScript, `files=` in Python requests): do not set it yourself, or the boundary is lost and the API answers `400 Bad Request, the body must be multipart/form-data`.
 
 ### Request Body
 
 The request body should be in `multipart/form-data` format and include the following fields:
 
-- `image` (required): The image file for which you want to generate metadata. Supported image formats are JPEG, JPG, PNG, WebP, and GIF.
-- `schema` (optional): A JSON string specifying the desired output format of the generated metadata.
-- `keywords` (optional): A comma-separated list of keywords to assist in generating more accurate metadata.
-- `context` (optional): Additional context or description to assist in generating more accurate metadata.
-- `language` (optional): A string specifying the desired language for the metadata output. If not provided, the default is English ('en').
+- `image` (required): The image file for which you want to generate metadata, up to 10 MB. Supported image formats are JPEG, PNG, WebP, and GIF. The API detects the format from the file content, so the file name and the content type of the form part do not matter (a part sent as `application/octet-stream` works).
+- `schema` (optional): A JSON string with a flat object that maps each output field to a short description of what to generate, with at most 20 fields. See [Schemas](#schemas) below.
+- `keywords` (optional): A comma-separated list of keywords to assist in generating more accurate metadata. Only the first 1,000 characters are used.
+- `context` (optional): Additional context or description to assist in generating more accurate metadata. Only the first 1,000 characters are used.
+- `language` (optional): The language of the metadata output, as a language code (`en`, `fr`, `it`, `pt-BR`, `zh-TW`...) or a language name (`French`, `Brazilian Portuguese`...), up to 64 characters. If not provided, the default is English (`en`).
 
 ### Example Request
 
 ```bash
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+  -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
   -F "keywords=playful,kittens" \
   -F "context=Playful kittens" \
   -F "language=fr" \
@@ -50,7 +49,7 @@ curl -X POST \
 
 ### Success Response
 
-If the request is successful, the API will return a JSON object containing the generated metadata for the provided image in the specified language.
+If the request is successful, the API will return a `200 OK` status and a flat JSON object containing the generated metadata for the provided image in the specified language. The object has exactly the keys of your schema (or `title`, `alternativeText`, and `caption` when no schema is sent), and every value is a string. When the request has no `schema` field, the object also has `alt_text`, a copy of `alternativeText` kept for older versions of the WordPress plugin.
 
 ```json
 {
@@ -62,22 +61,42 @@ If the request is successful, the API will return a JSON object containing the g
 
 ### Error Responses
 
-If the request is unsuccessful, the API will return an appropriate HTTP status code along with an error message in the response body. Here are the possible error responses:
+If the request is unsuccessful, the API returns the HTTP status code of the error and a JSON body (`Content-Type: application/json`) whose `error` field contains a human-readable message:
+
+```json
+{
+	"error": "Unauthorized, no credit left"
+}
+```
+
+Here are the possible error responses, with an example body for each:
 
 - `400 Bad Request`
-  - `400 No file uploaded`: The `image` parameter is missing in the request.
-  - `400 Invalid image file`: The uploaded file is not a valid image format.
-  - `400 Invalid schema`: The provided schema is invalid or malformed.
-  - `400 Invalid language`: The provided language code is not supported.
+  - `Bad Request, the body must be multipart/form-data`: The request body is not a `multipart/form-data` form, or its `Content-Type` header was set by hand without the boundary.
+    - Body: `{"error": "Bad Request, the body must be multipart/form-data"}`
+  - `Bad Request, No file uploaded`: The `image` field is missing in the request.
+    - Body: `{"error": "Bad Request, No file uploaded"}`
+  - `Bad Request, Invalid image file`: The uploaded file is not a JPEG, PNG, WebP, or GIF image. The format is detected from the file content, so a renamed file of another type gets this error.
+    - Body: `{"error": "Bad Request, Invalid image file"}`
+  - `Invalid schema: ...`: The `schema` is over the [schema limits](/data-schemas#schema-validation): more than 20 fields, a field name longer than 64 characters, a description longer than 1,000 characters, or a field named `__proto__`. The rest of the message names the limit.
+    - Body: `{"error": "Invalid schema: at most 20 fields are allowed"}`
+  - `Invalid schema: the requested fields need a longer answer than the API can return ...`: The schema asks for more text than one answer can hold (about 1,500 words for all fields together).
+    - Body: `{"error": "Invalid schema: the requested fields need a longer answer than the API can return (about 1,500 words for all fields together), ask for fewer or shorter fields"}`
 
 - `401 Unauthorized`
-  - `401 Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request.
-  - `401 Unauthorized, invalid token`: The provided API key or token is invalid.
-  - `401 Unauthorized, no credit left`: The user has insufficient credits to make the request.
+  - `Unauthorized, missing Authorization header`: The `Authorization` header is missing in the request, or it does not start with `Bearer `.
+    - Body: `{"error": "Unauthorized, missing Authorization header"}`
+  - `Unauthorized, invalid token`: The provided API key is invalid, has expired, or has been deleted from the dashboard.
+    - Body: `{"error": "Unauthorized, invalid token"}`
+  - `Unauthorized, no credit left`: Your credit balance is empty.
+    - Body: `{"error": "Unauthorized, no credit left"}`
 
-- `429 Too Many Requests`: The request limit for your subscription plan has been exceeded.
+- `413 Payload Too Large`: The image is over 10 MB, or the request body is over 11 MB.
+  - Body: `{"error": "Image too large: the maximum is 10 MB"}`
 
-- `500 Internal Server Error`: An unexpected error occurred on the server side.
+- `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed or did not answer in time) or another unexpected error occurred. No credit is used, so you can retry the request.
+  - Body: `{"error": "Internal Server Error"}`
+  - A JPEG, PNG, WebP, or GIF file that cannot be decoded (truncated or corrupt) also gets `500`, with a message that starts with `Image processing failed: ` and gives the cause.
 
 For more details on error codes and messages, refer to the [Error Codes](/error-codes) documentation.
 
@@ -85,31 +104,30 @@ For more details on error codes and messages, refer to the [Error Codes](/error-
 
 To use the `/describe` endpoint, you need to include a valid API key in the `Authorization` header of your request. The API key should be prefixed with `Bearer `.
 
-If you don't have an API key yet, sign up for a ForVoyez account and obtain your API key from the [Dashboard](https://forvoyez.com/app/dashboard).
+If you don't have an API key yet, sign up for a ForVoyez account and obtain your API key from the [Dashboard](https://forvoyez.com/app).
 
-## Rate Limiting
+## Credits
 
-The `/describe` endpoint is subject to rate limiting to ensure fair usage and maintain the stability of the API. The rate limits are determined by your subscription plan.
+Each successful request to the `/describe` endpoint uses 1 credit from your balance. A request that fails does not use any credit, whatever the error, including a `500` when the metadata could not be generated. When your balance is empty, the API returns `401 Unauthorized` with the message `Unauthorized, no credit left`.
 
-If you exceed the rate limit, you will receive a `429 Too Many Requests` error response. Upgrade your subscription plan or wait for the rate limit to reset before making further requests.
+See [Limits and Quotas](/limits-and-quotas) to learn how credits are added to your balance.
 
 ## Schemas
 
-You can customize the output format of the generated metadata by providing a JSON schema in the `schema` parameter of the request. The schema should specify the desired structure of the metadata.
+You can customize the output fields of the generated metadata by providing a schema in the `schema` field of the request. The schema is a flat JSON object: each key is an output field and each value describes what to generate for it. Nested objects and arrays are not supported, and every value in the response is a string.
 
 Here's an example schema:
 
 ```json
 {
-	"title": "string",
-	"alternativeText": "string",
-	"caption": "string",
-	"tags": ["string"],
-	"categories": ["string"]
+	"title": "A short title for the image",
+	"alternativeText": "Alt text for screen readers",
+	"caption": "A one-sentence caption",
+	"tags": "Five comma-separated keywords describing the image"
 }
 ```
 
-If no schema is provided, the API will use a default schema to generate the metadata.
+If no schema is provided, the API will use a default schema that returns `title`, `alternativeText`, and `caption`. A schema can have at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters; a larger schema is rejected with `400 Bad Request`. All fields together must also fit in one answer of about 1,500 words: a schema that asks for more is rejected with `400 Bad Request` and no credit is used. See [Data Schemas](/data-schemas) for more details.
 
 ## Examples
 
@@ -120,9 +138,8 @@ Here are a few examples of how to use the `/describe` endpoint with different pr
 ```bash {{title: 'cURL'}}
 curl -X POST \
 -H "Authorization: Bearer YOUR_API_KEY" \
--H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
--F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+-F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
 -F "keywords=playful,kittens" \
 -F "context=Playful kittens" \
 -F "language=fr" \
@@ -140,7 +157,7 @@ files = [
 ]
 
 payload = {
-    'schema': '{"title":"string","alternativeText":"string","caption":"string"}',
+    'schema': '{"title":"A short title for the image","alternativeText":"Alt text for screen readers","caption":"A one-sentence caption"}',
     'keywords': 'playful,kittens',
     'context': 'Playful kittens',
     'language': 'fr'
@@ -161,9 +178,9 @@ form.append('image', fileInput.files[0])
 form.append(
 	'schema',
 	JSON.stringify({
-		title: 'string',
-		alternativeText: 'string',
-		caption: 'string',
+		title: 'A short title for the image',
+		alternativeText: 'Alt text for screen readers',
+		caption: 'A one-sentence caption',
 	})
 )
 form.append('keywords', 'playful,kittens')

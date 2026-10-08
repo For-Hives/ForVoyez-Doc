@@ -45,9 +45,8 @@ Now that you have your API key, you're ready to make your first API call to gene
 ```bash {{ title: 'cURL' }}
 curl -X POST \
   -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: multipart/form-data" \
   -F "image=@/path/to/your/image.jpg" \
-  -F "schema={\"title\":\"string\",\"alternativeText\":\"string\",\"caption\":\"string\"}" \
+  -F "schema={\"title\":\"A short title for the image\",\"alternativeText\":\"Alt text for screen readers\",\"caption\":\"A one-sentence caption\"}" \
   -F "keywords=image,description" \
   -F "context=Your image context" \
   -F "language=en" \
@@ -60,9 +59,9 @@ form.append('image', fileInput.files[0])
 form.append(
 	'schema',
 	JSON.stringify({
-		title: 'string',
-		alternativeText: 'string',
-		caption: 'string',
+		title: 'A short title for the image',
+		alternativeText: 'Alt text for screen readers',
+		caption: 'A one-sentence caption',
 	})
 )
 form.append('keywords', 'image,description')
@@ -94,7 +93,7 @@ Make sure to replace `YOUR_API_KEY` with your actual API key and `/path/to/your/
 The request includes the following parameters:
 
 - `image` (required): The image file you want to generate metadata for.
-- `schema` (optional): A JSON string specifying the desired output format for the generated metadata.
+- `schema` (optional): A JSON string with a flat object that maps each output field to a short description of what to generate.
 - `keywords` (optional): A comma-separated list of keywords to help guide the metadata generation.
 - `context` (optional): Additional context about the image to improve accuracy.
 - `language` (optional): The desired language for the metadata output (defaults to 'en' for English).

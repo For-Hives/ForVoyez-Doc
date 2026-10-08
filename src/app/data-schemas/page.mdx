@@ -4,76 +4,71 @@ import { Button } from '@/components/Button'
 export const metadata = {
 	title: 'Data Schemas',
 	description:
-		'Understand the JSON schema structure, learn how to customize schemas, and ensure schema validation when using the ForVoyez API.',
+		'Understand the schema structure, learn how to choose the output fields, and see how the ForVoyez API handles your schema.',
 }
 
 # Data Schemas
 
-The ForVoyez API allows you to customize the output of the generated metadata by providing a schema in the request. In this section, we'll explore the JSON schema structure, how to customize schemas, and the importance of schema validation.
+The ForVoyez API allows you to customize the output of the generated metadata by providing a schema in the `schema` field of the request. In this section, we'll explore the schema structure, how to customize schemas, and how the API handles the schema you send.
 
 ## JSON Schema Structure
 
-The schema you provide in the API request should follow the JSON Schema format. It defines the structure and constraints of the generated metadata. Here's an example of a basic schema:
+The schema is a flat JSON object. Each key is the name of a field you want in the response, and each value is a short description that tells the AI what to generate for that field. Here's an example of a basic schema:
 
 ```json
 {
-	"title": "string",
-	"alternativeText": "string",
-	"caption": "string",
-	"tags": ["string"],
-	"categories": ["string"]
+	"title": "A short title for the image",
+	"alternativeText": "Alt text for screen readers",
+	"caption": "A one-sentence caption"
 }
 ```
 
-In this example, the schema defines the expected data types for each field. The `title`, `alternativeText`, and `caption` fields are specified as strings, while `tags` and `categories` are arrays of strings.
-
-## Customizing Schemas
-
-You can customize the schema to match your specific requirements. For example, you can add additional fields, specify required fields, or define default values. Here's an example of a customized schema:
+The response contains exactly the keys of your schema, and every value is returned as a string:
 
 ```json
 {
-	"title": {
-		"type": "string",
-		"required": true
-	},
-	"alternativeText": {
-		"type": "string",
-		"required": true
-	},
-	"caption": {
-		"type": "string",
-		"required": false
-	},
-	"tags": {
-		"type": "array",
-		"items": {
-			"type": "string"
-		},
-		"default": []
-	},
-	"customField": {
-		"type": "string"
-	}
+	"title": "Playful Kittens",
+	"alternativeText": "Two kittens playing with a ball of yarn",
+	"caption": "Adorable kittens having fun and being mischievous"
+}
+```
+
+If you don't send a schema, the API uses its default schema, which returns the `title`, `alternativeText`, and `caption` fields. Without a `schema` field, the response also has `alt_text`, a copy of `alternativeText` kept for older versions of the WordPress plugin.
+
+## Customizing Schemas
+
+You can customize the schema to match your specific requirements: rename the fields, add your own fields, or keep only the ones you need. Here's an example of a customized schema:
+
+```json
+{
+	"title": "A product title under 60 characters",
+	"alternativeText": "Alt text for screen readers, under 125 characters",
+	"seoDescription": "A meta description of about 150 characters",
+	"tags": "Five comma-separated keywords describing the image"
 }
 ```
 
 In this customized schema:
 
-- The `title` and `alternativeText` fields are marked as required.
-- The `caption` field is optional.
-- The `tags` field is an array of strings with an empty array as the default value.
-- A custom field named `customField` is added.
+- The `title` and `alternativeText` fields have descriptions that set a length target.
+- A custom field named `seoDescription` is added.
+- The `tags` field asks for a comma-separated list, returned as a single string.
 
-To use a customized schema in your API request, include it in the `data` parameter as a JSON object. Here are examples using cURL and JavaScript:
+Keep the following rules in mind:
+
+- The schema must be a flat object: nested objects and arrays are not supported.
+- Values are descriptions, not types: `"type"`, `"required"`, `"items"` or `"default"` settings are not interpreted.
+- Every value in the response is a string. To get a list, ask for a comma-separated list in the description (as with `tags` above) and split it in your code.
+- Every key of the schema is present in the response, and keys that are not in the schema are never returned.
+
+To use a customized schema in your API request, send it as a JSON string in the `schema` field, next to the other form fields. Here are examples using cURL and JavaScript:
 
 <CodeGroup>
 ```bash {{ title: 'cURL' }}
 curl -X POST \
 -H "Authorization: Bearer YOUR_API_KEY" \
--H "Content-Type: multipart/form-data" \
 -F "image=@/path/to/your/image.jpg" \
--F "data={\"schema\":{\"title\":{\"type\":\"string\",\"required\":true},\"alternativeText\":{\"type\":\"string\",\"required\":true},\"caption\":{\"type\":\"string\",\"required\":false},\"tags\":{\"type\":\"array\",\"items\":{\"type\":\"string\"},\"default\":[]},\"customField\":{\"type\":\"string\"}}}" \
+-F "schema={\"title\":\"A product title under 60 characters\",\"alternativeText\":\"Alt text for screen readers, under 125 characters\",\"seoDescription\":\"A meta description of about 150 characters\",\"tags\":\"Five comma-separated keywords describing the image\"}" \
 -F "language=en" \
 https://forvoyez.com/api/describe
 ```
@@ -82,32 +77,12 @@ https://forvoyez.com/api/describe
 const form = new FormData()
 form.append('image', fileInput.files[0])
 form.append(
-	'data',
+	'schema',
 	JSON.stringify({
-		schema: {
-			title: {
-				type: 'string',
-				required: true,
-			},
-			alternativeText: {
-				type: 'string',
-				required: true,
-			},
-			caption: {
-				type: 'string',
-				required: false,
-			},
-			tags: {
-				type: 'array',
-				items: {
-					type: 'string',
-				},
-				default: [],
-			},
-			customField: {
-				type: 'string',
-			},
-		},
+		title: 'A product title under 60 characters',
+		alternativeText: 'Alt text for screen readers, under 125 characters',
+		seoDescription: 'A meta description of about 150 characters',
+		tags: 'Five comma-separated keywords describing the image',
 	})
 )
 form.append('language', 'en')
@@ -132,17 +107,46 @@ fetch('https://forvoyez.com/api/describe', {
 
 </CodeGroup>
 
-Note that the `language` parameter is now included separately from the `data` object in both the cURL and JavaScript examples.
+The response for this schema looks like this:
+
+```json
+{
+	"title": "Kittens Playing with Yarn",
+	"alternativeText": "Two tabby kittens playing with a red ball of yarn on a wooden floor",
+	"seoDescription": "Two playful tabby kittens tumble over a red ball of yarn on a sunny wooden floor.",
+	"tags": "kittens, yarn, playful, tabby, pets"
+}
+```
 
 ## Schema Validation
 
-When providing a custom schema, it's important to ensure that it is valid and well-formed. The ForVoyez API performs schema validation on the server side to check for any structural or type-related issues.
+The API reads the `schema` field as a JSON string and keeps only its keys and their descriptions. Make sure your schema is a valid JSON object before sending it:
 
-If the provided schema is invalid, the API will return a `400 Bad Request` error with details about the validation errors. Make sure to carefully construct your schema and test it before using it in production.
+- If the `schema` field is missing, empty, or is not a valid JSON object, the API uses the default schema (`title`, `alternativeText`, `caption`).
+- Use plain strings for the descriptions: other values (numbers, objects, arrays) are not interpreted as types or structures.
+- A schema can have at most 20 fields. Field names can be up to 64 characters and descriptions up to 1,000 characters, and `__proto__` is not allowed as a field name.
+
+A schema over these limits is rejected with `400 Bad Request` and no credit is used. The `error` field of the JSON response names the limit:
+
+```json
+{
+	"error": "Invalid schema: at most 20 fields are allowed"
+}
+```
+
+All the fields of one answer must also fit in about 1,500 words. A schema that asks for more, for example many fields that each ask for several paragraphs, is rejected with `400 Bad Request` and no credit is used:
+
+```json
+{
+	"error": "Invalid schema: the requested fields need a longer answer than the API can return (about 1,500 words for all fields together), ask for fewer or shorter fields"
+}
+```
+
+Test your schema in the [API Playground](https://forvoyez.com/app/playground) before using it in production.
 
 <div className="not-prose">
-	<Button href="/api-documentation" variant="text" arrow="right">
-		See the API documentation for more details on schema validation
+	<Button href="/describe" variant="text" arrow="right">
+		See the /describe endpoint for all request fields
 	</Button>
 </div>
 

@@ -16,14 +16,14 @@ export const metadata = {
 const sourcesans = Source_Sans_3({
 	weight: ['300', '400', '700', '900'],
 	subsets: ['latin'],
-	variable: '--font-sourcesans',
+	variable: '--next-font-sourcesans',
 	style: ['normal', 'italic'],
 })
 
 const jost = Jost({
 	weight: ['200', '300', '400', '500', '600', '700', '800'],
 	subsets: ['latin'],
-	variable: '--font-jost',
+	variable: '--next-font-jost',
 	style: ['normal'],
 })
 

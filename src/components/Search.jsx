@@ -177,7 +177,7 @@ function SearchResult({
 				<div
 					id={`${id}-hierarchy`}
 					aria-hidden="true"
-					className="mt-1 truncate whitespace-nowrap text-2xs text-slate-500"
+					className="mt-1 truncate text-2xs whitespace-nowrap text-slate-500"
 				>
 					{hierarchy.map((item, itemIndex, items) => (
 						<Fragment key={itemIndex}>
@@ -206,7 +206,7 @@ function SearchResults({ autocomplete, query, collection }) {
 				<NoResultsIcon className="mx-auto h-5 w-5 stroke-slate-900" />
 				<p className="mt-2 text-xs text-slate-700">
 					Nothing found for{' '}
-					<strong className="break-words font-semibold text-slate-900">
+					<strong className="font-semibold wrap-break-word text-slate-900">
 						&lsquo;{query}&rsquo;
 					</strong>
 					. Please try again.
@@ -239,11 +239,11 @@ const SearchInput = forwardRef(function SearchInput(
 
 	return (
 		<div className="group relative flex h-12">
-			<SearchIcon className="pointer-events-none absolute left-3 top-0 h-full w-5 stroke-slate-500" />
+			<SearchIcon className="pointer-events-none absolute top-0 left-3 h-full w-5 stroke-slate-500" />
 			<input
 				ref={inputRef}
 				className={clsx(
-					'flex-auto appearance-none bg-transparent pl-10 text-slate-900 outline-none placeholder:text-slate-500 focus:w-full focus:flex-none sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden',
+					'flex-auto appearance-none bg-transparent pl-10 text-slate-900 outline-hidden placeholder:text-slate-500 focus:w-full focus:flex-none sm:text-sm [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden [&::-webkit-search-results-button]:hidden [&::-webkit-search-results-decoration]:hidden',
 					autocompleteState.status === 'stalled' ? 'pr-11' : 'pr-4'
 				)}
 				{...inputProps}
@@ -328,7 +328,7 @@ function SearchDialog({ open, setOpen, className }) {
 					leaveFrom="opacity-100"
 					leaveTo="opacity-0"
 				>
-					<div className="fixed inset-0 bg-slate-400/25 backdrop-blur-sm" />
+					<div className="fixed inset-0 bg-slate-400/25 backdrop-blur-xs" />
 				</Transition.Child>
 
 				<div className="fixed inset-0 overflow-y-auto px-4 py-4 sm:px-6 sm:py-20 md:py-32 lg:px-8 lg:py-[15vh]">
@@ -346,6 +346,8 @@ function SearchDialog({ open, setOpen, className }) {
 								<form
 									ref={formRef}
 									{...autocomplete.getFormProps({
+										// Algolia Autocomplete expects the input element here; it is set after the first render
+										// eslint-disable-next-line react-hooks/refs
 										inputElement: inputRef.current,
 									})}
 								>
@@ -410,6 +412,8 @@ export function Search() {
 	let { buttonProps, dialogProps } = useSearchProps()
 
 	useEffect(() => {
+		// `navigator` only exists in the browser, so this cannot be computed during the server render
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setModifierKey(
 			/(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) ? '⌘' : 'Ctrl '
 		)
@@ -419,7 +423,7 @@ export function Search() {
 		<div className="hidden lg:block lg:max-w-md lg:flex-auto">
 			<button
 				type="button"
-				className="hidden h-8 w-full items-center gap-2 rounded-full bg-white pl-2 pr-3 text-sm text-slate-500 ring-1 ring-slate-900/10 transition hover:ring-slate-900/20 ui-not-focus-visible:outline-none lg:flex"
+				className="hidden h-8 w-full items-center gap-2 rounded-full bg-white pr-3 pl-2 text-sm text-slate-500 ring-1 ring-slate-900/10 transition hover:ring-slate-900/20 lg:flex ui-not-focus-visible:outline-hidden"
 				{...buttonProps}
 			>
 				<SearchIcon className="h-5 w-5 stroke-current" />
@@ -443,7 +447,7 @@ export function MobileSearch() {
 		<div className="contents lg:hidden">
 			<button
 				type="button"
-				className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-slate-900/5 ui-not-focus-visible:outline-none lg:hidden"
+				className="flex h-6 w-6 items-center justify-center rounded-md transition hover:bg-slate-900/5 lg:hidden ui-not-focus-visible:outline-hidden"
 				aria-label="Find something..."
 				{...buttonProps}
 			>
