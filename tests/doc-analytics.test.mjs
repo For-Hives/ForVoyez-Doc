@@ -1,8 +1,10 @@
 // Guards for the analytics of the docs: the Umami setup, the event names, the
 // click classification and the UTM parameters of the links to the app. The
 // tracker only runs on the production hosts, so nothing here observes a real
-// event: the helpers of src/lib/analytics.js are tested directly. Run with
-// `pnpm test` (node:test, no dependencies).
+// event: the helpers of src/lib/analytics.js are tested directly, and the
+// components are only read as text. Nothing renders a page: the README says
+// how to check the rendered links. Run with `pnpm test` (node:test, no
+// dependencies).
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -232,8 +234,39 @@ describe('UTM parameters of the links to the app', () => {
 				assert.ok(!source.includes('utm_'), `src/${name} has a UTM parameter`)
 			}
 		}
-		assert.ok(source('components/mdx.jsx').includes('DocLink as a'))
+		assert.match(source('components/mdx.jsx'), /export const a = [^]*<DocLink/)
 		assert.ok(source('components/Button.jsx').includes('<DocLink'))
+	})
+
+	test('the link text is read by the caller, never by DocLink', () => {
+		// DocLink is a client component. `children` sent by a server component
+		// (an MDX page) can reach it as a lazy reference without any text,
+		// depending on how React cut the payload: the same link then had one
+		// utm_content on a direct load and another after a client-side
+		// navigation, and `next dev` reported a hydration error.
+		const docLink = source('components/DocLink.jsx').replace(/\/\/.*$/gm, '')
+		assert.match(docLink, /^'use client'/)
+		assert.doesNotMatch(docLink, /textOf|Children\b/)
+		assert.match(docLink, /content: utmContent\b/)
+		assert.equal(
+			docLink.match(/\bchildren\b/g).length,
+			2,
+			'DocLink may only receive its children and render them'
+		)
+
+		// The callers run on the server for the MDX pages, where the children
+		// are plain elements: they must not become client components.
+		for (const name of ['components/mdx.jsx', 'components/Button.jsx']) {
+			assert.ok(
+				source(name).includes('utmContent={slug(textOf(children))}'),
+				`src/${name} does not name its links`
+			)
+			assert.doesNotMatch(
+				source(name),
+				/^\s*['"]use client['"]/m,
+				`src/${name}`
+			)
+		}
 	})
 
 	test('slugs are short and made of a-z, 0-9 and dashes', () => {

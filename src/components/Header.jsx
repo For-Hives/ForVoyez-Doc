@@ -11,12 +11,15 @@ import {
 } from '@/components/MobileNavigation'
 import { useMobileNavigationStore } from '@/components/MobileNavigation'
 import { MobileSearch, Search } from '@/components/Search'
+import { slug } from '@/lib/analytics'
 
 function TopLevelNavItem({ href, children }) {
 	return (
 		<li>
 			<DocLink
 				href={href}
+				// the labels are the plain strings written below
+				utmContent={slug(children)}
 				className="text-sm leading-5 text-slate-600 transition hover:text-slate-900"
 			>
 				{children}

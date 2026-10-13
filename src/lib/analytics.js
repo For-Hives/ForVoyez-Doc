@@ -73,7 +73,9 @@ export function lengthBucket(length) {
 	return '21+'
 }
 
-// Text of a link's React children, '' when it has none (a logo, an icon)
+// Text of a link's React children, '' when it has none (a logo, an icon).
+// Only where the children are written: a client component that receives them
+// from a server component may get a lazy reference instead (see DocLink.jsx).
 export function textOf(node) {
 	if (typeof node === 'string' || typeof node === 'number') {
 		return String(node)
