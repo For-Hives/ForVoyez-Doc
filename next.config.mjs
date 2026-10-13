@@ -54,6 +54,20 @@ function withMDXServerLayer(nextConfig) {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	pageExtensions: ['js', 'jsx', 'ts', 'tsx', 'mdx'],
+	async headers() {
+		return [
+			{
+				// the font files carry their version in their name (src/styles/fonts.css)
+				source: '/fonts/:file*.woff2',
+				headers: [
+					{
+						key: 'Cache-Control',
+						value: 'public, max-age=31536000, immutable',
+					},
+				],
+			},
+		]
+	},
 }
 
 export default withMDXServerLayer(withSearch(withMDX(nextConfig)))
