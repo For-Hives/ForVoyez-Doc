@@ -215,8 +215,7 @@ function SearchResult({
 
 function NoResults({ query, noResultSent }) {
 	useEffect(() => {
-		// Nothing was searched: a dialog closed with a query can reopen on this
-		// panel, with an empty query
+		// an empty query is not a failed search
 		if (query === '') {
 			return
 		}
@@ -331,6 +330,19 @@ function SearchDialog({ open, setOpen, className }) {
 	let pathname = usePathname()
 	let searchParams = useSearchParams()
 
+	// `setQuery('')` alone empties the field but leaves the panel open on its
+	// last results: a search closed by a click outside (Escape and choosing a
+	// result close the panel themselves) reopened on them, or on "Nothing found
+	// for ''". Also run before the dialog enters, for a request that answered
+	// after it closed.
+	function resetSearch() {
+		autocomplete.setQuery('')
+		autocomplete.setCollections([])
+		autocomplete.setIsOpen(false)
+		autocomplete.setStatus('idle')
+		noResultSent.current = false
+	}
+
 	useEffect(() => {
 		setOpen(false)
 	}, [pathname, searchParams, setOpen])
@@ -358,10 +370,8 @@ function SearchDialog({ open, setOpen, className }) {
 		<Transition.Root
 			show={open}
 			as={Fragment}
-			afterLeave={() => {
-				autocomplete.setQuery('')
-				noResultSent.current = false
-			}}
+			beforeEnter={resetSearch}
+			afterLeave={resetSearch}
 		>
 			<Dialog
 				onClose={setOpen}
@@ -410,14 +420,15 @@ function SearchDialog({ open, setOpen, className }) {
 										className="border-t border-slate-200 bg-white empty:hidden"
 										{...autocomplete.getPanelProps({})}
 									>
-										{autocompleteState.isOpen && (
-											<SearchResults
-												autocomplete={autocomplete}
-												query={autocompleteState.query}
-												collection={autocompleteState.collections[0]}
-												noResultSent={noResultSent}
-											/>
-										)}
+										{autocompleteState.isOpen &&
+											autocompleteState.collections[0] && (
+												<SearchResults
+													autocomplete={autocomplete}
+													query={autocompleteState.query}
+													collection={autocompleteState.collections[0]}
+													noResultSent={noResultSent}
+												/>
+											)}
 									</div>
 								</form>
 							</div>
