@@ -1,5 +1,7 @@
 import clsx from 'clsx'
-import Link from 'next/link'
+
+import { DocLink } from '@/components/DocLink'
+import { slug, textOf } from '@/lib/analytics'
 
 function ArrowIcon(props) {
 	return (
@@ -64,9 +66,15 @@ export function Button({
 		)
 	}
 
+	// The link text is read here, on the server for the MDX pages, and not in
+	// DocLink: do not add 'use client' to this file (see DocLink.jsx)
 	return (
-		<Link className={className} {...props}>
+		<DocLink
+			className={className}
+			utmContent={slug(textOf(children))}
+			{...props}
+		>
 			{inner}
-		</Link>
+		</DocLink>
 	)
 }

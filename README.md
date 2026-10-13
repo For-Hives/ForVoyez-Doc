@@ -87,6 +87,19 @@ If you encounter any issues or have questions about the ForVoyez documentation, 
 
 - Change the pricing/number in the database (for the descriptions)
 
+## Analytics events
+
+The site sends click events to the Umami website it shares with the app, so every event name starts with `doc-`. The names are listed in `EVENTS` in `src/lib/analytics.js` and checked by `pnpm test` (`tests/doc-analytics.test.mjs`).
+
+- Links need no markup: one click listener (`src/components/Analytics.jsx`) classifies each link by host (`doc-nav-click`, `doc-outbound-app`, `doc-outbound-wporg`, `doc-outbound-social`, `doc-outbound-other`) and sends the `zone` (the closest `data-zone`: header, sidebar, main, footer), the `target` path and the current `page`.
+- To give a button or a link its own event, add `data-fv-event="doc-..."` and optional `data-fv-event-<key>="<value>"` properties, then add the name to `EVENTS`. Never use Umami's own `data-umami-event` attribute: on a link, the Umami script cancels the click and breaks client-side navigation.
+- For an outcome only known in JavaScript, call `track(name, data)` from `src/lib/analytics.js`.
+- Links to forvoyez.com get their UTM parameters at render time (`src/components/DocLink.jsx`): keep the bare URLs in the MDX pages.
+- `utm_content` is the slug of the link text. The MDX link (`a` in `src/components/mdx.jsx`) and `Button` read that text and pass it to `DocLink` as the `utmContent` string. `DocLink` is a client component and must not read its `children`: sent by a server component, they can reach it as a lazy reference without text, and the same link then gets two different values.
+- Never send personal data or what a visitor typed: the search only reports the length of the query. `doc-search-no-result` is sent at most once per opening of the search dialog, after a one-second pause on a query that finds nothing.
+- The tracker only runs on forvoyez.com, doc.forvoyez.com and docs.forvoyez.com: nothing is sent from localhost.
+- `pnpm test` reads the sources and renders no page. After a change to the links to the app, check the rendered pages on `pnpm build` and `pnpm start`: each link to forvoyez.com must have the same `utm_content` on a direct load of its page and after a client-side navigation to it (a click in the sidebar). `pnpm dev` must also load the page without a hydration error in the browser console.
+
 ---
 
 📚 Comprehensive documentation for ForVoyez - Empowering your AI-powered image metadata generation! 📚

@@ -2,11 +2,16 @@ import glob from 'fast-glob'
 import { Jost, Source_Sans_3 } from 'next/font/google'
 import Script from 'next/script'
 
+import { Analytics } from '@/components/Analytics'
 import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
 
 export const metadata = {
+	// docs.forvoyez.com serves the same pages: every page names its
+	// doc.forvoyez.com URL as canonical ('./' resolves to the page's own path)
+	metadataBase: new URL('https://doc.forvoyez.com'),
+	alternates: { canonical: './' },
 	title: {
 		template: '%s - ForVoyez API Reference',
 		default: 'ForVoyez API Reference',
@@ -45,7 +50,7 @@ export default async function RootLayout({ children }) {
 		>
 			<Script
 				async
-				data-domains={'forvoyez.com,doc.forvoyez.com'}
+				data-domains={'forvoyez.com,doc.forvoyez.com,docs.forvoyez.com'}
 				data-website-id="705a7c53-7dc4-4cf7-b625-f2f87a428bfb"
 				src="https://umami.wadefade.fr/script.js"
 				strategy="afterInteractive"
@@ -54,6 +59,7 @@ export default async function RootLayout({ children }) {
 				<div className="w-full">
 					<Layout allSections={allSections}>{children}</Layout>
 				</div>
+				<Analytics />
 			</body>
 		</html>
 	)

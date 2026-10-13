@@ -14,6 +14,7 @@ import {
 import { create } from 'zustand'
 
 import { Tag } from '@/components/Tag'
+import { track } from '@/lib/analytics'
 
 const languageNames = {
 	js: 'JavaScript',
@@ -36,6 +37,12 @@ function getPanelTitle({ title, language }) {
 	return 'Code'
 }
 
+// Language sent with the analytics events: the one of the code fence, so the
+// copy button and the tabs report the same values
+function getEventLanguage({ language }) {
+	return { js: 'javascript', ts: 'typescript' }[language] ?? language ?? 'plain'
+}
+
 function ClipboardIcon(props) {
 	return (
 		<svg viewBox="0 0 20 20" aria-hidden="true" {...props}>
@@ -52,7 +59,7 @@ function ClipboardIcon(props) {
 	)
 }
 
-function CopyButton({ code }) {
+function CopyButton({ code, language }) {
 	let [copyCount, setCopyCount] = useState(0)
 	let copied = copyCount > 0
 
@@ -104,6 +111,8 @@ function CopyButton({ code }) {
 					? 'bg-forvoyez_orange-400/10 ring-1 ring-forvoyez_orange-400/20 ring-inset'
 					: 'bg-white/5 hover:bg-white/7.5'
 			)}
+			data-fv-event="doc-code-copy"
+			data-fv-event-language={getEventLanguage({ language })}
 			onClick={() => copyToClipboard(code)}
 		>
 			<span
@@ -162,6 +171,7 @@ function CodePanel(props) {
 		newProps.tag = child.props.tag ?? newProps.tag
 		newProps.label = child.props.label ?? newProps.label
 		newProps.code = child.props.code ?? newProps.code
+		newProps.language = child.props.language ?? newProps.language
 	}
 
 	if (!newProps.code) {
@@ -177,7 +187,7 @@ function CodePanel(props) {
 				<pre className="overflow-x-auto p-4 text-xs text-white">
 					{props.children}
 				</pre>
-				<CopyButton code={newProps.code} />
+				<CopyButton code={newProps.code} language={newProps.language} />
 			</div>
 		</div>
 	)
@@ -282,7 +292,7 @@ const usePreferredLanguageStore = create()(set => ({
 		})),
 }))
 
-function useTabGroupProps(availableLanguages) {
+function useTabGroupProps(availableLanguages, eventLanguages) {
 	let { preferredLanguages, addPreferredLanguage } = usePreferredLanguageStore()
 	let [selectedIndex, setSelectedIndex] = useState(0)
 	let activeLanguage = [...availableLanguages].sort(
@@ -301,6 +311,12 @@ function useTabGroupProps(availableLanguages) {
 		ref: positionRef,
 		selectedIndex,
 		onChange: newSelectedIndex => {
+			// one call per choice, by click or with the arrow keys: the other
+			// groups of the page follow through the store, without onChange
+			track('doc-code-tab-change', {
+				language: eventLanguages[newSelectedIndex],
+				page: window.location.pathname,
+			})
 			preventLayoutShift(() =>
 				addPreferredLanguage(availableLanguages[newSelectedIndex])
 			)
@@ -315,7 +331,11 @@ export function CodeGroup({ children, title, ...props }) {
 		Children.map(children, child =>
 			getPanelTitle(isValidElement(child) ? child.props : {})
 		) ?? []
-	let tabGroupProps = useTabGroupProps(languages)
+	let eventLanguages =
+		Children.map(children, child =>
+			getEventLanguage(isValidElement(child) ? child.props : {})
+		) ?? []
+	let tabGroupProps = useTabGroupProps(languages, eventLanguages)
 	let hasTabs = Children.count(children) > 1
 
 	let containerClassName =

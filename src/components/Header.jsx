@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform } from 'motion/react'
 import Link from 'next/link'
 import { forwardRef } from 'react'
 
+import { DocLink } from '@/components/DocLink'
 import { Logo } from '@/components/Logo'
 import {
 	MobileNavigation,
@@ -10,16 +11,19 @@ import {
 } from '@/components/MobileNavigation'
 import { useMobileNavigationStore } from '@/components/MobileNavigation'
 import { MobileSearch, Search } from '@/components/Search'
+import { slug } from '@/lib/analytics'
 
 function TopLevelNavItem({ href, children }) {
 	return (
 		<li>
-			<Link
+			<DocLink
 				href={href}
+				// the labels are the plain strings written below
+				utmContent={slug(children)}
 				className="text-sm leading-5 text-slate-600 transition hover:text-slate-900"
 			>
 				{children}
-			</Link>
+			</DocLink>
 		</li>
 	)
 }
@@ -35,6 +39,7 @@ export const Header = forwardRef(function Header({ className }, ref) {
 	return (
 		<motion.div
 			ref={ref}
+			data-zone="header"
 			className={clsx(
 				className,
 				'fixed inset-x-0 top-0 z-50 flex h-14 items-center justify-between gap-12 px-4 transition sm:px-6 lg:left-72 lg:z-30 lg:px-8 xl:left-80',

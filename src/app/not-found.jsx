@@ -1,6 +1,11 @@
 import { Button } from '@/components/Button'
 import { HeroPattern } from '@/components/HeroPattern'
 
+export const metadata = {
+	// a missing page has no canonical URL (the root layout sets one per page)
+	alternates: { canonical: null },
+}
+
 export default function NotFound() {
 	return (
 		<>

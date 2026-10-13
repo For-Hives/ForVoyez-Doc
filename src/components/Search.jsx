@@ -17,6 +17,7 @@ import {
 import Highlighter from 'react-highlight-words'
 
 import { navigation } from '@/components/Navigation'
+import { lengthBucket, track } from '@/lib/analytics'
 
 function useAutocomplete({ close }) {
 	let id = useId()
@@ -36,6 +37,19 @@ function useAutocomplete({ close }) {
 		) {
 			close()
 		}
+	}
+
+	// Runs once per chosen result, by click or with Enter (`navigate` runs twice
+	// on Enter). The query itself is not sent, only its length.
+	function onSelect(params) {
+		let [target, anchor] = (params.itemUrl ?? '').split('#')
+		track('doc-search-result-select', {
+			target,
+			...(anchor && { anchor }),
+			query_length: lengthBucket(params.state?.query?.length ?? 0),
+			page: window.location.pathname,
+		})
+		navigate(params)
 	}
 
 	let [autocomplete] = useState(() =>
@@ -63,7 +77,7 @@ function useAutocomplete({ close }) {
 							getItemUrl({ item }) {
 								return item.url
 							},
-							onSelect: navigate,
+							onSelect,
 						},
 					]
 				})
@@ -199,20 +213,49 @@ function SearchResult({
 	)
 }
 
-function SearchResults({ autocomplete, query, collection }) {
+function NoResults({ query, noResultSent }) {
+	useEffect(() => {
+		// Nothing was searched: a dialog closed with a query can reopen on this
+		// panel, with an empty query
+		if (query === '') {
+			return
+		}
+
+		// Wait for the visitor to stop typing, and send one event per opening of
+		// the dialog: rewriting a query that still finds nothing is the same
+		// failed search. The query itself is not sent, only its length.
+		let timeout = setTimeout(() => {
+			if (noResultSent.current) {
+				return
+			}
+			noResultSent.current = true
+			track('doc-search-no-result', {
+				query_length: lengthBucket(query.length),
+				page: window.location.pathname,
+			})
+		}, 1000)
+		return () => {
+			clearTimeout(timeout)
+		}
+	}, [query, noResultSent])
+
+	return (
+		<div className="p-6 text-center">
+			<NoResultsIcon className="mx-auto h-5 w-5 stroke-slate-900" />
+			<p className="mt-2 text-xs text-slate-700">
+				Nothing found for{' '}
+				<strong className="font-semibold wrap-break-word text-slate-900">
+					&lsquo;{query}&rsquo;
+				</strong>
+				. Please try again.
+			</p>
+		</div>
+	)
+}
+
+function SearchResults({ autocomplete, query, collection, noResultSent }) {
 	if (collection.items.length === 0) {
-		return (
-			<div className="p-6 text-center">
-				<NoResultsIcon className="mx-auto h-5 w-5 stroke-slate-900" />
-				<p className="mt-2 text-xs text-slate-700">
-					Nothing found for{' '}
-					<strong className="font-semibold wrap-break-word text-slate-900">
-						&lsquo;{query}&rsquo;
-					</strong>
-					. Please try again.
-				</p>
-			</div>
-		)
+		return <NoResults query={query} noResultSent={noResultSent} />
 	}
 
 	return (
@@ -278,6 +321,8 @@ function SearchDialog({ open, setOpen, className }) {
 	let formRef = useRef(null)
 	let panelRef = useRef(null)
 	let inputRef = useRef(null)
+	// true once this opening of the dialog has sent doc-search-no-result
+	let noResultSent = useRef(false)
 	let { autocomplete, autocompleteState } = useAutocomplete({
 		close() {
 			setOpen(false)
@@ -298,7 +343,7 @@ function SearchDialog({ open, setOpen, className }) {
 		function onKeyDown(event) {
 			if (event.key === 'k' && (event.metaKey || event.ctrlKey)) {
 				event.preventDefault()
-				setOpen(true)
+				setOpen(true, event)
 			}
 		}
 
@@ -313,7 +358,10 @@ function SearchDialog({ open, setOpen, className }) {
 		<Transition.Root
 			show={open}
 			as={Fragment}
-			afterLeave={() => autocomplete.setQuery('')}
+			afterLeave={() => {
+				autocomplete.setQuery('')
+				noResultSent.current = false
+			}}
 		>
 			<Dialog
 				onClose={setOpen}
@@ -367,6 +415,7 @@ function SearchDialog({ open, setOpen, className }) {
 												autocomplete={autocomplete}
 												query={autocompleteState.query}
 												collection={autocompleteState.collections[0]}
+												noResultSent={noResultSent}
 											/>
 										)}
 									</div>
@@ -380,6 +429,10 @@ function SearchDialog({ open, setOpen, className }) {
 	)
 }
 
+// Cmd/Ctrl+K presses already counted: with the mobile menu open the header is
+// rendered twice, and both searches open on the same key press
+const countedShortcuts = new WeakSet()
+
 function useSearchProps() {
 	let buttonRef = useRef(null)
 	let [open, setOpen] = useState(false)
@@ -387,6 +440,8 @@ function useSearchProps() {
 	return {
 		buttonProps: {
 			ref: buttonRef,
+			'data-fv-event': 'doc-search-open',
+			'data-fv-event-via': 'button',
 			onClick() {
 				setOpen(true)
 			},
@@ -394,11 +449,26 @@ function useSearchProps() {
 		dialogProps: {
 			open,
 			setOpen: useCallback(
-				open => {
+				(open, shortcut) => {
 					let { width = 0, height = 0 } =
 						buttonRef.current?.getBoundingClientRect() ?? {}
-					if (!open || (width !== 0 && height !== 0)) {
+					let isVisible = width !== 0 && height !== 0
+					if (!open || isVisible) {
 						setOpen(open)
+					}
+					// `shortcut` is the key press of Cmd/Ctrl+K (the button has its own
+					// onClick): counted once, and only for a visible search
+					if (
+						open &&
+						isVisible &&
+						shortcut &&
+						!countedShortcuts.has(shortcut)
+					) {
+						countedShortcuts.add(shortcut)
+						track('doc-search-open', {
+							via: 'shortcut',
+							page: window.location.pathname,
+						})
 					}
 				},
 				[setOpen]
