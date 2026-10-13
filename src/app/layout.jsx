@@ -1,10 +1,11 @@
 import glob from 'fast-glob'
-import { Jost, Source_Sans_3 } from 'next/font/google'
 import Script from 'next/script'
+import { preload } from 'react-dom'
 
 import { Analytics } from '@/components/Analytics'
 import { Layout } from '@/components/Layout'
 
+import '@/styles/fonts.css'
 import '@/styles/tailwind.css'
 
 export const metadata = {
@@ -18,19 +19,14 @@ export const metadata = {
 	},
 }
 
-const sourcesans = Source_Sans_3({
-	weight: ['300', '400', '700', '900'],
-	subsets: ['latin'],
-	variable: '--next-font-sourcesans',
-	style: ['normal', 'italic'],
-})
-
-const jost = Jost({
-	weight: ['200', '300', '400', '500', '600', '700', '800'],
-	subsets: ['latin'],
-	variable: '--next-font-jost',
-	style: ['normal'],
-})
+// The latin files of the two fonts (src/styles/fonts.css), preloaded like
+// next/font did (the italic one is only used on a few pages); the other
+// subsets load on demand.
+const PRELOADED_FONTS = [
+	'/fonts/source-sans-3-v20-latin-normal.woff2',
+	'/fonts/source-sans-3-v20-latin-italic.woff2',
+	'/fonts/jost-v20-latin-normal.woff2',
+]
 
 export default async function RootLayout({ children }) {
 	let pages = await glob('**/*.mdx', { cwd: 'src/app' })
@@ -42,12 +38,12 @@ export default async function RootLayout({ children }) {
 	)
 	let allSections = Object.fromEntries(allSectionsEntries)
 
+	for (let href of PRELOADED_FONTS) {
+		preload(href, { as: 'font', type: 'font/woff2', crossOrigin: 'anonymous' })
+	}
+
 	return (
-		<html
-			lang="en"
-			suppressHydrationWarning
-			className={`h-full ${sourcesans.variable} ${jost.variable}`}
-		>
+		<html lang="en" suppressHydrationWarning className="h-full">
 			<Script
 				async
 				data-domains={'forvoyez.com,doc.forvoyez.com,docs.forvoyez.com'}

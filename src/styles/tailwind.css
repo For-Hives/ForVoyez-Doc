@@ -59,7 +59,7 @@
 	--container-5xl: 66rem;
 }
 
-/* next/font variables, set on <html> in src/app/layout.jsx */
+/* the font variables of src/styles/fonts.css */
 @theme inline {
 	--font-sourcesans: var(--next-font-sourcesans);
 	--font-jost: var(--next-font-jost);
