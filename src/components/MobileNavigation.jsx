@@ -13,6 +13,7 @@ import {
 } from 'react'
 import { create } from 'zustand'
 
+import { reportClick } from '@/components/Analytics'
 import { Header } from '@/components/Header'
 import { Navigation } from '@/components/Navigation'
 
@@ -59,6 +60,11 @@ function MobileNavigationDialog({ isOpen, close }) {
 	}, [pathname, searchParams, close, initialPathname, initialSearchParams])
 
 	function onClickDialog(event) {
+		// Dialog.Panel stops the propagation of the clicks next/link does not
+		// handle (external links, buttons): they never reach the document
+		// listener of <Analytics />, so every click of the dialog is reported here
+		reportClick(event.nativeEvent)
+
 		if (!(event.target instanceof HTMLElement)) {
 			return
 		}

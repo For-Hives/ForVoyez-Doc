@@ -17,6 +17,7 @@ import {
 import Highlighter from 'react-highlight-words'
 
 import { navigation } from '@/components/Navigation'
+import { lengthBucket, track } from '@/lib/analytics'
 
 function useAutocomplete({ close }) {
 	let id = useId()
@@ -36,6 +37,19 @@ function useAutocomplete({ close }) {
 		) {
 			close()
 		}
+	}
+
+	// Runs once per chosen result, by click or with Enter (`navigate` runs twice
+	// on Enter). The query itself is not sent, only its length.
+	function onSelect(params) {
+		let [target, anchor] = (params.itemUrl ?? '').split('#')
+		track('doc-search-result-select', {
+			target,
+			...(anchor && { anchor }),
+			query_length: lengthBucket(params.state?.query?.length ?? 0),
+			page: window.location.pathname,
+		})
+		navigate(params)
 	}
 
 	let [autocomplete] = useState(() =>
@@ -63,7 +77,7 @@ function useAutocomplete({ close }) {
 							getItemUrl({ item }) {
 								return item.url
 							},
-							onSelect: navigate,
+							onSelect,
 						},
 					]
 				})
@@ -199,20 +213,38 @@ function SearchResult({
 	)
 }
 
+function NoResults({ query }) {
+	useEffect(() => {
+		// Wait for the visitor to stop typing: one event per failed search, not
+		// one per keystroke. The query itself is not sent, only its length.
+		let timeout = setTimeout(() => {
+			track('doc-search-no-result', {
+				query_length: lengthBucket(query.length),
+				page: window.location.pathname,
+			})
+		}, 1000)
+		return () => {
+			clearTimeout(timeout)
+		}
+	}, [query])
+
+	return (
+		<div className="p-6 text-center">
+			<NoResultsIcon className="mx-auto h-5 w-5 stroke-slate-900" />
+			<p className="mt-2 text-xs text-slate-700">
+				Nothing found for{' '}
+				<strong className="font-semibold wrap-break-word text-slate-900">
+					&lsquo;{query}&rsquo;
+				</strong>
+				. Please try again.
+			</p>
+		</div>
+	)
+}
+
 function SearchResults({ autocomplete, query, collection }) {
 	if (collection.items.length === 0) {
-		return (
-			<div className="p-6 text-center">
-				<NoResultsIcon className="mx-auto h-5 w-5 stroke-slate-900" />
-				<p className="mt-2 text-xs text-slate-700">
-					Nothing found for{' '}
-					<strong className="font-semibold wrap-break-word text-slate-900">
-						&lsquo;{query}&rsquo;
-					</strong>
-					. Please try again.
-				</p>
-			</div>
-		)
+		return <NoResults query={query} />
 	}
 
 	return (
@@ -387,6 +419,8 @@ function useSearchProps() {
 	return {
 		buttonProps: {
 			ref: buttonRef,
+			'data-fv-event': 'doc-search-open',
+			'data-fv-event-via': 'button',
 			onClick() {
 				setOpen(true)
 			},
@@ -397,8 +431,17 @@ function useSearchProps() {
 				open => {
 					let { width = 0, height = 0 } =
 						buttonRef.current?.getBoundingClientRect() ?? {}
-					if (!open || (width !== 0 && height !== 0)) {
+					let isVisible = width !== 0 && height !== 0
+					if (!open || isVisible) {
 						setOpen(open)
+					}
+					// Only the keyboard shortcut opens the dialog through here (the
+					// button has its own onClick), and only for the visible search
+					if (open && isVisible) {
+						track('doc-search-open', {
+							via: 'shortcut',
+							page: window.location.pathname,
+						})
 					}
 				},
 				[setOpen]

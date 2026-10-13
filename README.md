@@ -87,6 +87,17 @@ If you encounter any issues or have questions about the ForVoyez documentation, 
 
 - Change the pricing/number in the database (for the descriptions)
 
+## Analytics events
+
+The site sends click events to the Umami website it shares with the app, so every event name starts with `doc-`. The names are listed in `EVENTS` in `src/lib/analytics.js` and checked by `pnpm test` (`tests/doc-analytics.test.mjs`).
+
+- Links need no markup: one click listener (`src/components/Analytics.jsx`) classifies each link by host (`doc-nav-click`, `doc-outbound-app`, `doc-outbound-wporg`, `doc-outbound-social`, `doc-outbound-other`) and sends the `zone` (the closest `data-zone`: header, sidebar, main, footer), the `target` path and the current `page`.
+- To give a button or a link its own event, add `data-fv-event="doc-..."` and optional `data-fv-event-<key>="<value>"` properties, then add the name to `EVENTS`. Never use Umami's own `data-umami-event` attribute: on a link, the Umami script cancels the click and breaks client-side navigation.
+- For an outcome only known in JavaScript, call `track(name, data)` from `src/lib/analytics.js`.
+- Links to forvoyez.com get their UTM parameters at render time (`src/components/DocLink.jsx`): keep the bare URLs in the MDX pages.
+- Never send personal data or what a visitor typed: the search only reports the length of the query.
+- The tracker only runs on forvoyez.com, doc.forvoyez.com and docs.forvoyez.com: nothing is sent from localhost.
+
 ---
 
 📚 Comprehensive documentation for ForVoyez - Empowering your AI-powered image metadata generation! 📚

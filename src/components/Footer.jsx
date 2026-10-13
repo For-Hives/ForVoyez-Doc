@@ -63,6 +63,11 @@ const social = [
 ]
 
 function PageLink({ label, page, previous = false }) {
+	let pagerEvent = {
+		'data-fv-event': 'doc-nav-pager-click',
+		'data-fv-event-direction': previous ? 'previous' : 'next',
+	}
+
 	return (
 		<>
 			<Button
@@ -70,6 +75,7 @@ function PageLink({ label, page, previous = false }) {
 				aria-label={`${label}: ${page.title}`}
 				variant="secondary"
 				arrow={previous ? 'left' : 'right'}
+				{...pagerEvent}
 			>
 				{label}
 			</Button>
@@ -78,6 +84,7 @@ function PageLink({ label, page, previous = false }) {
 				tabIndex={-1}
 				aria-hidden="true"
 				className="text-base font-semibold text-slate-900 transition hover:text-slate-600"
+				{...pagerEvent}
 			>
 				{page.title}
 			</Link>
@@ -151,7 +158,10 @@ function SmallPrint() {
 
 export function Footer() {
 	return (
-		<footer className="mx-auto w-full max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
+		<footer
+			data-zone="footer"
+			className="mx-auto w-full max-w-2xl space-y-10 pb-16 lg:max-w-5xl"
+		>
 			<PageNavigation />
 			<SmallPrint />
 		</footer>

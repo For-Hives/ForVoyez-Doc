@@ -1,5 +1,6 @@
 import clsx from 'clsx'
-import Link from 'next/link'
+
+import { DocLink } from '@/components/DocLink'
 
 function ArrowIcon(props) {
 	return (
@@ -65,8 +66,8 @@ export function Button({
 	}
 
 	return (
-		<Link className={className} {...props}>
+		<DocLink className={className} {...props}>
 			{inner}
-		</Link>
+		</DocLink>
 	)
 }

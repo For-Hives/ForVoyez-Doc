@@ -2,6 +2,7 @@ import glob from 'fast-glob'
 import { Jost, Source_Sans_3 } from 'next/font/google'
 import Script from 'next/script'
 
+import { Analytics } from '@/components/Analytics'
 import { Layout } from '@/components/Layout'
 
 import '@/styles/tailwind.css'
@@ -58,6 +59,7 @@ export default async function RootLayout({ children }) {
 				<div className="w-full">
 					<Layout allSections={allSections}>{children}</Layout>
 				</div>
+				<Analytics />
 			</body>
 		</html>
 	)

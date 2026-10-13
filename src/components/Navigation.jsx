@@ -227,7 +227,7 @@ export const navigation = [
 
 export function Navigation(props) {
 	return (
-		<nav {...props}>
+		<nav data-zone="sidebar" {...props}>
 			<ul role="list">
 				<TopLevelNavItem href="/">API</TopLevelNavItem>
 				<TopLevelNavItem href="/introduction">Documentation</TopLevelNavItem>
