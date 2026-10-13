@@ -42,3 +42,5 @@ large.txt
 
 .txt
 *.txt
+# the licences shipped with the fonts
+!public/fonts/OFL-*.txt

@@ -19,8 +19,9 @@ export const metadata = {
 	},
 }
 
-// The latin files of the two fonts (src/styles/fonts.css), which every page
-// uses: preloaded like next/font did, the other subsets load on demand.
+// The latin files of the two fonts (src/styles/fonts.css), preloaded like
+// next/font did (the italic one is only used on a few pages); the other
+// subsets load on demand.
 const PRELOADED_FONTS = [
 	'/fonts/source-sans-3-v20-latin-normal.woff2',
 	'/fonts/source-sans-3-v20-latin-italic.woff2',
