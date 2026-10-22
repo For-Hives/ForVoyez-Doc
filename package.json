@@ -53,7 +53,7 @@
 		"tailwindcss": "4.3.3",
 		"unist-util-filter": "5.0.1",
 		"unist-util-visit": "5.1.0",
-		"zustand": "5.0.15"
+		"zustand": "5.0.16"
 	},
 	"devDependencies": {
 		"@eslint/compat": "2.1.1",
