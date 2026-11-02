@@ -69,7 +69,7 @@ If the request is unsuccessful, the API returns the HTTP status code of the erro
 }
 ```
 
-The API checks the request in this order, and answers with the first error it finds: the `Authorization` header and the API key (`401`), your credit balance (`401`), the size of the request body (`413`), the form and its `image` field (`400`), the `schema` (`400`), the image itself (`400`, `413`, or `500`), and finally the generation (`500`, or `400` when the answer would be too long). A request with an invalid API key therefore gets a `401` even when its image is too large or missing.
+The API checks the request in this order, and answers with the first error it finds: the `Authorization` header and the API key (`401`), your credit balance (`401`), the requests running on your account (`429`), the size of the request body (`413`), the form and its `image` field (`400`), the `schema` (`400`), the image itself (`400`, `413`, or `500`), and finally the generation (`500`, `400` when the answer would be too long, or `429` after too many of those). A request with an invalid API key therefore gets a `401` even when its image is too large or missing.
 
 Here are the possible error responses, with an example body for each:
 
@@ -95,6 +95,11 @@ Here are the possible error responses, with an example body for each:
 
 - `413 Payload Too Large`: The image is over 10 MB, or the request body is over 11 MB. When the `Content-Length` header announces a body over 11 MB, the API answers before reading the upload.
   - Body: `{"error": "Image too large: the maximum is 10 MB"}`
+  - A progressive JPEG, interlaced PNG, or GIF image over 50 megapixels gets the same status.
+  - Body: `{"error": "Image too large: progressive JPEG, interlaced PNG and GIF images are limited to 50 megapixels, resize the image and try again"}`
+
+- `429 Too Many Requests`: Your account already has 16 requests running, or 20 answers were too long in the last hour. No credit is used, see [Limits and Quotas](/limits-and-quotas).
+  - Body: `{"error": "Too many requests at the same time: at most 16 per account, wait for one to end and try again"}`
 
 - `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed or did not answer in time) or another unexpected error occurred. No credit is used, so you can retry the request.
   - Body: `{"error": "Internal Server Error"}`

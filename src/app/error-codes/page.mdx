@@ -33,7 +33,8 @@ The ForVoyez API uses standard HTTP status codes to indicate the success or fail
 - `400 Bad Request`: The body is not `multipart/form-data`, the image is missing or is not a JPEG, PNG, WebP, or GIF image, the `schema` is over the schema limits, or the requested fields need a longer answer than the API can return. With `/tokens`: the key was not created from the dashboard.
 - `401 Unauthorized`: The API key is missing, invalid, expired, or deleted. With `/describe`, also when your credit balance is empty.
 - `404 Not Found`: With `/tokens` only: the API key is valid but its account no longer exists.
-- `413 Payload Too Large`: With `/describe` only: the image is over 10 MB, or the request body is over 11 MB.
+- `413 Payload Too Large`: With `/describe` only: the image is over 10 MB, the request body is over 11 MB, or a progressive JPEG, interlaced PNG, or GIF image is over 50 megapixels.
+- `429 Too Many Requests`: With `/describe` only: your account has 16 requests running, or 20 answers that were too long in the last hour. No credit is used.
 - `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed or timed out), the image could not be processed, or another unexpected error occurred on the server side. No credit is used, so you can retry the request.
 
 ## ForVoyez API Error Messages
@@ -108,6 +109,26 @@ Each error message of the `/describe` endpoint below comes with its status code 
   - Description: The image is over 10 MB, or the whole request body is over 11 MB. When the `Content-Length` header announces a body over 11 MB, the API answers before reading the upload. No credit is used.
   - Solution: Resize or compress the image to 10 MB or less. The API scales every image down to at most 1,000 pixels on its longest side before analysing it, so a smaller upload gives the same result.
 
+- `Image too large: progressive JPEG, interlaced PNG and GIF images are limited to 50 megapixels, resize the image and try again`
+  - Status Code: `413`
+  - Body: `{"error": "Image too large: progressive JPEG, interlaced PNG and GIF images are limited to 50 megapixels, resize the image and try again"}`
+  - Description: The image is valid, but these formats are decoded whole, which takes too much memory above 50 megapixels. No credit is used.
+  - Solution: Resize the image, or save it as a baseline JPEG. The API scales every image down to at most 1,000 pixels on its longest side before analysing it, so a smaller upload gives the same result.
+
+### 429 Too Many Requests
+
+- `Too many requests at the same time: at most 16 per account, wait for one to end and try again`
+  - Status Code: `429`
+  - Body: `{"error": "Too many requests at the same time: at most 16 per account, wait for one to end and try again"}`
+  - Description: Your account already has 16 `/describe` requests running, API and playground together. No credit is used.
+  - Solution: Send fewer requests in parallel, and retry this one when another has ended.
+
+- `Too many requests failed because the schema needs a longer answer than the API can return. Ask for fewer or shorter fields, and try again in an hour`
+  - Status Code: `429`
+  - Body: `{"error": "Too many requests failed because the schema needs a longer answer than the API can return. Ask for fewer or shorter fields, and try again in an hour"}`
+  - Description: In the last hour, 20 requests of your account asked for more text than one answer can hold. No credit is used.
+  - Solution: Ask for fewer or shorter fields, and try again when the hour is over.
+
 ### 500 Internal Server Error
 
 - `Internal Server Error`
@@ -168,7 +189,7 @@ When consuming the ForVoyez API, it's important to handle errors gracefully in y
 
 - Check the HTTP status code of the response to determine the general category of the error.
 - Read the `error` field of the JSON response body to understand the specific cause of the error.
-- Retry a `500` after a short wait: a failed request is not charged. Do not retry a `400`, `401`, or `413` unchanged: fix the request, the API key, or your credit balance first.
+- Retry a `500` after a short wait: a failed request is not charged. Retry a `429` later, with fewer requests in parallel. Do not retry a `400`, `401`, or `413` unchanged: fix the request, the API key, or your credit balance first.
 - Display user-friendly error messages to your users based on the error message received.
 - Implement appropriate error logging and monitoring mechanisms to track and investigate errors.
 - If you encounter persistent or unexpected errors, reach out to our support team for further assistance.

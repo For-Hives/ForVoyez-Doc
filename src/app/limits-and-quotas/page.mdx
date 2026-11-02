@@ -35,9 +35,12 @@ These limits apply to every `/describe` request, whatever your plan. A request r
 - Image size: at most 10 MB. A larger image gets `413 Payload Too Large` with `{"error": "Image too large: the maximum is 10 MB"}`.
 - Request body: at most 11 MB in total (the image, the form framing, and the text fields). When the `Content-Length` header announces a larger body, the API answers `413` before reading the upload.
 - Image formats: JPEG, PNG, WebP, and GIF, detected from the file content. Other formats, such as AVIF, HEIC, SVG, or TIFF, get `400 Bad Request, Invalid image file`.
+- Image dimensions: progressive JPEG, interlaced PNG, and GIF images are limited to 50 megapixels, because they are decoded whole. A larger one gets `413 Payload Too Large`. Baseline JPEG, plain PNG, and WebP images are not concerned below 268 megapixels.
 - Image resolution: the API scales every image down to at most 1,000 pixels on its longest side before analysing it, so a larger image does not give a more detailed result.
 - `schema`: at most 20 fields, with field names up to 64 characters and descriptions up to 1,000 characters (see [Data Schemas](/data-schemas#schema-validation)). All the fields of one answer must fit in about 1,500 words.
 - `context` and `keywords`: only the first 1,000 characters of each are used. `language`: only the first 64 characters are used.
+- Requests at the same time: at most 16 per account, API and playground together. Another one gets `429 Too Many Requests`. There is no limit on the number of requests over time, as long as your balance allows them.
+- Answers that would be too long: after 20 of them in an hour on one account, the next requests get `429 Too Many Requests` until the hour is over. They are not charged, but each one is a full call to the AI model.
 - Response time: the generation of the metadata is stopped after about 25 seconds, and the request then fails with `500 Internal Server Error`. Use a client timeout of at least 30 seconds.
 
 See [Error Codes](/error-codes) for the exact error messages.
