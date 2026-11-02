@@ -92,6 +92,10 @@ Here are the error codes of the `/describe` endpoint:
 
 - `413 Image too large: the maximum is 10 MB`: The image is over 10 MB, or the request body is over 11 MB. A body announced as larger than 11 MB by its `Content-Length` header is refused before it is read.
 
+- `413 Image too large: progressive JPEG, ...`: A progressive JPEG, interlaced PNG, or GIF image is over 50 megapixels.
+
+- `429 Too Many Requests`: Your account already has 16 requests running, or 20 answers were too long in the last hour. No credit is used.
+
 - `500 Internal Server Error`: The metadata could not be generated (for example, the AI model failed) or another unexpected error occurred on the server side. No credit is used, so you can retry the request.
 - `500 Image processing failed: ...`: The image is a supported format but could not be decoded (truncated or corrupt file).
 

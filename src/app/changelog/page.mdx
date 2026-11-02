@@ -8,6 +8,17 @@ export const metadata = {
 
 The ForVoyez API is continuously evolving to provide you with new features, enhancements, and improvements. This changelog details the latest changes, updates, and bug fixes to help you stay informed about the API's development.
 
+## Version 1.3.1 (2026-11-02)
+
+This update protects the API against requests that take too much memory or too many AI calls. Requests within these limits do not change.
+
+- Large images
+  - A progressive JPEG, interlaced PNG, or GIF image over 50 megapixels now gets `413 Payload Too Large` with a message saying to resize it
+- Requests at the same time
+  - An account can run 16 `/describe` requests at the same time; another one gets `429 Too Many Requests`
+- Answers that would be too long
+  - After 20 of them in an hour on one account, the next requests get `429 Too Many Requests` until the hour is over
+
 ## Version 1.3.0 (2026-10-08)
 
 This update makes API errors easier to handle, strengthens API key security, and upgrades metadata generation. The request fields and the format of successful responses are unchanged, except for an `alt_text` field added when no `schema` is sent:
