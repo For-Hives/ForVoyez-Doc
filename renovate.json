@@ -1,6 +1,7 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": ["config:base"],
+	"minimumReleaseAge": "3 days",
 	"lockFileMaintenance": {
 		"enabled": true,
 		"automerge": true,
@@ -16,7 +17,7 @@
 			"automergeStrategy": "squash"
 		},
 		{
-			"description": "Coolify builds with Nixpacks 1.41.0, whose corepack 0.24.1 cannot start pnpm 11+ (it looks for bin/pnpm.cjs). Hold pnpm majors until the deploy path supports them; the nixpacks-install CI job checks it.",
+			"description": "pnpm majors stay held: the nixpacks-install CI job still replays corepack 0.24.1, which cannot start pnpm 11+ (it looks for bin/pnpm.cjs), even though Coolify now builds with Railpack. Review this hold together with that job.",
 			"matchPackageNames": ["pnpm"],
 			"matchUpdateTypes": ["major"],
 			"enabled": false
