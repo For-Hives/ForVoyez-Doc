@@ -52,7 +52,7 @@ Other scripts: `pnpm lint` (ESLint), `pnpm format:check` (Prettier), `pnpm test`
 
 Ensure you have the following installed:
 
-- Node.js 22.22.1 or higher, for example the latest 22.x or 24.x (the lint-staged pre-commit hook needs 22.22.1+). Production (Coolify/Nixpacks) builds with the Node major version in `.nvmrc`.
+- Node.js 22.22.1 or higher, for example the latest 22.x or 24.x (the lint-staged pre-commit hook needs 22.22.1+). Production (Coolify/Railpack) builds with the Node major version in `.nvmrc` and the pnpm version in `packageManager`.
 - pnpm 10 (through Corepack, see `packageManager` in `package.json`)
 
 ## Contributing
