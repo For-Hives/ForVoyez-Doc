@@ -110,6 +110,10 @@ function rehypeShiki() {
 				})
 
 				textNode.value = renderTokens(tokens)
+			} else {
+				// `Code` renders its children as HTML: a block without a language
+				// must show its text, not run it
+				textNode.value = escapeHtml(textNode.value)
 			}
 		}
 	}
